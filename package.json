@@ -11,6 +11,7 @@
   "homepage": "https://bitbucket.org/njitclassroomquiz/quiz-backend#readme",
   "dependencies": {
     "express": "^4.13.x",
+    "passport": "^0.3.0",
     "ws": "0.8.x"
   },
   "engines": {
