@@ -1,0 +1,22 @@
+{
+  "name": "quiz-ws",
+  "version": "0.0.1",
+  "description": "Classroom Quiz Backend",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/njitclassroomquiz/quiz-backend.git"
+  },
+  "author": "Trevor Summerfield <ts249@njit.edu>",
+  "license": "MIT",
+  "homepage": "https://bitbucket.org/njitclassroomquiz/quiz-backend#readme",
+  "dependencies": {
+    "express": "^4.13.x",
+    "ws": "0.8.x"
+  },
+  "engines": {
+    "node": "0.12.x"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
