@@ -1,6 +1,7 @@
 // Require Section
 var express = require('express');
 var path = require('path');
+var flash = require('connect-flash');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var passport = require('passport');
@@ -46,12 +47,15 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 
 app.use(session({
-    secret: 'keyboard cat',
+    secret: 'keyboard cat', //TODO secret from environment variable
     resave: true,
     saveUninitialized: true
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(flash());
 
 app.use(express.static(path.join(__dirname, 'public')));
 

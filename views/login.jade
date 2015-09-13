@@ -3,6 +3,7 @@ extends layout
 block content
     h1 Quiz App
     p Welcome to Quiz App, please Log In:
+    .error #{message}
     div.loginbox
         form(name="login", action="/login", method="post")
             div
