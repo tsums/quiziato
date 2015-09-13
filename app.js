@@ -13,10 +13,10 @@ var mongoose = require('mongoose');
 
 // Passport Authentication Setup
 var User = require('./models/user');
+
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
 
 // Mongoose Setup
 mongoose.connect('mongodb://localhost/quiz', function (err) {
@@ -25,7 +25,6 @@ mongoose.connect('mongodb://localhost/quiz', function (err) {
     }
 });
 
-var routes = require('./routes/index');
 var app = express();
 var env = process.env.NODE_ENV || 'development';
 
@@ -60,7 +59,10 @@ app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Register Route Files
-app.use('/', routes);
+var index = require('./routes/index');
+var authRoutes = require('./routes/auth');
+app.use('/', index);
+app.use('/', authRoutes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
