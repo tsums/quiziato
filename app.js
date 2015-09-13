@@ -4,6 +4,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var passport = require('passport');
+var session = require('express-session')
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
@@ -17,10 +18,10 @@ passport.deserializeUser(User.deserializeUser());
 
 
 // Mongoose Setup
-mongoose.connect('mongodb://localhost/quiz', function(err) {
-  if (err) {
-    console.log('Could not connect to mongodb on localhost. Ensure that you have mongodb running on localhost and mongodb accepts connections on standard ports!');
-  }
+mongoose.connect('mongodb://localhost/quiz', function (err) {
+    if (err) {
+        console.log('Could not connect to mongodb.');
+    }
 });
 
 var routes = require('./routes/index');
@@ -39,13 +40,19 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 
 app.use(bodyParser.urlencoded({
-  extended: true
+    extended: true
 }));
 
+app.use(cookieParser());
+
+app.use(session({
+    secret: 'keyboard cat',
+    resave: true,
+    saveUninitialized: true
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Register Route Files
@@ -53,33 +60,33 @@ app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handlers
 
 // development error handler
 if (app.get('env') === 'development') {
-  app.use(function (err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err,
-      title: 'error'
+    app.use(function (err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err,
+            title: 'error'
+        });
     });
-  });
 }
 
 // production error handler
 app.use(function (err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {},
-    title: 'error'
-  });
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {},
+        title: 'error'
+    });
 });
 
 module.exports = app;
