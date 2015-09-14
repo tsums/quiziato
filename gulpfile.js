@@ -20,10 +20,7 @@ gulp.task('watch', function () {
 gulp.task('develop', function () {
 
     env({
-        file: '.env.json',
-        vars: {
-            // any variables you want to overwrite
-        }
+        file: '.env.json'
     });
 
     livereload.listen();

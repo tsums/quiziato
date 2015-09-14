@@ -51,7 +51,7 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 
 app.use(session({
-    secret: 'keyboard cat', //TODO secret from environment variable
+    secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true
 }));
