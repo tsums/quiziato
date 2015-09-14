@@ -18,8 +18,10 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+var mongoURI = process.env.MONGOLAB_URI;
+
 // Mongoose Setup
-mongoose.connect('mongodb://localhost/quiz', function (err) {
+mongoose.connect(mongoURI, function (err) {
     if (err) {
         console.log('Could not connect to mongodb.');
     }
