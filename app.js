@@ -25,6 +25,9 @@ mongoose.connect('mongodb://localhost/quiz', function (err) {
     }
 });
 
+
+var oauth2 = require('./services/oauth2');
+
 var app = express();
 var env = process.env.NODE_ENV || 'development';
 
@@ -61,8 +64,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Register Route Files
 var index = require('./routes/index');
 var authRoutes = require('./routes/auth');
+var apiRoutes = require('./routes/api');
 app.use('/', index);
 app.use('/', authRoutes);
+app.use('/api', apiRoutes);
+
+app.post('/oauth/token', oauth2.token);
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
