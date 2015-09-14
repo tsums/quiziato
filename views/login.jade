@@ -4,13 +4,12 @@ block content
     h1 Quiz App
     p Welcome to Quiz App, please Log In:
     .error #{message}
-    div.loginbox
-        form(name="login", action="/login", method="post")
-            div
-                label UCID:
-                input(type="text", name="username")
-            div
-                label Password:
-                input(type="password", name="password")
-            div
-                input(type="submit", value="login")
+    br
+    .login-box.center-block
+        form.form-signin(role='form', action="/login", method="post")
+            input.form-control(type='text', name='username', placeholder='UCID', required='', autofocus='')
+            input.form-control(type='password', name='password',placeholder='Password', required='')
+            //label.checkbox
+            //    input(type='checkbox', value='remember-me')
+            //    |  Remember me
+            button.btn.btn-lg.btn-primary.btn-block(type='submit') Sign in
