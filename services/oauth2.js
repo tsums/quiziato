@@ -1,3 +1,9 @@
+/**
+ * Trevor Summerfield
+ * CS 490-001 Fall 2015
+ * Quiz Project
+ */
+
 var passport = require('passport');
 var BearerStrategy = require('passport-http-bearer').Strategy;
 var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
@@ -24,7 +30,7 @@ passport.use(new ClientPasswordStrategy(
 ));
 
 /*
-
+    Bearer Token Strategy can be used to authenticate API routes.
  */
 passport.use(new BearerStrategy(
     function (accessToken, done) {

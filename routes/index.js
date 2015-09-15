@@ -1,6 +1,9 @@
 /**
- * Index routes. Basic front pages and things.
+ * Trevor Summerfield
+ * CS 490-001 Fall 2015
+ * Quiz Project
  */
+
 var router = require('express').Router();
 var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 

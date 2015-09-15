@@ -1,4 +1,11 @@
 #!/usr/bin/env node
+
+/**
+ * Trevor Summerfield
+ * CS 490-001 Fall 2015
+ * Quiz Project
+ */
+
 var app = require('../app');
 
 app.set('port', process.env.PORT || 3000);

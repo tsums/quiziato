@@ -1,8 +1,9 @@
 /**
- * OAuth2 Access Token Model
- *
- * @type {*|exports|module.exports}
+ * Trevor Summerfield
+ * CS 490-001 Fall 2015
+ * Quiz Project
  */
+
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;

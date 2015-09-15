@@ -1,10 +1,9 @@
 /**
- * The User Model
- *
- * Leverages Passport-Local-Mongoose to provide the passport local functionality we need.
- *
- * @type {*|exports|module.exports}
+ * Trevor Summerfield
+ * CS 490-001 Fall 2015
+ * Quiz Project
  */
+
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;

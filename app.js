@@ -1,4 +1,12 @@
-// Require Section
+/**
+ * Trevor Summerfield
+ * CS 490-001 Fall 2015
+ * Quiz Project
+ */
+
+/*
+ * External Dependencies
+ */
 var express = require('express');
 var path = require('path');
 var flash = require('connect-flash');
@@ -11,8 +19,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
 
-// Passport Authentication Setup
 var User = require('./models/user');
+var oauth2 = require('./services/oauth2');
 
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
@@ -28,28 +36,28 @@ mongoose.connect(mongoURI, function (err) {
 });
 
 
-var oauth2 = require('./services/oauth2');
-
 var app = express();
 var env = process.env.NODE_ENV || 'development';
 
+// App.Locals are available in every template render.
 app.locals.ENV = env;
 app.locals.ENV_DEVELOPMENT = env == 'development';
 
-// view engine setup
+// Jade View Engine
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // app.use(favicon(__dirname + '/public/img/favicon.ico'));
 app.use(logger('dev'));
-app.use(bodyParser.json());
 
+// Add Body and Cookie Parsers
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-
 app.use(cookieParser());
 
+// Initialize Passport, Session
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: true,
@@ -58,12 +66,15 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-
 app.use(flash());
 
+// Serve the static files in /public
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Register Route Files
+/*
+ * Routing
+ */
+
 var index = require('./routes/index');
 var authRoutes = require('./routes/auth');
 var apiRoutes = require('./routes/api');
@@ -73,17 +84,16 @@ app.use('/api', apiRoutes);
 
 app.post('/oauth/token', oauth2.token);
 
+/*
+ * Error Handling
+ */
 
-
-
-// catch 404 and forward to error handler
+// throw 404's to error handler.
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
 });
-
-// error handlers
 
 // development error handler
 if (app.get('env') === 'development') {

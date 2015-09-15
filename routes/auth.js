@@ -1,14 +1,22 @@
+/**
+ * Trevor Summerfield
+ * CS 490-001 Fall 2015
+ * Quiz Project
+ */
+
 var passport = require('passport');
 var router = require('express').Router();
 var User = require('../models/user');
+var ensureNotLoggedIn = require('connect-ensure-login').ensureNotLoggedIn;
+
 
 router.route('/login')
 
-    .get(function (req, res) {
+    .get(ensureNotLoggedIn('/dashboard'), function (req, res) {
         res.render('login', {title: 'Log in to Quiz App', message: req.flash('error')});
     })
 
-    .post(passport.authenticate('local', {
+    .post(ensureNotLoggedIn('/dashboard'), passport.authenticate('local', {
         successReturnToOrRedirect: '/dashboard',
         failureRedirect: '/login',
         failureFlash : true
@@ -21,11 +29,11 @@ router.get('/logout', function (req, res) {
 
 router.route('/register')
 
-    .get(function (req, res) {
+    .get(ensureNotLoggedIn('/dashboard'), function (req, res) {
         res.render('register', {});
     })
 
-    .post(function (req, res, next) {
+    .post(ensureNotLoggedIn('/dashboard'), function (req, res, next) {
         console.log('registering user');
         User.register(new User({username: req.body.username}), req.body.password, function (err) {
             if (err) {
