@@ -1,3 +1,9 @@
+/**
+ * OAuth2 Client Model
+ *
+ * @type {*|exports|module.exports}
+ */
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 

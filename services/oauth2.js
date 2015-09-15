@@ -48,7 +48,7 @@ passport.use(new BearerStrategy(
                     return done(null, false);
                 }
 
-                var info = { scope: '*' };
+                var info = { scope: '*' }; //TODO possibly consider including scopes.
                 done(null, user, info);
             })
 
@@ -98,6 +98,9 @@ oauth2.exchange(oauth2orize.exchange.password(function (client, username, passwo
 
 }));
 
+/*
+    Routine executed when the /token endpoint is hit.
+ */
 exports.token = [
     passport.authenticate('oauth2-client-password', { session: false }),
     oauth2.token(),

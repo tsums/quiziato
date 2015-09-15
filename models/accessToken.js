@@ -1,3 +1,9 @@
+/**
+ * OAuth2 Access Token Model
+ *
+ * @type {*|exports|module.exports}
+ */
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
