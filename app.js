@@ -10,7 +10,6 @@
 var express = require('express');
 var path = require('path');
 var flash = require('connect-flash');
-var favicon = require('serve-favicon');
 var logger = require('morgan');
 var passport = require('passport');
 var session = require('express-session')
