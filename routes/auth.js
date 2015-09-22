@@ -45,4 +45,17 @@ router.route('/register')
         });
     });
 
+// API registration for mobile apps.
+router.route("/register/api")
+    .post(function(req, res, next) {
+        User.register(new User({username: req.body.username}), req.body.password, function (err) {
+            if (err) {
+                console.log('error while registering: ', err);
+                return next(err);
+            }
+            console.log('user registered!');
+            res.json({success: true});
+        });
+    });
+
 module.exports = router;
