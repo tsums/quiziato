@@ -24,6 +24,9 @@ module.exports.listen = function(server){
            console.log('socket joining inClass');
         });
 
+        socket.on('data_test', function(data) {
+            console.log(data);
+        });
 
 
 
