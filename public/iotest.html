@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        var socket = io.connect();
+        var socket = io('/classroom').connect();
         socket.on('news', function (data) {
             console.log(data);
             socket.emit('click', { my: 'data' });
         });
+        socket.on('question', function(data) {
+            console.log(data);
+        })
     </script>
     <title>Socket Test</title>
 </head>
