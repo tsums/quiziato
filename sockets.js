@@ -25,7 +25,7 @@ module.exports.listen = function(server){
         });
 
         socket.on('data_test', function(data) {
-            console.log(data);
+            console.log(data.toJSON());
         });
 
 
