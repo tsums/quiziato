@@ -13,18 +13,21 @@ module.exports.listen = function(server){
     var classroom = io.of('/classroom');
 
     classroom.on('connection', function (socket) {
+
+        console.log('Client connected to namespace \'/classroom\'');
+
         socket.emit('news', { hello: 'world' });
-        socket.on('click', function (data) {
-            console.log(data);
-        });
 
         socket.on('attendance', function(data) {
-           if (data === true) {
-               socket.join('inClass');
-               classroom.to('inClass').emit('question', "What is the square root of 4?");
-               console.log('socket joining inClass');
-           }
+           socket.join(data);
+           classroom.to(data).emit('question', "What is the square root of 4?");
+           console.log('socket joining inClass');
         });
+
+
+
+
+
     });
 
     return io;
