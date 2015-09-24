@@ -43,8 +43,6 @@ passport.use(new BearerStrategy(
                 return done(null, false);
             }
 
-
-            console.log(token.userID);
             User.findOne(token.userID, function (err, user) {
 
                 if (err) {

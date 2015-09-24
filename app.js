@@ -17,10 +17,16 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
-
+/*
+ *  Pre-instantiated Dependencies
+ */
 var User = require('./models/user');
 var oauth2 = require('./services/oauth2');
+var winston = require('./services/logging');
 
+/*
+ *  Modle Setup
+ */
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -30,11 +36,13 @@ var mongoURI = process.env.MONGOLAB_URI;
 // Mongoose Setup
 mongoose.connect(mongoURI, function (err) {
     if (err) {
-        console.log('Could not connect to mongodb.');
+        winston.error('Could not connect to mongodb.');
     }
 });
 
-
+/*
+ *  Express Setup
+ */
 var app = express();
 var env = process.env.NODE_ENV || 'development';
 
@@ -46,7 +54,6 @@ app.locals.ENV_DEVELOPMENT = env == 'development';
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-// app.use(favicon(__dirname + '/public/img/favicon.ico'));
 app.use(logger('dev'));
 
 // Add Body and Cookie Parsers
@@ -71,9 +78,8 @@ app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 
 /*
- * Routing
+ * Express Routing
  */
-
 var index = require('./routes/index');
 var authRoutes = require('./routes/auth');
 var apiRoutes = require('./routes/api');
@@ -86,7 +92,6 @@ app.post('/oauth/token', oauth2.token);
 /*
  * Error Handling
  */
-
 // throw 404's to error handler.
 app.use(function (req, res, next) {
     var err = new Error('Not Found');

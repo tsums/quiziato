@@ -4,9 +4,13 @@
  * Quiz Project
  */
 
+/*
+ * Socket.io Configuration
+ */
 var socketio = require('socket.io');
+var winston = require('winston').loggers.get('socket');
 
-module.exports.listen = function(server){
+var listen = function(server){
 
     var io = socketio.listen(server);
 
@@ -14,24 +18,23 @@ module.exports.listen = function(server){
 
     classroom.on('connection', function (socket) {
 
-        console.log('Client connected to namespace \'/classroom\'');
+        winston.info('Client connected to namespace \'/classroom\'');
 
         socket.emit('news', { hello: 'world' });
 
         socket.on('attendance', function(data) {
            socket.join(data);
            classroom.to(data).emit('question', "What is the square root of 4?");
-           console.log('socket joining inClass');
+           winston.info('socket joining inClass');
         });
 
         socket.on('data_test', function(data) {
-            console.log(data.toString());
+            winston.info(data.toString());
         });
-
-
-
 
     });
 
     return io;
 };
+
+module.exports.listen = listen;
