@@ -82,6 +82,10 @@ oauth2.exchange(oauth2orize.exchange.password(function (client, username, passwo
 
         if (err) return done(err);
 
+        if (user == null) {
+            return done(new Error("User Not Found"));
+        }
+
         user.authenticate(password, function(err, authenticated, message) {
 
             if (err) return done(err);
