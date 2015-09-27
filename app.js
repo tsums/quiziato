@@ -12,10 +12,12 @@ var path = require('path');
 var flash = require('connect-flash');
 var logger = require('morgan');
 var passport = require('passport');
-var session = require('express-session')
+var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+
 
 /*
  *  Pre-instantiated Dependencies
@@ -32,6 +34,8 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 var mongoURI = process.env.MONGOLAB_URI;
+var redisURI = process.env.REDISCLOUD_URL;
+var redisInfo = require("redis-url").parse(redisURI);
 
 // Mongoose Setup
 mongoose.connect(mongoURI, function (err) {
@@ -65,6 +69,12 @@ app.use(cookieParser());
 
 // Initialize Passport, Session
 app.use(session({
+    store: new RedisStore({
+        host: redisInfo.hostname,
+        port: redisInfo.port,
+        db: Number(redisInfo.database),
+        pass: redisInfo.password
+    }),
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true

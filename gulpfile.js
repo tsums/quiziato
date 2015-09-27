@@ -3,7 +3,8 @@ var gulp = require('gulp'),
     plumber = require('gulp-plumber'),
     env = require('gulp-env'),
     livereload = require('gulp-livereload'),
-    sass = require('gulp-sass');
+    sass = require('gulp-sass'),
+    gutil = require('gulp-util');
 
 gulp.task('sass', function () {
     gulp.src('./public/css/*.scss')
@@ -19,11 +20,14 @@ gulp.task('watch', function () {
 
 gulp.task('develop', function () {
 
+    gutil.log(gutil.colors.green('Running App...'));
+
     env({
         file: 'env.json'
     });
 
     livereload.listen();
+
     nodemon({
         script: 'bin/www',
         ext: 'js jade coffee',

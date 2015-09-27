@@ -10,7 +10,7 @@
 var socketio = require('socket.io');
 var winston = require('winston').loggers.get('socket');
 
-var listen = function(server){
+var listen = function(server) {
 
     var io = socketio.listen(server);
 
