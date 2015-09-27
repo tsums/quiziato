@@ -24,6 +24,6 @@ winston.loggers.add('socket', {
         colorize: true,
         label: 'socket'
     }
-})
+});
 
 module.exports = winston;

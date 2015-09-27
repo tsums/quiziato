@@ -17,6 +17,7 @@ var RedisStore = require('connect-redis')(session);
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var config = require('./config');
 
 
 /*
@@ -35,8 +36,6 @@ passport.deserializeUser(User.deserializeUser());
 
 // Parse Environment Variables
 var mongoURI = process.env.MONGOLAB_URI;
-var redisURI = process.env.REDISCLOUD_URL;
-var redisInfo = require("redis-url").parse(redisURI);
 
 // Mongoose Setup
 mongoose.connect(mongoURI, function (err) {
@@ -70,12 +69,8 @@ app.use(cookieParser());
 
 // Initialize Passport, Session
 app.use(session({
-    store: new RedisStore({
-        host: redisInfo.hostname,
-        port: redisInfo.port,
-        db: Number(redisInfo.database),
-        pass: redisInfo.password
-    }),
+    store: require('./services/redis-session'),
+    key: config.session_key,
     secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true
