@@ -27,12 +27,13 @@ var oauth2 = require('./services/oauth2');
 var winston = require('./services/logging');
 
 /*
- *  Modle Setup
+ *  Module Setup
  */
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+// Parse Environment Variables
 var mongoURI = process.env.MONGOLAB_URI;
 var redisURI = process.env.REDISCLOUD_URL;
 var redisInfo = require("redis-url").parse(redisURI);

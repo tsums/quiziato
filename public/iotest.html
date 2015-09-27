@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        var socket = io('/classroom').connect();
+        var socket = io.connect(window.location.origin + '/classroom');
         socket.on('news', function (data) {
             console.log(data);
             socket.emit('click', { my: 'data' });
