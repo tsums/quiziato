@@ -14,42 +14,55 @@ var redis_session = require('./redis-session');
 var cookieParser = require('cookie-parser');
 var config = require('../config');
 
-var listen = function(server) {
+var listen = function (server) {
 
     var io = socketio.listen(server);
 
+    // Classroom Namespace is for mobile clients.
     var classroom = io.of('/classroom');
+
+    // Dashboard Namespace is for web clients.
+    var dashboard = io.of('/dashboard');
 
     classroom.on('connection', function (socket) {
 
         winston.info('Client connected to namespace \'/classroom\'');
 
-        winston.info(socket.request.user.username);
+        socket.emit('news', {hello: 'world'});
 
-        socket.emit('news', { hello: 'world' });
-
-        socket.on('attendance', function(data) {
-           socket.join(data);
-           classroom.to(data).emit('question', "What is the square root of 4?");
-           winston.info('socket joining inClass');
+        socket.on('attendance', function (data) {
+            socket.join(data);
+            classroom.to(data).emit('question', "What is the square root of 4?");
+            winston.info('socket joining inClass');
         });
 
-        socket.on('data_test', function(data) {
+        socket.on('data_test', function (data) {
             winston.info(data.toString());
         });
 
     });
 
-    io.use(passportSocketIo.authorize({
-        key:          config.session_key,
-        secret:       process.env.SESSION_SECRET,
-        store:        redis_session,
-        success:      function(data, accept) {
-            console.log('success');
+    // TODO classroom namespace needs a bearer token authentication scheme.
+
+
+
+
+    dashboard.on('connection', function (socket) {
+        winston.info(socket.request.user.username + ' connected to namespace \'/dashboard\'');
+        classroom.emit('join', 'Instructor Joined!');
+    });
+
+    // Cookie-Based Authentication for Web Clients
+    dashboard.use(passportSocketIo.authorize({
+        key: config.session_key,
+        secret: process.env.SESSION_SECRET,
+        store: redis_session,
+        success: function (data, accept) {
+            winston.info('User connecting...');
             accept();
         },
-        fail:         function(data, message, error, accept) {
-            console.log(data);
+        fail: function (data, message, error, accept) {
+            winston.warn('Dashboard: Unauthorized user attempted to access sockets.');
         }
 
     }));
