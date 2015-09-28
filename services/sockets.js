@@ -11,7 +11,6 @@ var socketio = require('socket.io');
 var winston = require('winston').loggers.get('socket');
 var passportSocketIo = require("passport.socketio");
 var redis_session = require('./redis-session');
-var cookieParser = require('cookie-parser');
 var config = require('../config');
 
 var listen = function (server) {
@@ -42,8 +41,14 @@ var listen = function (server) {
 
     });
 
-    // TODO classroom namespace needs a bearer token authentication scheme.
+    // Token-Based Authentication for Mobile Clients
+    classroom.use(function(socket,next) {
+        // TODO classroom namespace needs a bearer token authentication scheme.
 
+        winston.info(socket.request.headers.Authorization);
+        winston.info(socket.auth);
+        next();
+    });
 
 
 
