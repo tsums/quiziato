@@ -28,22 +28,19 @@ var listen = function (server) {
 
     classroom.on('connection', function (socket) {
 
-        socket.get('user', function(err, user) {
+        winston.info(socket.request.user + ' connected to namespace \'/classroom\'');
 
-            winston.info(user + ' connected to namespace \'/classroom\'');
+        socket.emit('news', {hello: 'world'});
 
-            socket.emit('news', {hello: 'user.username'});
+        socket.on('attendance', function (data) {
+            if (!data) return;
+            socket.join(data);
+            classroom.to(data).emit('question', "What is the square root of 4?");
+            winston.info('socket joining inClass');
+        });
 
-            socket.on('attendance', function (data) {
-                if (!data) return;
-                socket.join(data);
-                classroom.to(data).emit('question', "What is the square root of 4?");
-                winston.info('socket joining inClass');
-            });
-
-            socket.on('data_test', function (data) {
-                winston.info(user.username + " " + data.toString());
-            });
+        socket.on('data_test', function (data) {
+            winston.info(data.toString());
         });
 
     });
@@ -76,9 +73,7 @@ var listen = function (server) {
                         socket.disconnect("User Not Found...");
                     }
 
-                    socket.set('user', user, function() {
-                        next();
-                    })
+                    socket['user'] = user;
                 })
 
             });
