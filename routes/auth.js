@@ -14,7 +14,7 @@ var winston = require('winston').loggers.get('default');
 router.route('/login')
 
     .get(ensureNotLoggedIn('/dashboard'), function (req, res) {
-        res.render('login', {title: 'Log in to Quiz App', message: req.flash('error')});
+        res.render('auth/login', {title: 'Log in to Quiz App', message: req.flash('error')});
     })
 
     .post(ensureNotLoggedIn('/dashboard'), passport.authenticate('local', {
@@ -31,7 +31,7 @@ router.get('/logout', function (req, res) {
 router.route('/register')
 
     .get(ensureNotLoggedIn('/dashboard'), function (req, res) {
-        res.render('register', {});
+        res.render('auth/register', {});
     })
 
     .post(ensureNotLoggedIn('/dashboard'), function (req, res, next) {

@@ -1,5 +1,25 @@
-extends ../layout
-block content
-    h1= title
-    p Welcome to Quiz App, #{user}.
-    a(href='/logout') Log Out
+doctype html
+html(lang='en')
+    head
+        meta(charset='UTF-8')
+        meta(name='viewport', content='width=device-width')
+        title= title
+        block css
+            link(rel='stylesheet', href='/css/style.css')
+            link(href='components/bootstrap/dist/css/bootstrap.css', rel='stylesheet')
+        block js
+            if ENV_DEVELOPMENT
+                script(src='http://localhost:35729/livereload.js')
+    body
+        block content
+        h1= title
+        p Welcome to Quiz App, #{user}.
+        a(href='/logout') Log Out
+
+    script(src='/socket.io/socket.io.js')
+    script(src='components/angular/angular.js')
+    script(src='components/angular-socket-io/socket.js')
+    script(src='js/dashboard/app.js')
+
+
+

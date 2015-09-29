@@ -12,7 +12,7 @@ router.get('/', function (req, res) {
 });
 
 router.get('/dashboard', ensureLoggedIn('/login'), function (req, res) {
-    res.render('dashboard', {title: 'Quiz App', user: req.user.username});
+    res.render('dashboard/dashboard', {title: 'Quiz App', user: req.user.username});
 });
 
 module.exports = router;
