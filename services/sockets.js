@@ -10,7 +10,9 @@
 var socketio = require('socket.io');
 var winston = require('winston').loggers.get('socket');
 var passportSocketIo = require("passport.socketio");
+
 var redis_session = require('./redis-session');
+var AccessToken = require('../models/accessToken');
 var config = require('../config');
 
 var listen = function (server) {
@@ -25,7 +27,7 @@ var listen = function (server) {
 
     classroom.on('connection', function (socket) {
 
-        winston.info('Client connected to namespace \'/classroom\'');
+        winston.info(socket.user + ' connected to namespace \'/classroom\'');
 
         socket.emit('news', {hello: 'world'});
 
@@ -44,11 +46,36 @@ var listen = function (server) {
 
     // Token-Based Authentication for Mobile Clients
     classroom.use(function(socket,next) {
-        // TODO classroom namespace needs a bearer token authentication scheme.
-        // TODO have Mike try sending headers and see if I can parse them.
 
-        winston.info(socket.request.headers.authorization);
-        winston.info(socket.auth);
+        if (socket.request.headers.authorization == null) {
+            socket.disconnect('Unauthorized');
+        } else {
+            winston.info("Socket Connecting to Classroom: " + socket.request.headers.authorization);
+
+            AccessToken.findOne({token: socket.request.headers.authorization}, function (err, token) {
+
+                if (err) {
+                    return next(err);
+                }
+                if (!token) {
+                    socket.disconnect("Token Not Found...");
+                }
+
+                User.findOne(token.userID, function (err, user) {
+
+                    if (err) {
+                        return next(err);
+                    }
+                    if (!user) {
+                        winston.err("Found a token in database to which the user did not exist...");
+                        socket.disconnect("User Not Found...");
+                    }
+
+                    socket.user = user;
+                })
+
+            });
+        }
         next();
     });
 
