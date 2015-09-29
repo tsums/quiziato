@@ -28,15 +28,16 @@ var listen = function (server) {
 
     classroom.on('connection', function (socket) {
 
-        winston.info(socket.request.user + ' connected to namespace \'/classroom\'');
+        winston.info(socket.request.user.username + ' connected to namespace \'/classroom\'');
 
-        socket.emit('news', {hello: 'world'});
-
+        // Join the Sokcet to the proper room according to its attendance token.
         socket.on('attendance', function (data) {
+
             if (!data) return;
+
             socket.join(data);
-            classroom.to(data).emit('question', "What is the square root of 4?");
-            winston.info('socket joining inClass');
+            
+            dashboard.emit('cat', 'User: ' + socket.request.user.username + "joined room " + data);
         });
 
         socket.on('data_test', function (data) {
