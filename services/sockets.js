@@ -60,7 +60,6 @@ var listen = function (server) {
             winston.info("Rejecting unauthorized connection");
             socket.disconnect('Unauthorized');
         } else {
-            winston.info("Socket Connecting to Classroom: " + socket.request.headers.authorization);
 
             AccessToken.findOne({token: socket.request.headers.authorization}, function (err, token) {
 
@@ -82,6 +81,7 @@ var listen = function (server) {
                     }
 
                     socket.request['user'] = user;
+                    winston.info(socket.request.user.username + ' connected to \'classroom\'');
                     next();
                 })
 
@@ -93,7 +93,7 @@ var listen = function (server) {
         winston.info(socket.request.user.username + ' connected to namespace \'/dashboard\'');
         classroom.emit('join', 'Instructor Joined!');
         socket.on('disconnect', function(data) {
-            winston.info(socket.request.user.username + 'disconnected from \'/dashboard\'');
+            winston.info(socket.request.user.username + ' disconnected from \'/dashboard\'');
         })
     });
 
