@@ -48,6 +48,7 @@ var listen = function (server) {
     classroom.use(function(socket,next) {
 
         if (socket.request.headers.authorization == null) {
+            winston.info("Rejecting unauthorized connection");
             socket.disconnect('Unauthorized');
         } else {
             winston.info("Socket Connecting to Classroom: " + socket.request.headers.authorization);
