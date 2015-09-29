@@ -73,7 +73,7 @@ var listen = function (server) {
                         socket.disconnect("User Not Found...");
                     }
 
-                    socket['user'] = user;
+                    socket.request['user'] = user;
                     next();
                 })
 
