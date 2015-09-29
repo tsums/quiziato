@@ -28,7 +28,7 @@ var listen = function (server) {
 
     classroom.on('connection', function (socket) {
 
-        winston.info(socket.user + ' connected to namespace \'/classroom\'');
+        winston.info(socket.request.user + ' connected to namespace \'/classroom\'');
 
         socket.emit('news', {hello: 'world'});
 
@@ -73,7 +73,7 @@ var listen = function (server) {
                         socket.disconnect("User Not Found...");
                     }
 
-                    socket.user = user;
+                    socket.request.user = user;
                 })
 
             });
