@@ -74,6 +74,7 @@ var listen = function (server) {
                     }
 
                     socket['user'] = user;
+                    next();
                 })
 
             });
