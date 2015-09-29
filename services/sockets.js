@@ -93,6 +93,7 @@ var listen = function (server) {
         winston.info(socket.request.user.username + ' connected to namespace \'/dashboard\'');
         classroom.emit('join', 'Instructor Joined!');
         socket.on('disconnect', function(data) {
+            // TODO inform class that instructor has left.
             winston.info(socket.request.user.username + ' disconnected from \'/dashboard\'');
         })
     });
