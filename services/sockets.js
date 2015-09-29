@@ -95,7 +95,10 @@ var listen = function (server) {
         socket.on('disconnect', function(data) {
             // TODO inform class that instructor has left.
             winston.info(socket.request.user.username + ' disconnected from \'/dashboard\'');
-        })
+        });
+
+        socket.emit('testEvent', 'Foo Bar Baz');
+
     });
 
     // Cookie-Based Authentication for Web Clients
