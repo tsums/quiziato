@@ -30,6 +30,7 @@ var listen = function (server) {
         socket.emit('news', {hello: 'world'});
 
         socket.on('attendance', function (data) {
+            if (!data) return;
             socket.join(data);
             classroom.to(data).emit('question', "What is the square root of 4?");
             winston.info('socket joining inClass');
@@ -44,6 +45,7 @@ var listen = function (server) {
     // Token-Based Authentication for Mobile Clients
     classroom.use(function(socket,next) {
         // TODO classroom namespace needs a bearer token authentication scheme.
+        // TODO have Mike try sending headers and see if I can parse them.
 
         winston.info(socket.request.headers.Authorization);
         winston.info(socket.auth);
@@ -64,6 +66,7 @@ var listen = function (server) {
         store: redis_session,
         success: function (data, accept) {
             winston.info('User connecting...');
+            // TODO not sure if we really need this callback...
             accept();
         },
         fail: function (data, message, error, accept) {
