@@ -33,10 +33,12 @@ var listen = function (server) {
         // Join the Sokcet to the proper room according to its attendance token.
         socket.on('attendance', function (data) {
 
+            winston.info(socket.request.user.username + ' sent attendance', {namespace : 'classroom'});
+
             if (!data) return;
 
             socket.join(data);
-            
+
             dashboard.emit('cat', 'User: ' + socket.request.user.username + "joined room " + data);
         });
 
