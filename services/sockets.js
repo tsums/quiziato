@@ -13,6 +13,7 @@ var passportSocketIo = require("passport.socketio");
 
 var redis_session = require('./redis-session');
 var AccessToken = require('../models/accessToken');
+var User = require('../models/user');
 var config = require('../config');
 
 var listen = function (server) {
