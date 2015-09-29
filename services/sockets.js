@@ -47,7 +47,7 @@ var listen = function (server) {
         // TODO classroom namespace needs a bearer token authentication scheme.
         // TODO have Mike try sending headers and see if I can parse them.
 
-        winston.info(socket.request.headers.Authorization);
+        winston.info(socket.request.headers);
         winston.info(socket.auth);
         next();
     });
