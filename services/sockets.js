@@ -7,6 +7,7 @@
 /*
  * Socket.io Configuration
  */
+
 var socketio = require('socket.io');
 var winston = require('winston').loggers.get('socket');
 var passportSocketIo = require("passport.socketio");
@@ -30,7 +31,7 @@ var listen = function (server) {
 
         winston.info(socket.request.user.username + ' connected to namespace \'/classroom\'');
 
-        // Join the Sokcet to the proper room according to its attendance token.
+        // Join the Socket to the proper room according to its attendance token.
         socket.on('attendance', function (data) {
 
             winston.info(socket.request.user.username + ' sent attendance', {namespace : 'classroom'});
@@ -45,6 +46,10 @@ var listen = function (server) {
         socket.on('data_test', function (data) {
             winston.info(data.toString());
         });
+
+        socket.on('disconnect', function(data) {
+            winston.info(socket.request.user.username + 'disconnected from \'/classroom\'');
+        })
 
     });
 
@@ -84,11 +89,12 @@ var listen = function (server) {
         }
     });
 
-
-
     dashboard.on('connection', function (socket) {
         winston.info(socket.request.user.username + ' connected to namespace \'/dashboard\'');
         classroom.emit('join', 'Instructor Joined!');
+        socket.on('disconnect', function(data) {
+            winston.info(socket.request.user.username + 'disconnected from \'/dashboard\'');
+        })
     });
 
     // Cookie-Based Authentication for Web Clients
