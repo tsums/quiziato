@@ -1,3 +1,10 @@
+//-
+ Trevor Summerfield
+ CS 490-001 Fall 2015
+ Quiz Project
+
+//- Dashboard Server Template For Client Dashboard Angular Application
+
 doctype html
 html(lang='en')
     head
@@ -6,23 +13,40 @@ html(lang='en')
         title= title
         block css
             link(rel='stylesheet', href='/css/style.css')
-            link(href='components/bootstrap/dist/css/bootstrap.css', rel='stylesheet')
+            link(href='/components/bootstrap/dist/css/bootstrap.css', rel='stylesheet')
         block js
             if ENV_DEVELOPMENT
                 script(src='http://localhost:35729/livereload.js')
-    body
-        block content
-        h1= title
-        p Welcome to Quiz App, #{user}.
-        a(href='/logout') Log Out
 
+        base(href="/dashboard/")
+    body
         div(ng-app='dashboard')
             div(ng-controller='dashboardController')
+                .navbar.navbar-default.navbar-fixed-top(role="navigation")
+                    .container
+                        .navbar-header
+                            a.navbar-brand(href="/dashboard") Quiz App
+
+                        ul.nav.navbar-nav
+                            li
+                                a(href="classroom") Classroom
+                            li
+                                a(href="questions") Manage Questions
+
+                        ul.nav.navbar-nav.navbar-right
+                            li
+                                p.navbar-text Loggin in as #{user}
+                            li
+                                a(href='/logout') Log Out
+
+                div(ng-view).container
+
+
+
 
     script(src='/socket.io/socket.io.js')
-    script(src='components/angular/angular.js')
-    script(src='components/angular-socket-io/socket.js')
-    script(src='js/dashboard/app.js')
-
-
-
+    script(src='/components/angular/angular.js')
+    script(src='/components/angular-route/angular-route.js')
+    script(src='/components/angular-bootstrap/ui-bootstrap.js')
+    script(src='/components/angular-socket-io/socket.js')
+    script(src='/js/dashboard/app.js')

@@ -8,7 +8,24 @@
  *  Dashboard Angular App
  */
 
-var app = angular.module('dashboard', ['btford.socket-io']);
+var app = angular.module('dashboard', ['btford.socket-io', 'ngRoute']);
+
+app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+    $routeProvider
+        .when('/', {
+            templateUrl: '/partials/main'
+        })
+        .when('/classroom', {
+            templateUrl: '/partials/classroom',
+            controller: 'classroomController'
+        })
+        .otherwise({redirectTo: '/'});
+
+    $locationProvider.html5Mode({
+        enabled: true,
+        requireBase: true
+    });
+}]);
 
 // Dashboard Socket Factory
 app.factory('dashSocket', function(socketFactory) {
@@ -24,23 +41,15 @@ app.factory('dashSocket', function(socketFactory) {
 });
 
 app.controller('dashboardController', function($scope, dashSocket) {
-    //
-    //dashSocket.on('news', function (data) {
-    //    console.log(data);
-    //    socket.emit('click', { my: 'data' });
-    //});
-    //dashSocket.on('question', function(data) {
-    //    console.log(data);
-    //});
-    //dashSocket.on('cat', function(data) {
-    //    console.log(data);
-    //});
 
     $scope.$on('socket:testEvent', function(event, data) {
         console.log(data);
     });
 
+});
 
+app.controller('classroomController', function($scope, $routeParams) {
+    $scope.foo = 'classroom-foo';
 });
 
 

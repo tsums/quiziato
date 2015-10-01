@@ -13,7 +13,6 @@ var flash = require('connect-flash');
 var logger = require('morgan');
 var passport = require('passport');
 var session = require('express-session');
-var RedisStore = require('connect-redis')(session);
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
@@ -92,6 +91,11 @@ var apiRoutes = require('./routes/api');
 app.use('/', index);
 app.use('/', authRoutes);
 app.use('/api', apiRoutes);
+
+app.get('/partials/:name', function(req,res) {
+    var name = req.params.name;
+    res.render('partials/' + name);
+});
 
 app.post('/oauth/token', oauth2.token);
 
