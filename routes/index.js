@@ -11,9 +11,9 @@ router.get('/', function (req, res) {
     res.render('index', {title: 'Quiz App'});
 });
 
-router.get('/dashboard', ensureLoggedIn('/login'), function (req, res) {
-    res.render('dashboard/dashboard', {user: req.user.username});
-});
+//router.get('/dashboard', ensureLoggedIn('/login'), function (req, res) {
+//    res.render('dashboard/dashboard', {user: req.user.username});
+//});
 
 router.get('/dashboard*', ensureLoggedIn('/login'), function(req, res) {
     res.render('dashboard/dashboard', {user: req.user.username});
