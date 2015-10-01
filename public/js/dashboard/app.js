@@ -19,6 +19,10 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
             templateUrl: '/partials/classroom',
             controller: 'classroomController'
         })
+        .when('/questions', {
+            templateUrl: '/partials/questionManager',
+            controller: 'questionManagerController'
+        })
         .otherwise({redirectTo: '/'});
 
     $locationProvider.html5Mode({
@@ -50,6 +54,10 @@ app.controller('dashboardController', function($scope, dashSocket) {
 
 app.controller('classroomController', function($scope, $routeParams) {
     $scope.foo = 'classroom-foo';
+});
+
+app.controller('questionManagerController', function($scope, $routeParams) {
+    $scope.foo = 'questionManager-foo';
 });
 
 

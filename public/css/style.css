@@ -3,11 +3,11 @@
  * CS 490-001 Fall 2015
  * Quiz Project
  */
-body {
-  padding: 50px; }
-
 .login-box {
   width: 320px; }
 
 .login-entry {
+  margin-top: 1em; }
+
+.interior {
   margin-top: 1em; }
