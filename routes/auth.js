@@ -31,18 +31,28 @@ router.get('/logout', function (req, res) {
 router.route('/register')
 
     .get(ensureNotLoggedIn('/dashboard'), function (req, res) {
-        res.render('auth/register', {});
+        res.render('auth/register', {message: req.flash('error')});
     })
 
     .post(ensureNotLoggedIn('/dashboard'), function (req, res, next) {
         winston.info('registering user');
-        User.register(new User({username: req.body.username, role: "student"}), req.body.password, function (err) {
-            if (err) {
-                console.log('error while registering: ', err);
-                return next(err);
+        User.register(new User({
+            username: req.body.username,
+            role: "student",
+            name: {
+                first: req.body.name_first,
+                last: req.body.name_last
             }
-            winston.info('user registered!');
-            res.redirect('/');
+        }), req.body.password, function (err) {
+            if (err) {
+                //console.log('error while registering: ', err);
+                //return next(err);
+                req.flash('error', err.message);
+                res.redirect('/register');
+            } else {
+                winston.info('user registered!');
+                res.redirect('/');
+            }
         });
     });
 

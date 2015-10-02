@@ -3,14 +3,9 @@
  * CS 490-001 Fall 2015
  * Quiz Project
  */
-.login-box {
-  width: 320px; }
-
-.login-entry {
-  margin-top: 1em; }
-
 .interior {
   margin-top: 1em; }
 
-.auth-container {
-  padding: 50px; }
+.auth-box {
+  margin-top: 8em;
+  width: 320px; }

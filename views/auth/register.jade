@@ -1,12 +1,22 @@
 extends ../layout
 block content
-    h2 Register
-    form(action="/register",method="post")
-        div
-            label Username
-            input(type="text",name="username")
-        div
-            label Password
-            input(type="password",name="password")
-        div
-            input(type="submit",value="Register")
+    .center-block.auth-box
+        h1 Quiz App
+        p Please fill the form below to register:
+        if message.length !== 0
+            .alert.alert-danger= message
+        form(role='form', action="/register", method="post")
+            .form-group
+                label(for='username') UCID
+                input.form-control(type='text', name='username', placeholder='UCID', required='', autofocus='').
+            .form-group
+                label(for='password') Password
+                input.form-control(type='password', name='password',placeholder='Password', required='')
+            .form-group
+                label(for='name_first') First Name
+                input.form-control(type='text', name='name_first',placeholder='First Name', required='')
+            .form-group
+                label(for='name_last') Last Name
+                input.form-control(type='text', name='name_last',placeholder='Last Name', required='')
+
+            button.login-entry.btn.btn-lg.btn-primary.btn-block(type='submit') Register
