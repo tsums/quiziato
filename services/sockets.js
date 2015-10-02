@@ -38,6 +38,9 @@ var listen = function (server) {
 
             if (!data) return;
 
+            // verify attendance token, have student join current room
+            // notify instructor that the
+
             socket.join(data);
 
             dashboard.emit('cat', 'User: ' + socket.request.user.username + "joined room " + data);
@@ -97,11 +100,13 @@ var listen = function (server) {
         //var i = 0;
         //var interval = setInterval(function() {
         //    socket.emit('testEvent', i++);
-        //}, 100);
+        //}, 3000);
 
         socket.on('disconnect', function(data) {
             // TODO inform class that instructor has left.
+
             winston.info(socket.request.user.username + ' disconnected from \'/dashboard\'');
+
             //clearInterval(interval);
         });
     });
@@ -113,8 +118,12 @@ var listen = function (server) {
         store: redis_session,
         success: function (data, accept) {
             winston.info('User connecting...');
-            // TODO not sure if we really need this callback...
-            accept();
+
+            if (data.user.role == 'instructor') {
+                accept();
+            } else {
+                winston.info("Non-instructor user rejected: " + data.user.username);
+            }
         },
         fail: function (data, message, error, accept) {
             winston.warn('Dashboard: Unauthorized user attempted to access sockets.');

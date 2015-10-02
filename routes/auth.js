@@ -36,7 +36,7 @@ router.route('/register')
 
     .post(ensureNotLoggedIn('/dashboard'), function (req, res, next) {
         winston.info('registering user');
-        User.register(new User({username: req.body.username}), req.body.password, function (err) {
+        User.register(new User({username: req.body.username, role: "student"}), req.body.password, function (err) {
             if (err) {
                 console.log('error while registering: ', err);
                 return next(err);

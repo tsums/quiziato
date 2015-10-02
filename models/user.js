@@ -11,7 +11,11 @@ var passportLocalMongoose = require('passport-local-mongoose');
 
 
 //TODO Roles, etc.
-var User = new Schema({});
+var User = new Schema({
+
+    role: {type: String}
+
+});
 
 User.plugin(passportLocalMongoose);
 

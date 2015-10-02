@@ -38,6 +38,8 @@ app.factory('dashSocket', ['socketFactory', function(socketFactory) {
         ioSocket: socket
     });
 
+    // events can be forwarded to scope here.
+
     return ngSocket;
 }]);
 
@@ -57,6 +59,11 @@ app.factory('classroomManager', ['dashSocket', function(dashSocket) {
         if (i > -1) {
             manager.students.splice(i, 1);
         }
+    });
+
+    // Temporary Logger for Random Data.
+    dashSocket.on('testEvent', function(data) {
+        console.log(data);
     });
 
     return manager;
