@@ -1,7 +1,14 @@
-[] Class Model
-[] Instructor Panel
-    - Add Class
-    - Start Class Session
-[] QR Code Rendering
-[] Session Token Usage (no rotation for now)
-[] 
+- Models for Backend Entities
+    - Course
+    - Session
+    - Question
+    - Attendance
+- Question Control Panel
+- User Profile Contol Panel / API
+    - Name
+    - Profile Picture?
+- Classroom Control Panel
+    - QR Code Generation
+    - Session Management
+    - View Students in session.
+
