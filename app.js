@@ -5,6 +5,10 @@
  */
 
 /*
+    Primary Application Control Script
+ */
+
+/*
  * External Dependencies
  */
 var express = require('express');

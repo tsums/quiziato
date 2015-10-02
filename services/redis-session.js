@@ -2,6 +2,10 @@
  * Created by trevor on 9/27/15.
  */
 
+/*
+    Connect-Session store using Redis Memory Cache for persistent sessions and speed.
+ */
+
 var session = require('express-session');
 var RedisStore = require('connect-redis')(session);
 

@@ -9,12 +9,12 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose');
 
-
-//TODO Roles, etc.
 var User = new Schema({
-
-    role: {type: String}
-
+    role: {type: String},
+    name: {
+        first: String,
+        last: String
+    }
 });
 
 User.plugin(passportLocalMongoose);

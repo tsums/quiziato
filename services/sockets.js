@@ -5,7 +5,7 @@
  */
 
 /*
- * Socket.io Configuration
+ * Socket Configuration
  */
 
 var socketio = require('socket.io');

@@ -4,6 +4,10 @@
  * Quiz Project
  */
 
+/*
+    OAuth2 Master Configuration
+ */
+
 var passport = require('passport');
 var BearerStrategy = require('passport-http-bearer').Strategy;
 var ClientPasswordStrategy = require('passport-oauth2-client-password').Strategy;
