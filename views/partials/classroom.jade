@@ -1,1 +1,7 @@
-p Classroom partial. {{foo}}
+.row
+    .col-md-9
+        p.text-center This is the Main Column
+    .col-md-3
+        p.text-center Students Connected
+        ul.list-group
+            li.list-group-item(ng-repeat="student in students") {{student}}

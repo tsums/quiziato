@@ -92,13 +92,18 @@ var listen = function (server) {
     dashboard.on('connection', function (socket) {
         winston.info(socket.request.user.username + ' connected to namespace \'/dashboard\'');
         classroom.emit('join', 'Instructor Joined!');
+
+
+        //var i = 0;
+        //var interval = setInterval(function() {
+        //    socket.emit('testEvent', i++);
+        //}, 100);
+
         socket.on('disconnect', function(data) {
             // TODO inform class that instructor has left.
             winston.info(socket.request.user.username + ' disconnected from \'/dashboard\'');
+            //clearInterval(interval);
         });
-
-        socket.emit('testEvent', 'Foo Bar Baz');
-
     });
 
     // Cookie-Based Authentication for Web Clients

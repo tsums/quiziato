@@ -32,33 +32,48 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
 }]);
 
 // Dashboard Socket Factory
-app.factory('dashSocket', function(socketFactory) {
+app.factory('dashSocket', ['socketFactory', function(socketFactory) {
     var socket = io.connect(window.location.origin + '/dashboard');
     var ngSocket =  socketFactory({
         ioSocket: socket
     });
 
-    // Forward Socket Events to Angular Root Scope Event System
-    ngSocket.forward('testEvent');
-
     return ngSocket;
-});
+}]);
 
-app.controller('dashboardController', function($scope, dashSocket) {
+app.factory('classroomManager', ['dashSocket', function(dashSocket) {
 
-    $scope.$on('socket:testEvent', function(event, data) {
-        console.log(data);
+    var manager = {};
+    manager.students = [];
+
+    // Add student to list when they join the room
+    dashSocket.on('studentJoined', function(data) {
+        manager.students.push(data);
     });
 
-});
+    // remove student from list when they leave the room.
+    dashSocket.on('studentLeft', function(data) {
+        var i = manager.students.indexof(data);
+        if (i > -1) {
+            manager.students.splice(i, 1);
+        }
+    });
 
-app.controller('classroomController', function($scope, $routeParams) {
-    $scope.foo = 'classroom-foo';
-});
+    return manager;
+}]);
 
-app.controller('questionManagerController', function($scope, $routeParams) {
+app.controller('dashboardController', ['$scope', function($scope) {
+
+}]);
+
+app.controller('classroomController', ['$scope', '$routeParams', '$controller', 'classroomManager', function($scope, $routeParams, $controller, classroomManager) {
+    $scope.testData = classroomManager.messages;
+    $scope.students = ["Johnny", "Robert", "Annabelle", "Matthew"]
+}]);
+
+app.controller('questionManagerController', ['$scope', '$routeParams', function($scope, $routeParams) {
     $scope.foo = 'questionManager-foo';
-});
+}]);
 
 
 
