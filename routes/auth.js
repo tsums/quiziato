@@ -45,8 +45,6 @@ router.route('/register')
             }
         }), req.body.password, function (err) {
             if (err) {
-                //console.log('error while registering: ', err);
-                //return next(err);
                 req.flash('error', err.message);
                 res.redirect('/register');
             } else {

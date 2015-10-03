@@ -9,15 +9,11 @@ var ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 var roleControl = require('../services/authentication').roleControl;
 
 router.get('/', function (req, res) {
-    res.render('index', {title: 'Quiz App'});
+    res.redirect('/login');
 });
 
-//router.get('/dashboard', ensureLoggedIn('/login'), function (req, res) {
-//    res.render('dashboard/dashboard', {user: req.user.username});
-//});
-
 router.get('/dashboard*', ensureLoggedIn('/login'), roleControl.can('dashboard'), function(req, res) {
-    res.render('dashboard/dashboard', {user: req.user.username});
+    res.render('dashboard/dashboard', {user: req.user});
 });
 
 module.exports = router;

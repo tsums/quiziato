@@ -12,9 +12,13 @@ var passportLocalMongoose = require('passport-local-mongoose');
 var User = new Schema({
     role: {type: String},
     name: {
-        first: String,
-        last: String
+        first: {type: String, required: true},
+        last: {type: String, required: true}
     }
+});
+
+User.virtual('name.full').get(function() {
+    return this.name.first + ' ' + this.name.last;
 });
 
 User.plugin(passportLocalMongoose, {
