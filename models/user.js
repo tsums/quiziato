@@ -17,6 +17,10 @@ var User = new Schema({
     }
 });
 
-User.plugin(passportLocalMongoose);
+User.plugin(passportLocalMongoose, {
+    // Set these to the same as to not distinguish between invalid password and invalid username.
+    incorrectPasswordError: 'Invalid Credentials',
+    incorrectUsernameError: 'Invalid Credentials'
+});
 
 module.exports = mongoose.model('User', User);
