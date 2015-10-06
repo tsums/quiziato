@@ -116,16 +116,21 @@ var listen = function (server) {
 
     dashboard.on('connection', function (socket) {
 
-        var room = 'apple';
-
-        socket.join(room);
+        // track the socket's current room.
+        var room;
 
         winston.info(socket.request.user.username + ' connected to namespace \'/dashboard\'');
 
-        classroom.in(room).emit('join', 'Instructor Joined!');
+        socket.on('startRoom', function(data) {
+            winston.info(socket.request.user.username + 'starting room: ' + data);
+            room = data;
+            socket.join(data);
+            classroom.in(room).emit('join', 'Instructor Joined!');
+        });
 
         socket.on('disconnect', function(data) {
             winston.info(socket.request.user.username + ' disconnected from \'/dashboard\'');
+            classroom.in(room).emit('left', 'Instructor Left!');
         });
     });
 
