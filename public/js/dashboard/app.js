@@ -50,7 +50,7 @@ app.factory('classroomManager', ['dashSocket', function(dashSocket) {
 
     // Add student to list when they join the room
     dashSocket.on('studentJoined', function(data) {
-        manager.students.push(data.name);
+        manager.students.push(data);
     });
 
     // remove student from list when they leave the room.
