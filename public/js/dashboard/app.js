@@ -56,8 +56,8 @@ app.factory('classroomManager', ['dashSocket', function(dashSocket) {
 
     // remove student from list when they leave the room.
     dashSocket.on('studentLeft', function(data) {
-        var i = manager.students.indexof(data);
-        console.log("studentLeft: " + data)
+        var i = manager.students.indexOf(data);
+        console.log("studentLeft: " + data);
         if (i > -1) {
             manager.students.splice(i, 1);
         }
