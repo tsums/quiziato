@@ -30,37 +30,37 @@ var listen = function (server) {
     var dashboard = io.of('/dashboard');
 
     // Token-Based Authentication for Mobile Clients
-    classroom.use(function(socket,next) {
+    classroom.use(function(socketConnection,next) {
 
-        if (socket.request.headers.authorization == null) {
+        if (socketConnection.request.headers.authorization == null) {
             winston.info("Rejecting unauthorized connection");
-            socket.disconnect('Unauthorized');
+            socketConnection.disconnect('Unauthorized');
         } else {
 
-            AccessToken.findOne({token: socket.request.headers.authorization}, function (err, token) {
+            AccessToken.findOne({token: socketConnection.request.headers.authorization}, function (err, token) {
 
-                winston.debug("Looking up access token: " + socket.request.headers.authorization);
+                winston.debug("Looking up access token: " + socketConnection.request.headers.authorization);
 
                 if (err) {
                     return next(err);
                 }
                 if (!token) {
-                    socket.disconnect("Token Not Found...");
+                    socketConnection.disconnect("Token Not Found...");
                 }
 
-                User.findOne(token.userID, function (err, user) {
+                User.findOne(token.userID, function (err, userFetched) {
 
                     winston.debug("Token points to user ID: " + token.userID);
 
                     if (err) {
                         return next(err);
                     }
-                    if (!user) {
+                    if (!userFetched) {
                         winston.err("Found a token in database to which the user did not exist...");
-                        socket.disconnect("User Not Found...");
+                        socketConnection.disconnect("User Not Found...");
                     }
 
-                    socket.request['user'] = user;
+                    socketConnection.request['user'] = userFetched;
                     next();
                 })
 
