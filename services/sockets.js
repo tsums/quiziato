@@ -45,7 +45,7 @@ var listen = function (server) {
 
             socket.join(RoomName);
 
-            dashboard.sockets.in(RoomName).emit('studentJoined', socket.request.user.name.full);
+            dashboard.in(RoomName).emit('studentJoined', socket.request.user.name.full);
         });
 
         socket.on('data_test', function (data) {
@@ -100,7 +100,7 @@ var listen = function (server) {
 
         winston.info(socket.request.user.username + ' connected to namespace \'/dashboard\'');
 
-        classroom.sockets.in(RoomName).emit('join', 'Instructor Joined!');
+        classroom.in(RoomName).emit('join', 'Instructor Joined!');
 
         //var i = 0;
         //var interval = setInterval(function() {
