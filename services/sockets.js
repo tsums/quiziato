@@ -19,7 +19,7 @@ var config = require('../config');
 
 var listen = function (server) {
 
-    var RoomName = "'oajfasdgoadfgosaijdf;siHFJSDFDIJWOIJWG";
+    var RoomName = 'foo';
 
     var io = socketio.listen(server);
 
@@ -28,35 +28,6 @@ var listen = function (server) {
 
     // Dashboard Namespace is for web clients.
     var dashboard = io.of('/dashboard');
-
-    classroom.on('connection', function (socket) {
-
-        winston.info(socket.request.user.username + ' connected to namespace \'/classroom\'');
-
-        // Join the Socket to the proper room according to its attendance token.
-        socket.on('attendance', function (data) {
-
-            winston.info(socket.request.user.username + ' sent attendance');
-
-            if (!data) return;
-
-            // verify attendance token, have student join current room
-            // notify instructor that the
-
-            socket.join(RoomName);
-
-            dashboard.in(RoomName).emit('studentJoined', socket.request.user.name.full);
-        });
-
-        socket.on('data_test', function (data) {
-            winston.info(data.toString());
-        });
-
-        socket.on('disconnect', function(data) {
-            winston.info(socket.request.user.username + 'disconnected from \'/classroom\'');
-        })
-
-    });
 
     // Token-Based Authentication for Mobile Clients
     classroom.use(function(socket,next) {
@@ -94,26 +65,33 @@ var listen = function (server) {
         }
     });
 
-    dashboard.on('connection', function (socket) {
+    classroom.on('connection', function (classroomSocket) {
 
-        socket.join(RoomName);
+        winston.info(classroomSocket.request.user.username + ' connected to namespace \'/classroom\'');
 
-        winston.info(socket.request.user.username + ' connected to namespace \'/dashboard\'');
+        classroomSocket.join(RoomName);
 
-        classroom.in(RoomName).emit('join', 'Instructor Joined!');
+        dashboard.in(RoomName).emit('studentJoined', classroomSocket.request.user.name.full);
 
-        //var i = 0;
-        //var interval = setInterval(function() {
-        //    socket.emit('testEvent', i++);
-        //}, 3000);
+        //// Join the Socket to the proper room according to its attendance token.
+        //classroomSocket.on('attendance', function (data) {
+        //
+        //    winston.info(classroomSocket.request.user.username + ' sent attendance');
+        //
+        //    if (!data) return;
+        //
+        //    // verify attendance token, have student join current room
+        //    // notify instructor that the
+        //});
 
-        socket.on('disconnect', function(data) {
-            // TODO inform class that instructor has left.
-
-            winston.info(socket.request.user.username + ' disconnected from \'/dashboard\'');
-
-            //clearInterval(interval);
+        classroomSocket.on('data_test', function (data) {
+            winston.info(data.toString());
         });
+
+        classroomSocket.on('disconnect', function(data) {
+            winston.info(classroomSocket.request.user.username + 'disconnected from \'/classroom\'');
+        })
+
     });
 
     // Cookie-Based Authentication for Web Clients
@@ -122,8 +100,6 @@ var listen = function (server) {
         secret: process.env.SESSION_SECRET,
         store: redis_session,
         success: function (data, accept) {
-            winston.info('User connecting...');
-
             if (data.user.role == 'instructor') {
                 accept();
             } else {
@@ -135,6 +111,19 @@ var listen = function (server) {
         }
 
     }));
+
+    dashboard.on('connection', function (doashboardSocket) {
+
+        doashboardSocket.join(RoomName);
+
+        winston.info(doashboardSocket.request.user.username + ' connected to namespace \'/dashboard\'');
+
+        classroom.in(RoomName).emit('join', 'Instructor Joined!');
+
+        doashboardSocket.on('disconnect', function(data) {
+            winston.info(doashboardSocket.request.user.username + ' disconnected from \'/dashboard\'');
+        });
+    });
 
     return io;
 };
