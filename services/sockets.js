@@ -19,8 +19,6 @@ var config = require('../config');
 
 var listen = function (server) {
 
-    var RoomName = 'foo';
-
     var io = socketio.listen(server);
 
     // Classroom Namespace is for mobile clients.
@@ -30,22 +28,22 @@ var listen = function (server) {
     var dashboard = io.of('/dashboard');
 
     // Token-Based Authentication for Mobile Clients
-    classroom.use(function(socketConnection,next) {
+    classroom.use(function(socket,next) {
 
-        if (socketConnection.request.headers.authorization == null) {
+        if (socket.request.headers.authorization == null) {
             winston.info("Rejecting unauthorized connection");
-            socketConnection.disconnect('Unauthorized');
+            socket.disconnect('Unauthorized');
         } else {
 
-            AccessToken.findOne({token: socketConnection.request.headers.authorization}, function (err, token) {
+            AccessToken.findOne({token: socket.request.headers.authorization}, function (err, token) {
 
-                winston.debug("Looking up access token: " + socketConnection.request.headers.authorization);
+                winston.debug("Looking up access token: " + socket.request.headers.authorization);
 
                 if (err) {
                     return next(err);
                 }
                 if (!token) {
-                    socketConnection.disconnect("Token Not Found...");
+                    socket.disconnect("Token Not Found...");
                 }
 
                 User.findById(token.userID, function (err, userFetched) {
@@ -57,10 +55,10 @@ var listen = function (server) {
                     }
                     if (!userFetched) {
                         winston.err("Found a token in database to which the user did not exist...");
-                        socketConnection.disconnect("User Not Found...");
+                        socket.disconnect("User Not Found...");
                     }
 
-                    socketConnection.request['user'] = userFetched;
+                    socket.request['user'] = userFetched;
                     next();
                 })
 
@@ -68,21 +66,32 @@ var listen = function (server) {
         }
     });
 
-    classroom.on('connection', function (classroomSocket) {
+    classroom.on('connection', function (socket) {
 
-        winston.info(classroomSocket.request.user.username + ' connected to namespace \'/classroom\'');
+        // this tracks the socket's current room.
+        var room;
 
-        classroomSocket.join(RoomName);
+        winston.info(socket.request.user.username + ' connected to namespace \'/classroom\'');
 
-        dashboard.in(RoomName).emit('studentJoined', classroomSocket.request.user.name.full);
+        socket.on('attendance', function(data) {
 
-        classroomSocket.on('data_test', function (data) {
+            //TODO switch out token for room name.
+            room = data;
+
+            winston.info(socket.request.user.username + " submitted attendance for session: " + room);
+
+            socket.join(room);
+            dashboard.in(room).emit('studentJoined', socket.request.user.name.full);
+        });
+
+
+        socket.on('data_test', function (data) {
             winston.info(data.toString());
         });
 
-        classroomSocket.on('disconnect', function(data) {
-            winston.info(classroomSocket.request.user.username + 'disconnected from \'/classroom\'');
-            dashboard.in(RoomName).emit('studentLeft', classroomSocket.request.user.name.full);
+        socket.on('disconnect', function(data) {
+            winston.info(socket.request.user.username + 'disconnected from \'/classroom\'');
+            dashboard.in(room).emit('studentLeft', socket.request.user.name.full);
         })
 
     });
@@ -105,16 +114,18 @@ var listen = function (server) {
 
     }));
 
-    dashboard.on('connection', function (doashboardSocket) {
+    dashboard.on('connection', function (socket) {
 
-        doashboardSocket.join(RoomName);
+        var room = 'apple';
 
-        winston.info(doashboardSocket.request.user.username + ' connected to namespace \'/dashboard\'');
+        socket.join(room);
 
-        classroom.in(RoomName).emit('join', 'Instructor Joined!');
+        winston.info(socket.request.user.username + ' connected to namespace \'/dashboard\'');
 
-        doashboardSocket.on('disconnect', function(data) {
-            winston.info(doashboardSocket.request.user.username + ' disconnected from \'/dashboard\'');
+        classroom.in(room).emit('join', 'Instructor Joined!');
+
+        socket.on('disconnect', function(data) {
+            winston.info(socket.request.user.username + ' disconnected from \'/dashboard\'');
         });
     });
 

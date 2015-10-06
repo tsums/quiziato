@@ -63,6 +63,10 @@ app.factory('classroomManager', ['dashSocket', function(dashSocket) {
         }
     });
 
+    dashSocket.on('students', function(data) {
+        manager.students = data;
+    });
+
     // Temporary Logger for Random Data.
     dashSocket.on('testEvent', function(data) {
         console.log(data);
@@ -73,9 +77,6 @@ app.factory('classroomManager', ['dashSocket', function(dashSocket) {
 
 app.factory('DashboardApi', ['$http', function($http) {
     var dashboardAPI = {};
-
-
-
 
     return dashboardAPI;
 }]);
