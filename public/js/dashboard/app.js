@@ -50,7 +50,7 @@ app.factory('classroomManager', ['dashSocket', function(dashSocket) {
 
     // Add student to list when they join the room
     dashSocket.on('studentJoined', function(data) {
-        manager.students.push(data);
+        manager.students.push(data.name);
     });
 
     // remove student from list when they leave the room.
@@ -84,7 +84,7 @@ app.controller('dashboardController', ['$scope', function($scope) {
 
 app.controller('classroomController', ['$scope', '$routeParams', '$controller', 'classroomManager', function($scope, $routeParams, $controller, classroomManager) {
     $scope.testData = classroomManager.messages;
-    $scope.students = ["Johnny", "Robert", "Annabelle", "Matthew"]
+    $scope.students = []
 }]);
 
 app.controller('questionManagerController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {

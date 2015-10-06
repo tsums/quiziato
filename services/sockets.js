@@ -19,6 +19,8 @@ var config = require('../config');
 
 var listen = function (server) {
 
+    var RoomName = "'oajfasdgoadfgosaijdf;siHFJSDFDIJWOIJWG";
+
     var io = socketio.listen(server);
 
     // Classroom Namespace is for mobile clients.
@@ -34,16 +36,16 @@ var listen = function (server) {
         // Join the Socket to the proper room according to its attendance token.
         socket.on('attendance', function (data) {
 
-            winston.info(socket.request.user.username + ' sent attendance', {namespace : 'classroom'});
+            winston.info(socket.request.user.username + ' sent attendance');
 
             if (!data) return;
 
             // verify attendance token, have student join current room
             // notify instructor that the
 
-            socket.join(data);
+            socket.join(RoomName);
 
-            dashboard.emit('cat', 'User: ' + socket.request.user.username + "joined room " + data);
+            dashboard.sockets.in(RoomName).emit('studentJoined', socket.request.user.name.full);
         });
 
         socket.on('data_test', function (data) {
@@ -93,9 +95,12 @@ var listen = function (server) {
     });
 
     dashboard.on('connection', function (socket) {
-        winston.info(socket.request.user.username + ' connected to namespace \'/dashboard\'');
-        classroom.emit('join', 'Instructor Joined!');
 
+        socket.join(RoomName);
+
+        winston.info(socket.request.user.username + ' connected to namespace \'/dashboard\'');
+
+        classroom.sockets.in(RoomName).emit('join', 'Instructor Joined!');
 
         //var i = 0;
         //var interval = setInterval(function() {
