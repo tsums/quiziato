@@ -66,36 +66,6 @@ var listen = function (server) {
         }
     });
 
-    classroom.on('connection', function (socket) {
-
-        // this tracks the socket's current room.
-        var room;
-
-        winston.info(socket.request.user.username + ' connected to namespace \'/classroom\'');
-
-        socket.on('attendance', function(data) {
-
-            //TODO switch out token for room name.
-            room = data;
-
-            winston.info(socket.request.user.username + " submitted attendance for session: " + room);
-
-            socket.join(room);
-            dashboard.in(room).emit('studentJoined', socket.request.user.name.full);
-        });
-
-
-        socket.on('data_test', function (data) {
-            winston.info(data.toString());
-        });
-
-        socket.on('disconnect', function(data) {
-            winston.info(socket.request.user.username + 'disconnected from \'/classroom\'');
-            dashboard.in(room).emit('studentLeft', socket.request.user.name.full);
-        })
-
-    });
-
     // Cookie-Based Authentication for Web Clients
     dashboard.use(passportSocketIo.authorize({
         key: config.session_key,
@@ -114,22 +84,49 @@ var listen = function (server) {
 
     }));
 
+    classroom.on('connection', function (socket) {
+
+        var room;
+        var username = socket.request.user.username;
+
+        winston.info(username + ' connected to namespace \'/classroom\'');
+
+        socket.on('attendance', function(data) {
+
+            //TODO switch out token for room name.
+            //TODO mark down attendance in database / cache
+            //TODO send data packet that describes current state.
+            room = data;
+
+            winston.info(username + " submitted attendance for session: " + room);
+
+            socket.join(room);
+            dashboard.in(room).emit('studentJoined', socket.request.user.name.full);
+        });
+
+        socket.on('disconnect', function(data) {
+            winston.info(username + 'disconnected from \'/classroom\'');
+            dashboard.in(room).emit('studentLeft', socket.request.user.name.full);
+        })
+
+    });
+
     dashboard.on('connection', function (socket) {
 
-        // track the socket's current room.
         var room;
+        var username = socket.request.user.username;
 
-        winston.info(socket.request.user.username + ' connected to namespace \'/dashboard\'');
+        winston.info(username + ' connected to namespace \'/dashboard\'');
 
         socket.on('startRoom', function(data) {
-            winston.info(socket.request.user.username + 'starting room: ' + data);
+            winston.info(username + 'starting room: ' + data);
             room = data;
             socket.join(data);
             classroom.in(room).emit('join', 'Instructor Joined!');
         });
 
         socket.on('disconnect', function(data) {
-            winston.info(socket.request.user.username + ' disconnected from \'/dashboard\'');
+            winston.info(username + ' disconnected from \'/dashboard\'');
             classroom.in(room).emit('left', 'Instructor Left!');
         });
     });
