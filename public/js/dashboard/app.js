@@ -51,11 +51,13 @@ app.factory('classroomManager', ['dashSocket', function(dashSocket) {
     // Add student to list when they join the room
     dashSocket.on('studentJoined', function(data) {
         manager.students.push(data);
+        console.log("studentJoined: " + data)
     });
 
     // remove student from list when they leave the room.
     dashSocket.on('studentLeft', function(data) {
         var i = manager.students.indexof(data);
+        console.log("studentLeft: " + data)
         if (i > -1) {
             manager.students.splice(i, 1);
         }

@@ -76,17 +76,6 @@ var listen = function (server) {
 
         dashboard.in(RoomName).emit('studentJoined', classroomSocket.request.user.name.full);
 
-        //// Join the Socket to the proper room according to its attendance token.
-        //classroomSocket.on('attendance', function (data) {
-        //
-        //    winston.info(classroomSocket.request.user.username + ' sent attendance');
-        //
-        //    if (!data) return;
-        //
-        //    // verify attendance token, have student join current room
-        //    // notify instructor that the
-        //});
-
         classroomSocket.on('data_test', function (data) {
             winston.info(data.toString());
         });
