@@ -39,6 +39,8 @@ var listen = function (server) {
 
             AccessToken.findOne({token: socket.request.headers.authorization}, function (err, token) {
 
+                winston.debug("Looking up access token: " + socket.request.headers.authorization);
+
                 if (err) {
                     return next(err);
                 }
@@ -47,6 +49,8 @@ var listen = function (server) {
                 }
 
                 User.findOne(token.userID, function (err, user) {
+
+                    winston.debug("Token points to user ID: " + token.userID);
 
                     if (err) {
                         return next(err);
@@ -57,7 +61,6 @@ var listen = function (server) {
                     }
 
                     socket.request['user'] = user;
-                    winston.info(socket.request.user.username + ' connected to \'classroom\'');
                     next();
                 })
 
