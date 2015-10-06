@@ -74,7 +74,7 @@ var listen = function (server) {
 
         classroomSocket.join(RoomName);
 
-        dashboard.in(RoomName).emit('studentJoined', classroomSocket.request.user.name.full);
+        dashboard.emit('studentJoined', classroomSocket.request.user.name.full);
 
         //// Join the Socket to the proper room according to its attendance token.
         //classroomSocket.on('attendance', function (data) {

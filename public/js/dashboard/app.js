@@ -84,7 +84,7 @@ app.controller('dashboardController', ['$scope', function($scope) {
 
 app.controller('classroomController', ['$scope', '$routeParams', '$controller', 'classroomManager', function($scope, $routeParams, $controller, classroomManager) {
     $scope.testData = classroomManager.messages;
-    $scope.students = []
+    $scope.students = classroomManager.students;
 }]);
 
 app.controller('questionManagerController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
