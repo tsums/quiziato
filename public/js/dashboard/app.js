@@ -69,6 +69,15 @@ app.factory('classroomManager', ['dashSocket', function(dashSocket) {
     return manager;
 }]);
 
+app.factory('DashboardApi', ['$http', function($http) {
+    var dashboardAPI = {};
+
+
+
+
+    return dashboardAPI;
+}]);
+
 app.controller('dashboardController', ['$scope', function($scope) {
 
 }]);
@@ -78,8 +87,8 @@ app.controller('classroomController', ['$scope', '$routeParams', '$controller', 
     $scope.students = ["Johnny", "Robert", "Annabelle", "Matthew"]
 }]);
 
-app.controller('questionManagerController', ['$scope', '$routeParams', function($scope, $routeParams) {
-    $scope.foo = 'questionManager-foo';
+app.controller('questionManagerController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+
 }]);
 
 

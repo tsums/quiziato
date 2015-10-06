@@ -10,7 +10,7 @@ var Schema = mongoose.Schema;
 //TODO Schema
 var Course = new Schema({
     title : {type: String},
-    instructor: {type: ObjectId}
+    instructor: {type: Schema.Types.ObjectId}
 });
 
 module.exports = mongoose.model('Course', Course);

@@ -16,10 +16,10 @@ var QuestionOption = new Schema({
 var Question = new Schema({
     title : {type: String, required: true},
     prompt: {type: String, required: true},
-    course: {type: ObjectId, required: true},
-    author: {type: ObjectId, required: true},
-    options: [QuestionOption],
-    correctOption: {type: Number, required: true}
+    course: {type: Schema.Types.ObjectId, required: true},
+    author: {type: Schema.Types.ObjectId, required: true},
+    options: [QuestionOption]
+    //correctOption: {type: Number, required: true}
 });
 
 module.exports = mongoose.model('Question', Question);
