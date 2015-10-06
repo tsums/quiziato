@@ -48,7 +48,7 @@ var listen = function (server) {
                     socketConnection.disconnect("Token Not Found...");
                 }
 
-                User.findOne(token.userID, function (err, userFetched) {
+                User.findById(token.userID, function (err, userFetched) {
 
                     winston.debug("Token points to user ID: " + token.userID);
 
