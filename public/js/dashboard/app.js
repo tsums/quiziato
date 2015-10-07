@@ -63,6 +63,7 @@ app.factory('classroomManager', ['dashSocket', function(dashSocket) {
         }
     });
 
+    // when we get a new students lisrt, replace it.
     dashSocket.on('students', function(data) {
         manager.students = data;
     });
@@ -72,8 +73,15 @@ app.factory('classroomManager', ['dashSocket', function(dashSocket) {
         console.log(data);
     });
 
-    manager.startRoom = function(room) {
-        dashSocket.emit('startRoom', room);
+    // create a class session.
+    manager.startSession = function(courseID) {
+        dashSocket.emit('startSession', {
+            course: courseID
+        }, function(data) {
+            if (data.success) {
+                manager.inSession = true;
+            }
+        });
     };
 
     return manager;
@@ -90,11 +98,10 @@ app.controller('dashboardController', ['$scope', function($scope) {
 }]);
 
 app.controller('classroomController', ['$scope', '$routeParams', '$controller', 'classroomManager', function($scope, $routeParams, $controller, classroomManager) {
-    $scope.testData = classroomManager.messages;
-    $scope.students = classroomManager.students;
+    $scope.manager = classroomManager;
 
     $scope.startRoom = function() {
-        classroomManager.startRoom($scope.room);
+        classroomManager.startSession($scope.room);
     }
 }]);
 

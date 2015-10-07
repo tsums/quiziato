@@ -11,11 +11,15 @@
 var socketio = require('socket.io');
 var winston = require('winston').loggers.get('socket');
 var passportSocketIo = require("passport.socketio");
+var uuid = require('node-uuid');
 
 var redis_session = require('./redis-session');
+var config = require('../config');
+
 var AccessToken = require('../models/accessToken');
 var User = require('../models/user');
-var config = require('../config');
+var Course = require('../models/course');
+var CourseSession = require('../models/course_session');
 
 var listen = function (server) {
 
@@ -114,20 +118,47 @@ var listen = function (server) {
     dashboard.on('connection', function (socket) {
 
         var room;
-        var username = socket.request.user.username;
+        var user = socket.request.user;
 
-        winston.info(username + ' connected to namespace \'/dashboard\'');
+        winston.info(user.username + ' connected to namespace \'/dashboard\'');
 
-        socket.on('startRoom', function(data) {
-            winston.info(username + 'starting room: ' + data);
-            room = data;
-            socket.join(data);
-            classroom.in(room).emit('join', 'Instructor Joined!');
+        // start a session for the course.
+        socket.on('startSession', function(data, callback) {
+            winston.info(user.username + ' starting session for course: ' + data.course);
+
+            var cs = new CourseSession({
+                date: Date.now(),
+                course: data.course,
+                roomId: uuid.v4(),
+                instructor: user.id
+            });
+
+            cs.save(function(err) {
+                if (err) {
+                    winston.error(err.message);
+                    res.send(err);
+                } else {
+                    room = cs.roomId;
+                    socket.join(room);
+
+                    callback({
+                        success: true,
+                        roomId: room
+                    });
+
+                    winston.info('Session started: ' + cs.id);
+                }
+            });
+
+        });
+
+        socket.on('assignQuestion', function(data) {
+
         });
 
         socket.on('disconnect', function(data) {
-            winston.info(username + ' disconnected from \'/dashboard\'');
-            classroom.in(room).emit('left', 'Instructor Left!');
+            winston.info(user.username + ' disconnected from \'/dashboard\'');
+            classroom.in(room).emit('instructorDisconnect');
         });
     });
 
