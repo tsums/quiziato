@@ -1,9 +1,10 @@
 .row
     .col-md-9
-        .well
+        .well(ng-show='API.sessions.length > 0')
+            h5.text-center You currently have {{API.sessions.length}} sessions in progress.
             div(ng-repeat='session in API.sessions')
                 .row
-                    p.col-md-4 {{session._id}}
+                    p.col-md-4 {{session.course.title}} : {{session.date | date : "MM/dd h:mm a"}}
                     button.btn.btn-sm.btn-success.col-md-3 Rejoin Session
                     button.btn.btn-sm.btn-warning.col-md-3.col-md-push-1 End Session
 

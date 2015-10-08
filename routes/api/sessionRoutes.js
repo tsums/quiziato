@@ -13,7 +13,7 @@ var winston = require('winston').loggers.get('api');
 router.route('/active')
 
     .get(function (req, res) {
-        CourseSession.find({ended: false, instructor: req.user.id}, function (err, sessions) {
+        CourseSession.find({ended: false, instructor: req.user.id}).populate('course').exec(function (err, sessions) {
             if (err) {
                 winston.error(err.message);
                 res.code(500).send(err.message);
