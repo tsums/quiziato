@@ -18,7 +18,7 @@
                     button.btn.btn-lg.btn-primary.btn-block(type='submit', ng-click='manager.startSession(course)', ng-disabled='start_session_form.$invalid') Start Room
 
         div(ng-show='manager.inSession')
-            p.text-center Current Session: {{manager.session.course.title}} Started At: {{manager.session.date | date : "MM/dd h:mm a"}}
+            p.text-center.lead Current Session: {{manager.session.course.title}} Started At: {{manager.session.date | date : "MM/dd h:mm a"}}
             div(ng-show='show_qr').text-center
                 qrcode(data='{{manager.session.roomId}}', size='500')
                 p {{manager.session.roomId}}
