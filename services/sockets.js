@@ -91,21 +91,32 @@ var listen = function (server) {
     classroom.on('connection', function (socket) {
 
         var room;
-        var username = socket.request.user.username;
+        var user = socket.request.user;
 
         winston.info(username + ' connected to namespace \'/classroom\'');
 
-        socket.on('attendance', function(data) {
+        socket.on('attendance', function(data, callback) {
 
-            //TODO switch out token for room name.
-            //TODO mark down attendance in database / cache
-            //TODO send data packet that describes current state.
-            room = data;
+            winston.info(user.username + ' sent attendance token: ' + data);
 
-            winston.info(username + " submitted attendance for session: " + room);
+            CourseSession.find({roomId: data}).populate('course').exec(function (err, session) {
+                if (err) {
+                    winston.error(err.message);
+                } else {
+                    if (!session) {
+                        winston.info('Session not found with Room ID: ' + data);
+                        return;
+                    }
 
-            socket.join(room);
-            dashboard.in(room).emit('studentJoined', socket.request.user.name.full);
+                    room = session.roomId;
+                    winston.info(username + " submitted attendance for session: " + room);
+                    socket.join(room);
+                    callback(session);
+                    dashboard.in(room).emit('studentJoined', user.name.full);
+                }
+            });
+
+
         });
 
         socket.on('disconnect', function(data) {
