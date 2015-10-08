@@ -12,7 +12,7 @@ router.get('/', function (req, res) {
     res.redirect('/login');
 });
 
-router.get('/dashboard*', ensureLoggedIn('/login'), roleControl.can('dashboard'), function(req, res) {
+router.get('/dashboard*', ensureLoggedIn('/login'), roleControl.is('instructor'), function(req, res) {
     res.render('dashboard/dashboard', {user: req.user});
 });
 

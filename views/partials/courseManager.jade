@@ -1,4 +1,19 @@
 //
    Created by trevor on 10/7/15.
 
-p Course Manager Partial
+h3 Course Manager
+.row
+    .col-md-8
+        div(ng-repeat="course in API.courses")
+            .row
+                .col-md-4
+                    p {{course.title}}
+                .col-md-4
+                    a(href="#") Start Session
+    .col-md-4
+        form
+            .form-group
+                label(for='username') Create New Course
+                input.form-control(type='text', name='course_title', placeholder='Title', autofocus='', required='', ng-model='new_course_title')
+            .form-group
+                button.btn.btn-primary.btn-block(type='submit' ng-click='API.postCourse(new_course_title)') Create Course

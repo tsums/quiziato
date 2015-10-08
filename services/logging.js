@@ -26,4 +26,12 @@ winston.loggers.add('socket', {
     }
 });
 
+winston.loggers.add('api', {
+    console: {
+        level: 'silly',
+        colorize: true,
+        label: 'api'
+    }
+});
+
 module.exports = winston;

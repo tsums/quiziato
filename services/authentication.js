@@ -13,7 +13,7 @@ var ConnectRoles = require('connect-roles');
 // Role Control Definition Controls under what conditions a request can go through.
 var roleControl = new ConnectRoles();
 
-roleControl.use('dashboard', function (req) {
+roleControl.use('instructor', function (req) {
     return req.user.role === 'instructor';
 });
 

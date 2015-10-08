@@ -1,14 +1,19 @@
 .row
     .col-md-9
-        p.text-center This is the Main Column
+        .well
+            div(ng-repeat='session in API.sessions')
+                .row
+                    p.col-md-4 {{session._id}}
+                    button.btn.btn-sm.btn-success.col-md-3 Rejoin Session
+                    button.btn.btn-sm.btn-warning.col-md-3.col-md-push-1 End Session
 
-
-        form
+        form(name='start_session_form')
+            h6.text-center To begin, select a course and click 'Start Room'
             .form-group
-                label(for='username') Room
-                input.form-control(type='text', name='room', placeholder='Room', autofocus='', ng-model='room')
+                label(for='username') Course
+                select.form-control(required='', ng-model='course', ng-options='course.title for course in API.courses')
             .form-group
-                button.btn.btn-lg.btn-primary.btn-block(type='submit' ng-click='startRoom()') Start Room
+                button.btn.btn-lg.btn-primary.btn-block(type='submit', ng-click='manager.startSession(course._id)', ng-disabled='start_session_form.$invalid') Start Room
     .col-md-3
         p.text-center Students Connected
         ul.list-group

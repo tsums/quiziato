@@ -91,35 +91,53 @@ app.factory('classroomManager', ['dashSocket', function(dashSocket) {
     return manager;
 }]);
 
-app.factory('DashboardApi', ['$http', function($http) {
-    var dashboardAPI = {};
+app.factory('API', ['$http', function($http) {
+    var API = {};
 
-    return dashboardAPI;
+    API.getCourses = function() {
+        $http.get('/web/api/course/my').then(function(response) {
+            API.courses = response.data;
+        }, function(error) {
+            console.log(error);
+        });
+    };
+
+    API.getSessions = function() {
+        $http.get('/web/api/session/active').then(function(response) {
+            API.sessions = response.data;
+        }, function(error) {
+            console.log(error);
+        });
+    };
+
+    API.postCourse = function(title) {
+        $http.post('/web/api/course', {
+            title: title
+        }).then(function(response) {
+            API.getCourses();
+        }, function(error) {
+            console.log(error);
+        });
+    };
+
+    API.getCourses();
+    API.getSessions();
+
+    return API;
 }]);
 
 app.controller('dashboardController', ['$scope', function($scope) {
 
 }]);
 
-app.controller('classroomController', ['$scope', '$routeParams', '$controller', 'classroomManager', function($scope, $routeParams, $controller, classroomManager) {
+app.controller('classroomController', ['$scope', '$routeParams', '$controller', 'classroomManager' , 'API', function($scope, $routeParams, $controller, classroomManager, API) {
     $scope.manager = classroomManager;
-
-    $scope.startRoom = function() {
-        classroomManager.startSession($scope.room);
-    }
+    $scope.API = API;
 }]);
 
-app.controller('courseManagerController', ['$scope', '$routeParams', '$http', function($scope, $routeParams, $http) {
+app.controller('courseManagerController', ['$scope', '$routeParams', 'API', function($scope, $routeParams, API) {
 
-
-    $http.get('/web/api/course/my').then(function(response) {
-        $scope.courses = response.data;
-        console.log(response.data)
-    }, function(error) {
-        console.log(error);
-    });
-
-
+    $scope.API = API;
 
 }]);
 

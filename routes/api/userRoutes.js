@@ -5,6 +5,7 @@
  */
 
 var router = require('express').Router();
+var winston = require('winston').loggers.get('api');
 
 router.route('/me')
 
