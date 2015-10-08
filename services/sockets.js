@@ -90,7 +90,7 @@ var listen = function (server) {
 
     classroom.on('connection', function (socket) {
 
-        var room;
+        var room = null;
         var user = socket.request.user;
 
         winston.info(user.username + ' connected to namespace \'/classroom\'');
@@ -113,7 +113,7 @@ var listen = function (server) {
                     winston.info('current room: ' + room);
                     socket.join(room);
                     callback(session);
-                    dashboard.emit('studentJoined', user.name.full);
+                    dashboard.in(room).emit('studentJoined', user.name.full);
                 }
             });
 
