@@ -8,13 +8,15 @@ var gulp = require('gulp'),
     env = require('gulp-env'),
     livereload = require('gulp-livereload'),
     sass = require('gulp-sass'),
-    gutil = require('gulp-util');
+    gutil = require('gulp-util'),
+    cssmin = require('gulp-cssmin');
 
 // Compile SASS into CSS
 gulp.task('sass', function () {
-    gulp.src('./public/css/*.scss')
+    gulp.src('./src/sass/*.scss')
         .pipe(plumber())
         .pipe(sass())
+        .pipe(cssmin())
         .pipe(gulp.dest('./public/css'))
         .pipe(livereload());
 });
