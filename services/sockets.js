@@ -93,7 +93,7 @@ var listen = function (server) {
         var room;
         var user = socket.request.user;
 
-        winston.info(username + ' connected to namespace \'/classroom\'');
+        winston.info(user.username + ' connected to namespace \'/classroom\'');
 
         socket.on('attendance', function(data, callback) {
 

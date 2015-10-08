@@ -12,7 +12,7 @@
     .col-md-4
         form
             .form-group
-                label(for='username') Create New Course
+                label Create New Course
                 input.form-control(type='text', name='course_title', placeholder='Title', autofocus='', required='', ng-model='new_course_title')
             .form-group
                 button.btn.btn-primary.btn-block(type='submit' ng-click='API.postCourse(new_course_title)') Create Course
