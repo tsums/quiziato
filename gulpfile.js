@@ -9,21 +9,29 @@ var gulp = require('gulp'),
     livereload = require('gulp-livereload'),
     sass = require('gulp-sass'),
     gutil = require('gulp-util'),
-    cssmin = require('gulp-cssmin');
+    cssmin = require('gulp-cssmin'),
+    del = require('del'),
+    uglify = require('gulp-uglify'),
+    concat = require('gulp-concat'),
+    rename = require("gulp-rename");
 
 // Compile SASS into CSS
 gulp.task('sass', function () {
-    gulp.src('./src/sass/*.scss')
+    gutil.log(gutil.colors.blue('Compiling SASS...'));
+    return gulp.src('./src/sass/*.scss')
         .pipe(plumber())
         .pipe(sass())
         .pipe(cssmin())
         .pipe(gulp.dest('./public/css'))
-        .pipe(livereload());
 });
 
-// Watch the frontend, rebuild when needed, tell livereload
-gulp.task('watch', function () {
-    gulp.watch('./public/css/*.scss', ['sass']);
+gulp.task('js:frontend', function() {
+    gutil.log(gutil.colors.blue('Minifying Frontend JS...'));
+    return gulp.src('./src/js/**/*.js')
+        .pipe(plumber())
+        .pipe(concat('app.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('./public/js'))
 });
 
 // Run the server in development mode.
@@ -56,17 +64,32 @@ gulp.task('develop', function () {
     });
 });
 
+// Clean the build folders
 gulp.task('clean', function() {
     gutil.log(gutil.colors.red('Cleaning Build Directories...'));
+    return del([
+        '/public/css/*.css',
+        '/public/js/*.js'
+    ]);
 });
 
-gulp.task('build', ['clean'], function() {
-    gutil.log(gutil.colors.green('Building Distribution Code...'));
+gulp.task('build', ['sass', 'js:frontend'], function() {
+    gutil.log(gutil.colors.green('Built Distribution Code...'));
+});
+
+gulp.task('build-dev', [], function() {
+    gutil.log(gutil.colors.yellow('Built Development Code...'));
+});
+
+// Watch the frontend, rebuild when needed, tell livereload
+gulp.task('watch', function () {
+    gulp.watch('./src/sass/*.scss', ['sass']);
+    gulp.watch('./src/js/**/*.js', ['js:frontend']);
 });
 
 // default task gets development envrionment up and running.
 gulp.task('default', [
-    'sass',
+    'build',
     'develop',
     'watch'
 ]);
