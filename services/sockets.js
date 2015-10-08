@@ -99,7 +99,7 @@ var listen = function (server) {
 
             winston.info(user.username + ' sent attendance token: ' + data);
 
-            CourseSession.find({roomId: data}).populate('course').exec(function (err, session) {
+            CourseSession.findOne({roomId: data}).populate('course').exec(function (err, session) {
                 if (err) {
                     winston.error(err.message);
                 } else {
