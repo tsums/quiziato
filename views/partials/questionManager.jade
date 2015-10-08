@@ -4,7 +4,7 @@
 
     .col-md-4
         p.text-center New Question
-        form
+        form(name='new_question_form')
             .form-group.form-group-sm
                 label.control-label Question Title
                 input.form-control(type='text', name='question_title', placeholder='Title', autofocus='', required='', ng-model='new_question.title')
@@ -13,5 +13,5 @@
                 input.form-control(type='text', name='question_prompt', placeholder='Prompt', required='', ng-model='new_question.prompt')
                 span.help-block The prompt the student sees when assigned the question.
             .form-group
-                button.btn.btn-primary.btn-block(type='submit' ng-click='postQuestion()') Create Question
+                button.btn.btn-primary.btn-block(type='submit' ng-click='postQuestion()', ng-disabled='new_question_form.$invalid') Create Question
 
