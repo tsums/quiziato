@@ -155,6 +155,7 @@ var listen = function (server) {
                     callback(session);
 
                     winston.info('Instructor ' + user.username + ' Started Session: ' + session.id);
+                    winston.info('Instructor ' + user.username + ' Joining Room: ' + room);
                 }
             });
 
