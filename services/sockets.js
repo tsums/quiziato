@@ -109,7 +109,7 @@ var listen = function (server) {
                     }
 
                     room = session.roomId;
-                    winston.info(user.username + " submitted attendance for session: " + session.id);
+                    winston.info(user.username + " submitted attendance for session: " + session);
                     socket.join(room);
                     callback(session);
                     dashboard.in(room).emit('studentJoined', user.name.full);
