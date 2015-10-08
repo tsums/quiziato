@@ -117,19 +117,19 @@ app.factory('API', ['$http', function($http) {
         });
     };
 
-    API.getSessions = function() {
-        $http.get('/web/api/session/active').then(function(response) {
-            API.sessions = response.data;
-        }, function(error) {
-            console.log(error);
-        });
-    };
-
     API.postCourse = function(title) {
         $http.post('/web/api/course', {
             title: title
         }).then(function(response) {
             API.getCourses();
+        }, function(error) {
+            console.log(error);
+        });
+    };
+
+    API.getSessions = function() {
+        $http.get('/web/api/session/active').then(function(response) {
+            API.sessions = response.data;
         }, function(error) {
             console.log(error);
         });
@@ -143,20 +143,37 @@ app.factory('API', ['$http', function($http) {
         })
     };
 
+    API.postQuestion = function(question) {
+        $http.post('/web/api/question', question).then(function (response) {
+            console.log(response);
+        }, function (error) {
+            console.log(error);
+        })
+    };
+
     API.getCourses();
     API.getSessions();
 
     return API;
+
 }]);
 
 app.controller('dashboardController', ['$scope','socket', function($scope, socket) {
+
     $scope.socket = socket;
+
+    $scope.$on('$routeChangeSuccess', function (event, current, previous) {
+        $scope.activeController = current.$$route.controller;
+    });
+
 }]);
 
 app.controller('classroomController', ['$scope', '$routeParams', '$controller', 'classroomManager' , 'API', function($scope, $routeParams, $controller, classroomManager, API) {
+
     $scope.manager = classroomManager;
     $scope.API = API;
     $scope.show_qr = true;
+
 }]);
 
 app.controller('courseManagerController', ['$scope', '$routeParams', 'API', function($scope, $routeParams, API) {
@@ -165,7 +182,9 @@ app.controller('courseManagerController', ['$scope', '$routeParams', 'API', func
 
 }]);
 
-app.controller('questionManagerController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
+app.controller('questionManagerController', ['$scope', '$routeParams', 'API', function($scope, $routeParams, API) {
+
+    $scope.API = API;
 
 }]);
 

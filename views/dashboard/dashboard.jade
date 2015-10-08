@@ -29,12 +29,12 @@ html(lang='en')
 
                         ul.nav.navbar-nav
                             li
-                                a(href="classroom") Classroom
+                                a(href="classroom", ng-class="{bold : activeController == 'classroomController'}") Classroom
                             li
-                                a(href="questions") Questions
+                                a(href="questions", ng-class="{bold : activeController == 'questionManagerController'}") Questions
 
                             li
-                                a(href="courses") Courses
+                                a(href="courses", ng-class="{bold : activeController == 'courseManagerController'}") Courses
 
                         ul.nav.navbar-nav.navbar-right
                             li
