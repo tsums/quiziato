@@ -35,9 +35,13 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
     });
 }]);
 
-// Dashboard Socket Factory
-app.factory('dashSocket', ['socketFactory', function(socketFactory) {
+app.factory('socket', function() {
     var socket = io.connect(window.location.origin + '/dashboard');
+    return socket;
+});
+
+// Dashboard Socket Factory
+app.factory('dashSocket', ['socketFactory', 'socket', function(socketFactory, socket) {
     var ngSocket =  socketFactory({
         ioSocket: socket
     });
@@ -51,6 +55,7 @@ app.factory('classroomManager', ['dashSocket', function(dashSocket) {
 
     var manager = {};
     manager.students = [];
+    manager.inSession = false;
 
     // Add student to list when they join the room
     dashSocket.on('studentJoined', function(data) {
@@ -78,13 +83,23 @@ app.factory('classroomManager', ['dashSocket', function(dashSocket) {
     });
 
     // create a class session.
-    manager.startSession = function(courseID) {
+    manager.startSession = function(course) {
         dashSocket.emit('startSession', {
-            course: courseID
+            course: course._id
         }, function(data) {
-            if (data.success) {
-                manager.inSession = true;
-            }
+            console.log(data);
+            data.course = course;
+            manager.inSession = true;
+            manager.session = data;
+        });
+    };
+
+    manager.resumeSession = function(session) {
+        dashSocket.emit('resumeSession', {
+            id: session._id
+        }, function(data) {
+            manager.session = data;
+            manager.inSession = true;
         });
     };
 
@@ -120,14 +135,22 @@ app.factory('API', ['$http', function($http) {
         });
     };
 
+    API.endSession = function(id) {
+        $http.post('/web/api/session/' + id + '/end', null).then(function(response) {
+            API.getSessions();
+        }, function (error) {
+            console.log(error);
+        })
+    };
+
     API.getCourses();
     API.getSessions();
 
     return API;
 }]);
 
-app.controller('dashboardController', ['$scope', function($scope) {
-
+app.controller('dashboardController', ['$scope','socket', function($scope, socket) {
+    $scope.socket = socket;
 }]);
 
 app.controller('classroomController', ['$scope', '$routeParams', '$controller', 'classroomManager' , 'API', function($scope, $routeParams, $controller, classroomManager, API) {

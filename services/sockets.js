@@ -117,7 +117,7 @@ var listen = function (server) {
 
     dashboard.on('connection', function (socket) {
 
-        var room;
+        var room = null;
         var user = socket.request.user;
 
         winston.info(user.username + ' connected to namespace \'/dashboard\'');
@@ -126,27 +126,44 @@ var listen = function (server) {
         socket.on('startSession', function(data, callback) {
             winston.info(user.username + ' starting session for course: ' + data.course);
 
-            var cs = new CourseSession({
+            var session = new CourseSession({
                 date: Date.now(),
                 course: data.course,
                 roomId: uuid.v4(),
                 instructor: user.id
             });
 
-            cs.save(function(err) {
+            session.save(function(err) {
                 if (err) {
                     winston.error(err.message);
                     res.send(err);
                 } else {
-                    room = cs.roomId;
+                    room = session.roomId;
                     socket.join(room);
 
-                    callback({
-                        success: true,
-                        roomId: room
-                    });
+                    callback(session);
 
-                    winston.info('Session started: ' + cs.id);
+                    winston.info('Instructor ' + user.username + ' Started Session: ' + session.id);
+                }
+            });
+
+        });
+
+        socket.on('resumeSession', function(data, callback) {
+
+            if (room != null) {
+                winston.warn('Socket Tried to Resume Session while already in a session.');
+                return;
+            }
+
+            CourseSession.findById(data.id).populate('course').exec(function (err, session) {
+                if (err) {
+                    winston.error(err);
+                } else {
+                    room = session.roomId;
+                    socket.join(session.roomId);
+                    callback(session);
+                    winston.info('Instructor ' + user.username + ' Re-Joined Session: ' + session.id);
                 }
             });
 
