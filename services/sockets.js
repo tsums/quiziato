@@ -109,7 +109,7 @@ var listen = function (server) {
                     }
 
                     room = session.roomId;
-                    winston.info(user.username + " submitted attendance for session: " + room);
+                    winston.info(user.username + " submitted attendance for session: " + session.id);
                     socket.join(room);
                     callback(session);
                     dashboard.in(room).emit('studentJoined', user.name.full);
@@ -172,7 +172,7 @@ var listen = function (server) {
                     winston.error(err);
                 } else {
                     room = session.roomId;
-                    socket.join(session.roomId);
+                    socket.join(room);
                     callback(session);
                     winston.info('Instructor ' + user.username + ' Re-Joined Session: ' + session.id);
                 }

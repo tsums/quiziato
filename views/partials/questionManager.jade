@@ -6,6 +6,9 @@
         p.text-center New Question
         form(name='new_question_form')
             .form-group.form-group-sm
+                label.control-label Select Course
+                select.form-control(required='', ng-model='new_question.course', ng-options='course.title for course in API.courses')
+            .form-group.form-group-sm
                 label.control-label Question Title
                 input.form-control(type='text', name='question_title', placeholder='Title', autofocus='', required='', ng-model='new_question.title')
             .form-group.form-group-sm
