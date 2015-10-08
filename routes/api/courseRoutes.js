@@ -22,6 +22,22 @@ router.route('/')
 
     });
 
+router.route('/my')
+
+    .get(function (req,res) {
+
+        Course.find({instructor: req.user.id}, function(err, courses) {
+            if (err) {
+                winston.error(err.message);
+                res.code(500).send('Error Ocurred: ' + err.message);
+                return;
+            }
+
+            res.json(courses);
+        });
+
+    });
+
 router.route('/:id')
 
     .get(function (req, res) {
@@ -41,6 +57,8 @@ router.route('/:id/questions')
         Question.find({course: req.params.id}, function(err, questions) {
             res.json(questions);
         });
-    })
+    });
+
+
 
 module.exports = router;

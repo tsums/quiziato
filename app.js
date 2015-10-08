@@ -91,10 +91,11 @@ app.use(express.static(path.join(__dirname, 'public')));
  */
 var index = require('./routes/index');
 var authRoutes = require('./routes/auth');
-var apiRoutes = require('./routes/api');
+var apiRoutes = require('./routes/security');
 app.use('/', index);
 app.use('/', authRoutes);
-app.use('/api', apiRoutes);
+app.use('/api', apiRoutes.mobile);
+app.use('/web/api', apiRoutes.web);
 
 app.get('/partials/:name', function(req,res) {
     var name = req.params.name;

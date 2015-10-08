@@ -23,6 +23,10 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
             templateUrl: '/partials/questionManager',
             controller: 'questionManagerController'
         })
+        .when('/courses', {
+            templateUrl: '/partials/courseManager',
+            controller: 'courseManagerController'
+        })
         .otherwise({redirectTo: '/'});
 
     $locationProvider.html5Mode({
@@ -103,6 +107,20 @@ app.controller('classroomController', ['$scope', '$routeParams', '$controller', 
     $scope.startRoom = function() {
         classroomManager.startSession($scope.room);
     }
+}]);
+
+app.controller('courseManagerController', ['$scope', '$routeParams', '$http', function($scope, $routeParams, $http) {
+
+
+    $http.get('/web/api/course/my').then(function(response) {
+        $scope.courses = response.data;
+        console.log(response.data)
+    }, function(error) {
+        console.log(error);
+    });
+
+
+
 }]);
 
 app.controller('questionManagerController', ['$scope', '$http', '$routeParams', function($scope, $http, $routeParams) {
