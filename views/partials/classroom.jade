@@ -20,7 +20,7 @@
         div(ng-show='manager.inSession')
             p.text-center Current Session: {{manager.session.course.title}} Started At: {{manager.session.date | date : "MM/dd h:mm a"}}
             div(ng-show='show_qr').text-center
-                qrcode(data='{{manager.session.roomId}}', size='300')
+                qrcode(data='{{manager.session.roomId}}', size='500')
                 p {{manager.session.roomId}}
     .col-md-3
         p.text-center Students Connected
