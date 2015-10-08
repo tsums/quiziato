@@ -12,6 +12,7 @@
     "angular-socket-io": "~0.7.0",
     "angular-route": "~1.4.7",
     "angular-bootstrap": "~0.13.4",
-    "bootswatch-dist": "paper"
+    "bootswatch-dist": "paper",
+    "angular-qrcode": "monospaced/angular-qrcode#~6.0.3"
   }
 }

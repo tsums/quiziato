@@ -8,7 +8,7 @@
  *  Dashboard Angular App
  */
 
-var app = angular.module('dashboard', ['btford.socket-io', 'ngRoute']);
+var app = angular.module('dashboard', ['btford.socket-io', 'ngRoute', 'monospaced.qrcode']);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
@@ -156,6 +156,7 @@ app.controller('dashboardController', ['$scope','socket', function($scope, socke
 app.controller('classroomController', ['$scope', '$routeParams', '$controller', 'classroomManager' , 'API', function($scope, $routeParams, $controller, classroomManager, API) {
     $scope.manager = classroomManager;
     $scope.API = API;
+    $scope.show_qr = true;
 }]);
 
 app.controller('courseManagerController', ['$scope', '$routeParams', 'API', function($scope, $routeParams, API) {
