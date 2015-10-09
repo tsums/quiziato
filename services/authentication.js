@@ -1,14 +1,13 @@
 /**
- * Created by trevor on 10/2/15.
+ * Trevor Summerfield
+ * CS 490-001 Fall 2015
+ * Quiz Project
  */
-
 /*
-    Authentication and Permission Control Configuration
+ *  Authentication and Permission Control Configuration
  */
-
 
 var ConnectRoles = require('connect-roles');
-
 
 // Role Control Definition Controls under what conditions a request can go through.
 var roleControl = new ConnectRoles();

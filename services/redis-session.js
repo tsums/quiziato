@@ -1,7 +1,8 @@
 /**
- * Created by trevor on 9/27/15.
+ * Trevor Summerfield
+ * CS 490-001 Fall 2015
+ * Quiz Project
  */
-
 /*
     Connect-Session store using Redis Memory Cache for persistent sessions and speed.
  */

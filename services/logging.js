@@ -5,7 +5,7 @@
  */
 
 /*
- *  Logging Confirutation
+ *  Logging Configuration
  */
 
 var winston = require('winston');
