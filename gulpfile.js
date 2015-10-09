@@ -12,8 +12,7 @@ var gulp = require('gulp'),
     cssmin = require('gulp-cssmin'),
     del = require('del'),
     uglify = require('gulp-uglify'),
-    concat = require('gulp-concat'),
-    rename = require("gulp-rename");
+    concat = require('gulp-concat');
 
 // Compile SASS into CSS
 gulp.task('sass', function () {
@@ -26,6 +25,7 @@ gulp.task('sass', function () {
         .pipe(livereload());
 });
 
+// Minify and Uglify Frontend JS
 gulp.task('js:frontend', function() {
     gutil.log(gutil.colors.blue('Minifying Frontend JS...'));
     return gulp.src('./src/js/**/*.js')

@@ -6,12 +6,15 @@
  * Quiz Project
  */
 
+// Instantiate Express Logic
 var app = require('../app');
 
+// Tell Express to listen on the envrionment-configured port
 app.set('port', process.env.PORT || 3000);
 
 var server = app.listen(app.get('port'), function () {
     console.log('Express server listening on port ' + server.address().port);
 });
 
+// Have socket.io piggyback on the existing server.
 var io = require('../services/sockets.js').listen(server);

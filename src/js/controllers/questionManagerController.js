@@ -6,9 +6,6 @@
 
 var app = angular.module('dashboard');
 
-
-
-
 app.controller('questionManagerController', ['$scope', '$routeParams', 'API', function($scope, $routeParams, API) {
 
     $scope.API = API;
