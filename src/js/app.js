@@ -51,6 +51,10 @@ app.controller('classroomController', ['$scope', '$routeParams', '$controller', 
     $scope.API = API;
     $scope.show_qr = true;
 
+    $scope.toggleQR = function() {
+        $scope.show_qr = !$scope.show_qr;
+    }
+
 }]);
 
 app.controller('courseManagerController', ['$scope', '$routeParams', 'API', function($scope, $routeParams, API) {
@@ -63,6 +67,16 @@ app.controller('questionManagerController', ['$scope', '$routeParams', 'API', fu
 
     $scope.API = API;
 
+    $scope.new_question = {};
+    $scope.new_question.options = [{}];
+
+    $scope.addOption = function() {
+        $scope.new_question.options.push({});
+    };
+
+    $scope.postQuestion = function() {
+
+    }
 }]);
 
 

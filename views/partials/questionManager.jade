@@ -15,6 +15,11 @@
                 label.control-label Question Prompt
                 input.form-control(type='text', name='question_prompt', placeholder='Prompt', required='', ng-model='new_question.prompt')
                 span.help-block The prompt the student sees when assigned the question.
+            .form-group.form-group-sm(ng-repeat="option in new_question.options track by $index")
+                label.control-label Option {{$index+1}}
+                input.form-control(type='text', placeholder='Answer Text {{$index+1}}', required='', ng-model='option.text')
+            .form-group.form-group-sm
+                button.btn.btn-block(ng-click='addOption()', ng-disabled='new_question.options.length >= 5') Add Option
             .form-group
                 button.btn.btn-primary.btn-block(type='submit' ng-click='postQuestion()', ng-disabled='new_question_form.$invalid') Create Question
 

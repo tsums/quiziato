@@ -23,6 +23,7 @@ gulp.task('sass', function () {
         .pipe(sass())
         .pipe(cssmin())
         .pipe(gulp.dest('./public/css'))
+        .pipe(livereload());
 });
 
 gulp.task('js:frontend', function() {

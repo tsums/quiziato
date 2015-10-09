@@ -162,6 +162,13 @@ var listen = function (server) {
 
         });
 
+        socket.on('leaveSession', function() {
+            winston.info('Instructor ' + user.username + ' Leaving Session.');
+            socket.leave(room);
+            classroom.in(room).emit('instructorDisconnect');
+            room = null;
+        });
+
         socket.on('resumeSession', function(data, callback) {
 
             if (room != null) {

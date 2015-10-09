@@ -7,7 +7,7 @@
 
 var app = angular.module('dashboard');
 
-app.factory('classroomManager', ['dashSocket', function(dashSocket) {
+app.factory('classroomManager', ['dashSocket', 'API', function(dashSocket, API) {
 
     var manager = {};
 
@@ -48,6 +48,7 @@ app.factory('classroomManager', ['dashSocket', function(dashSocket) {
             data.course = course;
             manager.inSession = true;
             manager.session = data;
+            API.getSessions();
         });
     };
 
@@ -58,6 +59,12 @@ app.factory('classroomManager', ['dashSocket', function(dashSocket) {
             manager.session = data;
             manager.inSession = true;
         });
+    };
+
+    manager.leaveSession = function() {
+        dashSocket.emit('leaveSession');
+        manager.inSession = false;
+        manager.session = null;
     };
 
     return manager;
