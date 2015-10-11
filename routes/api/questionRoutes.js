@@ -25,8 +25,37 @@ router.route('/')
     .post(function (req, res) {
         var question = new Question(req.body);
         question.author = req.user.id;
-        question.save();
-        res.json(question);
+        question.save(function(err) {
+            if (err) {
+                winston.error(err);
+                res.status(500).send(err.message);
+            } else {
+                question.correctOption = question.options[question.correctOption].id;
+                question.save(function (err) {
+                    if (err) {
+                        winston.error(err);
+                        res.status(500).send(err.message);
+                    } else {
+                        res.json(question);
+                    }
+                });
+            }
+        });
+    })
+
+    .get(function(req, res) {
+        if (!req.query.course) {
+            res.status(400).send('\'course\' query missing')
+        }
+
+        Question.find({course: req.query.course}, function (err, questions) {
+            if (err) {
+                winston.error(err);
+                res.status(500).send(err.message);
+            } else {
+                res.json(questions);
+            }
+        });
     });
 
 module.exports = router;

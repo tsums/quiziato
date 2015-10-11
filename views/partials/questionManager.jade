@@ -6,6 +6,8 @@ div.well
 .row(ng-show="currentCourse != null")
     .col-md-8
         p Questions
+        div(ng-repeat="question in questions")
+            p {{question.title}}
 
     .col-md-4
         p.text-center New Question
@@ -28,5 +30,5 @@ div.well
             .form-group.form-group-sm
                 button.btn.btn-block(ng-click='addOption()', ng-disabled='new_question.options.length >= 5') Add Option
             .form-group
-                button.btn.btn-primary.btn-block(type='submit' ng-click='postQuestion()', ng-disabled='new_question_form.$invalid || new_question.correct == null') Create Question
+                button.btn.btn-primary.btn-block(type='submit' ng-click='postQuestion()', ng-disabled='new_question_form.$invalid || new_question.correctOption == null') Create Question
 

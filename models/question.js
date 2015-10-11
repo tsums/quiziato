@@ -8,7 +8,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var QuestionOption = new Schema({
-    id: {type: Number, required: true},
     text: {type: String, required: true}
 });
 
@@ -18,7 +17,7 @@ var Question = new Schema({
     course: {type: Schema.Types.ObjectId, required: true},
     author: {type: Schema.Types.ObjectId, required: true},
     options: [QuestionOption],
-    correctOption: {type: Number, required: true}
+    correctOption: {type: String, required: true}
 });
 
 module.exports = mongoose.model('Question', Question);

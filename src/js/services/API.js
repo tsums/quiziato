@@ -10,6 +10,9 @@ var app = angular.module('dashboard');
 app.factory('API', ['$http', function($http) {
     var API = {};
 
+    API.courses = [];
+    API.sessions = [];
+
     API.getCourses = function() {
         $http.get('/web/api/course/my').then(function(response) {
             API.courses = response.data;
@@ -44,12 +47,20 @@ app.factory('API', ['$http', function($http) {
         })
     };
 
-    API.postQuestion = function(question) {
-        $http.post('/web/api/question', question).then(function (response) {
-            console.log(response);
+    API.getQuestionsForCourse = function (courseId, callback) {
+        $http.get('/web/api/question', {
+            params: {
+                course: courseId
+            }
+        }).then(function(response) {
+            callback(response.data)
         }, function (error) {
             console.log(error);
         })
+    };
+
+    API.postQuestion = function(question) {
+        return $http.post('/web/api/question', question);
     };
 
     API.getCourses();
