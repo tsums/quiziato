@@ -1,4 +1,9 @@
-.row
+div.well
+    form-group.form-group-sm
+        label.control-label Select Course
+        select.form-control(required='', ng-model='currentCourse', ng-options='course.title for course in API.courses')
+
+.row(ng-show="currentCourse != null")
     .col-md-8
         p Questions
 
@@ -6,20 +11,22 @@
         p.text-center New Question
         form(name='new_question_form')
             .form-group.form-group-sm
-                label.control-label Select Course
-                select.form-control(required='', ng-model='new_question.course', ng-options='course.title for course in API.courses')
-            .form-group.form-group-sm
                 label.control-label Question Title
                 input.form-control(type='text', name='question_title', placeholder='Title', autofocus='', required='', ng-model='new_question.title')
+                span.help-block Question Title for use in instructor control panel.
             .form-group.form-group-sm
                 label.control-label Question Prompt
                 input.form-control(type='text', name='question_prompt', placeholder='Prompt', required='', ng-model='new_question.prompt')
-                span.help-block The prompt the student sees when assigned the question.
+                span.help-block Students see this when assigned the question.
             .form-group.form-group-sm(ng-repeat="option in new_question.options track by $index")
                 label.control-label Option {{$index+1}}
-                input.form-control(type='text', placeholder='Answer Text {{$index+1}}', required='', ng-model='option.text')
+                .row
+                    .col-sm-10
+                        input.form-control(type='text', placeholder='Answer Text {{$index+1}}', required='', ng-model='new_question.options[$index].text')
+                    .col-sm-2
+                        input(type="radio", ng-model="new_question.correctOption", value="{{$index}}")
             .form-group.form-group-sm
                 button.btn.btn-block(ng-click='addOption()', ng-disabled='new_question.options.length >= 5') Add Option
             .form-group
-                button.btn.btn-primary.btn-block(type='submit' ng-click='postQuestion()', ng-disabled='new_question_form.$invalid') Create Question
+                button.btn.btn-primary.btn-block(type='submit' ng-click='postQuestion()', ng-disabled='new_question_form.$invalid || new_question.correct == null') Create Question
 

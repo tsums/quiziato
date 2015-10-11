@@ -10,11 +10,13 @@ app.controller('questionManagerController', ['$scope', '$routeParams', 'API', fu
 
     $scope.API = API;
 
-    $scope.new_question = {};
-    $scope.new_question.options = [{}];
+    $scope.$watch('currentCourse', function(newVal, oldVal) {
+        $scope.new_question = {};
+        $scope.new_question.options = [{}];
+    });
 
     $scope.addOption = function() {
-        $scope.new_question.options.push({});
+        $scope.new_question.options.push({text: ""});
     };
 
     $scope.postQuestion = function() {
