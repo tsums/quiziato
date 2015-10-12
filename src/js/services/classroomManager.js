@@ -12,7 +12,9 @@ app.factory('classroomManager', ['dashSocket', 'API', function(dashSocket, API) 
     var manager = {};
 
     manager.students = [];
+    manager.questions = [];
     manager.inSession = false;
+    manager.session = null;
 
     // Add student to list when they join the room
     dashSocket.on('studentJoined', function(data) {
@@ -39,16 +41,25 @@ app.factory('classroomManager', ['dashSocket', 'API', function(dashSocket, API) 
         console.log(data);
     });
 
+    manager.reset = function() {
+        manager.students = [];
+        manager.questions = [];
+        manager.inSession = false;
+        manager.session = null;
+    };
+
     // create a class session.
     manager.startSession = function(course) {
         dashSocket.emit('startSession', {
             course: course._id
         }, function(data) {
-            console.log(data);
             data.course = course;
             manager.inSession = true;
             manager.session = data;
             API.getSessions();
+            API.getQuestionsForCourse(course._id, function(questions) {
+                manager.questions = questions;
+            });
         });
     };
 
@@ -58,13 +69,21 @@ app.factory('classroomManager', ['dashSocket', 'API', function(dashSocket, API) 
         }, function(data) {
             manager.session = data;
             manager.inSession = true;
+            API.getQuestionsForCourse(manager.session.course._id, function(questions) {
+                manager.questions = questions;
+            });
         });
     };
 
     manager.leaveSession = function() {
         dashSocket.emit('leaveSession');
-        manager.inSession = false;
-        manager.session = null;
+        manager.reset();
+    };
+
+    manager.assignQuestion = function(questionId) {
+        dashSocket.emit('assignQuestion', questionId, function(data) {
+            console.log(data);
+        });
     };
 
     return manager;

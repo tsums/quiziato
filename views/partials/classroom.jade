@@ -14,15 +14,24 @@
                 .form-group
                     label(for='username') Course
                     select.form-control(required='', ng-model='course', ng-options='course.title for course in API.courses')
+                        option(value='') Select Course
                 .form-group
                     button.btn.btn-lg.btn-primary.btn-block(type='submit', ng-click='manager.startSession(course)', ng-disabled='start_session_form.$invalid') Start Room
 
         div(ng-show='manager.inSession')
             p.lead.text-center {{manager.session.course.title}} Started At: {{manager.session.date | date : "MM/dd h:mm a"}}
-            div.btn-toolbar.pagination-centered
-                button.btn.btn-danger(type='button', ng-click='manager.leaveSession()') Leave Session
-                button.btn.btn-warning(type='button', ng-click='toggleQR()') Show QR Code
-                button.btn.btn-success Assign Question
+            .row
+                div.col-md-6
+                    div.btn-toolbar.pagination-centered
+                        button.btn.btn-sm.btn-danger(type='button', ng-click='manager.leaveSession()') Leave Session
+                        button.btn.btn-sm.btn-warning(type='button', ng-click='toggleQR()') Show QR Code
+                div.col-md-6
+                    form.form-inline
+                        .form-group
+                            select.form-control(ng-model='currentQuestion', ng-options='question.title for question in manager.questions')
+                                option(value='') Choose Question
+                        .form-group
+                            button.btn.btn-sm.btn-success(ng-disabled='currentQuestion == null', ng-click='manager.assignQuestion(currentQuestion._id)') Assign Question
             div(ng-show='show_qr').text-center.interior
                 qrcode(data='{{manager.session.roomId}}', size='500')
                 p {{manager.session.roomId}}

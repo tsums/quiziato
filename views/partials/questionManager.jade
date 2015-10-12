@@ -1,7 +1,7 @@
 div.well
-    form-group.form-group-sm
-        label.control-label Select Course
+    form-group.form-group
         select.form-control(required='', ng-model='currentCourse', ng-options='course.title for course in API.courses')
+            option(value='') Select Course
 
 .row(ng-show="currentCourse != null")
     .col-md-8

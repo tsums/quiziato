@@ -20,6 +20,7 @@ var AccessToken = require('../models/accessToken');
 var User = require('../models/user');
 var Course = require('../models/course');
 var CourseSession = require('../models/course_session');
+var Question = require('../models/question');
 
 var listen = function (server) {
 
@@ -189,8 +190,18 @@ var listen = function (server) {
 
         });
 
-        socket.on('assignQuestion', function(data) {
+        socket.on('assignQuestion', function(data, callback) {
 
+            Question.findById(data, function(err, question) {
+                if (err) {
+                    winston.error(err);
+                } else {
+                    if (question) {
+                        classroom.in(room).emit('assignQuestion', question);
+                        callback(true);
+                    }
+                }
+            });
         });
 
         socket.on('disconnect', function(data) {
