@@ -197,6 +197,7 @@ var listen = function (server) {
                     winston.error(err);
                 } else {
                     if (question) {
+                        winston.info(user.username + " assigning Question " + question.id + " to room " + room);
                         classroom.in(room).emit('assignQuestion', question);
                         callback(true);
                     }
