@@ -14,6 +14,7 @@ app.factory('classroomManager', ['dashSocket', 'API', function(dashSocket, API) 
     manager.students = [];
     manager.questions = [];
     manager.inSession = false;
+    manager.questionAssigned = null;
     manager.session = null;
 
     // Add student to list when they join the room
@@ -45,6 +46,7 @@ app.factory('classroomManager', ['dashSocket', 'API', function(dashSocket, API) 
         manager.students = [];
         manager.questions = [];
         manager.inSession = false;
+        manager.questionAssigned = null;
         manager.session = null;
     };
 
@@ -83,6 +85,7 @@ app.factory('classroomManager', ['dashSocket', 'API', function(dashSocket, API) 
     manager.assignQuestion = function(questionId) {
         dashSocket.emit('assignQuestion', questionId, function(data) {
             console.log(data);
+            manager.questionAssigned = data;
         });
     };
 
