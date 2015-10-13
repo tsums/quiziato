@@ -131,6 +131,7 @@ var listen = function (server) {
     dashboard.on('connection', function (socket) {
 
         var room = null;
+        var currentSession = null;
         var user = socket.request.user;
 
         winston.info(user.username + ' connected to namespace \'/dashboard\'');
@@ -155,6 +156,7 @@ var listen = function (server) {
                     socket.join(room);
 
                     callback(session);
+                    currentSession = session;
 
                     winston.info('Instructor ' + user.username + ' Started Session: ' + session.id);
                     winston.info('Instructor ' + user.username + ' Joining Room: ' + room);
@@ -183,6 +185,7 @@ var listen = function (server) {
                 } else {
                     room = session.roomId;
                     socket.join(room);
+                    currentSession = session;
                     callback(session);
                     winston.info('Instructor ' + user.username + ' Re-Joined Session: ' + session.id);
                 }
@@ -199,7 +202,20 @@ var listen = function (server) {
                     if (question) {
                         winston.info(user.username + " assigning Question " + question.id + " to room " + room);
                         classroom.in(room).emit('assignQuestion', question);
-                        callback(true);
+
+                        currentSession.assignments.push({
+                            question: question.id
+                        });
+
+                        currentSession.save(function(err) {
+                            if (err) {
+                                winston.error(err);
+                            } else {
+                                // TODO hacky way of sending the last assignment, refactor?
+                                callback(currentSession.assignments[currentSession.assignments.length-1]);
+                            }
+                        });
+
                     }
                 }
             });

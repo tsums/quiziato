@@ -7,14 +7,14 @@
 
 var app = angular.module('dashboard');
 
-app.factory('classroomManager', ['dashSocket', 'API', function(dashSocket, API) {
+app.factory('classroomManager', ['dashSocket', 'API', '$timeout', '$interval', function(dashSocket, API, $timeout, $interval) {
 
     var manager = {};
 
     manager.students = [];
     manager.questions = [];
     manager.inSession = false;
-    manager.questionAssigned = null;
+    manager.assignment = null;
     manager.session = null;
 
     // Add student to list when they join the room
@@ -46,7 +46,7 @@ app.factory('classroomManager', ['dashSocket', 'API', function(dashSocket, API) 
         manager.students = [];
         manager.questions = [];
         manager.inSession = false;
-        manager.questionAssigned = null;
+        manager.assignment = null;
         manager.session = null;
     };
 
@@ -82,10 +82,26 @@ app.factory('classroomManager', ['dashSocket', 'API', function(dashSocket, API) 
         manager.reset();
     };
 
-    manager.assignQuestion = function(questionId) {
-        dashSocket.emit('assignQuestion', questionId, function(data) {
-            console.log(data);
-            manager.questionAssigned = data;
+    manager.assignQuestion = function(question) {
+        dashSocket.emit('assignQuestion', question._id, function(data) {
+            manager.assignment = data;
+            manager.assignment.question = question;
+
+            var due = moment(manager.assignment.dueAt);
+            manager.assignment.remaining = due.diff(moment(), 'seconds');
+            console.log(typeof(manager.assignment.remaining));
+
+            var counter = $interval(function () {
+                manager.assignment.remaining = due.diff(moment(), 'seconds');
+            }, 1000, manager.assignment.remaining);
+
+            $timeout(function() {
+                console.log("ended");
+                $interval.cancel(counter);
+                manager.assignment = null;
+            }, manager.assignment.remaining * 1000);
+
+
         });
     };
 

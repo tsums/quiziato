@@ -1,6 +1,6 @@
 .row
     .col-md-9
-        div(ng-show='!manager.inSession')
+        div(ng-if='!manager.inSession')
             .well(ng-show='API.sessions.length > 0')
                 h5.text-center You currently have {{API.sessions.length}} sessions in progress.
                 div(ng-repeat='session in API.sessions')
@@ -18,7 +18,7 @@
                 .form-group
                     button.btn.btn-lg.btn-primary.btn-block(type='submit', ng-click='manager.startSession(course)', ng-disabled='start_session_form.$invalid') Start Room
 
-        div(ng-show='manager.inSession')
+        div(ng-if='manager.inSession')
             p.lead.text-center {{manager.session.course.title}} Started At: {{manager.session.date | date : "MM/dd h:mm a"}}
             .row
                 div.col-md-6
@@ -31,8 +31,13 @@
                             select.form-control(ng-model='currentQuestion', ng-options='question.title for question in manager.questions')
                                 option(value='') Choose Question
                         .form-group
-                            button.btn.btn-sm.btn-success(ng-disabled='currentQuestion == null', ng-click='manager.assignQuestion(currentQuestion._id)') Assign Question
-            div(ng-show='show_qr').text-center.interior
+                            button.btn.btn-sm.btn-success(ng-disabled='currentQuestion == null', ng-click='manager.assignQuestion(currentQuestion)') Assign Question
+            div(ng-if='manager.assignment != null').interior.text-center
+                //div.progress
+                    div.progress-bar.progress-bar-striped.active(style="width: 60%;") 60%
+                h1 {{manager.assignment.question.prompt}}
+                h3 Answer Due {{manager.assignment.remaining}}
+            div(ng-if='show_qr').text-center.interior
                 qrcode(data='{{manager.session.roomId}}', size='500')
                 p {{manager.session.roomId}}
     .col-md-3
