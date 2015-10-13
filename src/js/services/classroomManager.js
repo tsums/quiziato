@@ -1,4 +1,4 @@
-/**
+    /**
  * Trevor Summerfield
  * CS 490-001 Fall 2015
  * Quiz Project
@@ -84,23 +84,25 @@ app.factory('classroomManager', ['dashSocket', 'API', '$timeout', '$interval', f
 
     manager.assignQuestion = function(question) {
         dashSocket.emit('assignQuestion', question._id, function(data) {
+            console.log(data);
+
             manager.assignment = data;
             manager.assignment.question = question;
 
             var due = moment(manager.assignment.dueAt);
+            console.log('due: ' + due);
             manager.assignment.remaining = due.diff(moment(), 'seconds');
-            console.log(typeof(manager.assignment.remaining));
 
             var counter = $interval(function () {
                 manager.assignment.remaining = due.diff(moment(), 'seconds');
             }, 1000, manager.assignment.remaining);
 
+            console.log(manager.assignment.remaining);
             $timeout(function() {
-                console.log("ended");
+                console.log("timeout_ended");
                 $interval.cancel(counter);
                 manager.assignment = null;
             }, manager.assignment.remaining * 1000);
-
 
         });
     };

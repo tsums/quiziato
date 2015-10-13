@@ -31,7 +31,7 @@
                             select.form-control(ng-model='currentQuestion', ng-options='question.title for question in manager.questions')
                                 option(value='') Choose Question
                         .form-group
-                            button.btn.btn-sm.btn-success(ng-disabled='currentQuestion == null', ng-click='manager.assignQuestion(currentQuestion)') Assign Question
+                            button.btn.btn-sm.btn-success(ng-disabled='currentQuestion == null || manager.assignment != null', ng-click='manager.assignQuestion(currentQuestion)') Assign Question
             div(ng-if='manager.assignment != null').interior.text-center
                 //div.progress
                     div.progress-bar.progress-bar-striped.active(style="width: 60%;") 60%

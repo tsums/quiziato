@@ -10,8 +10,8 @@ var Schema = mongoose.Schema;
 
 var QuestionAssignment = new Schema({
     question: {type: Schema.Types.ObjectId, required: true},
-    assignedAt: {type: Date, required: true, default: Date.now()},
-    dueAt: {type: Date, required: true, default: moment().add(2, 'minutes').toDate()}
+    assignedAt: {type: Date, required: true},
+    dueAt: {type: Date, required: true}
 });
 
 var CourseSession = new Schema({

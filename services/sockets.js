@@ -12,6 +12,7 @@ var socketio = require('socket.io');
 var winston = require('winston').loggers.get('socket');
 var passportSocketIo = require("passport.socketio");
 var uuid = require('node-uuid');
+var moment = require('moment');
 
 var redis_session = require('./redis-session');
 var config = require('../config');
@@ -26,7 +27,7 @@ var listen = function (server) {
 
     var io = socketio.listen(server);
 
-    // Classroom Namespace is for mobile clients.
+    // Classroom Namespace is for mobile clien  ts.
     var classroom = io.of('/classroom');
 
     // Dashboard Namespace is for web clients.
@@ -204,7 +205,9 @@ var listen = function (server) {
                         classroom.in(room).emit('assignQuestion', question);
 
                         currentSession.assignments.push({
-                            question: question.id
+                            question: question.id,
+                            assignedAt: Date.now(),
+                            dueAt: moment().add(1, 'minutes').toDate()
                         });
 
                         currentSession.save(function(err) {
