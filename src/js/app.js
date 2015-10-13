@@ -27,6 +27,10 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
             templateUrl: '/partials/courseManager',
             controller: 'courseManagerController'
         })
+        .when('/sessions', {
+            templateUrl: '/partials/sessionManager',
+            controller: 'sessionManagerController'
+        })
         .otherwise({redirectTo: '/'});
 
     $locationProvider.html5Mode({

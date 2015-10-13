@@ -7,10 +7,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-//TODO Schema
 var AttendanceRecord = new Schema({
-    student: {type: ObjectId},
-    session: {type: ObjectId}
+    student: {type: Schema.Types.ObjectId, required: true},
+    session: {type: Schema.Types.ObjectId, required: true}
 });
+
+AttendanceRecord.index({ student: 1, session: -1 }, { unique: true });
 
 module.exports = mongoose.model('AttendanceRecord', AttendanceRecord);

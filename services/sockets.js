@@ -22,6 +22,7 @@ var User = require('../models/user');
 var Course = require('../models/course');
 var CourseSession = require('../models/course_session');
 var Question = require('../models/question');
+var AttendanceRecord = require('../models/attendanceRecord');
 
 var listen = function (server) {
 
@@ -110,12 +111,28 @@ var listen = function (server) {
                         return;
                     }
 
-                    room = session.roomId;
-                    winston.info(user.username + " submitted attendance for session: " + session._id);
-                    winston.info('current room: ' + room);
-                    socket.join(room);
-                    callback(session);
-                    dashboard.in(room).emit('studentJoined', user.name.full);
+                    // TODO this needs to be tested.
+                    AttendanceRecord.findOne({student: user.id, session: session.id}, function(err, record) {
+                        if (err) {
+                            winston.error(err);
+                        } else if(!record) {
+                            record = new AttendanceRecord({student: user.id, session: session.id});
+                            record.save(function(err) {
+                                if (err) {
+                                    winston.error(err);
+                                } else {
+                                    room = session.roomId;
+                                    winston.info(user.username + " submitted attendance for session: " + session._id);
+                                    winston.info('current room: ' + room);
+                                    socket.join(room);
+                                    callback(session);
+                                    dashboard.in(room).emit('studentJoined', user.name.full);
+                                }
+                            })
+                        }
+                    });
+
+
                 }
             });
 
@@ -201,21 +218,27 @@ var listen = function (server) {
                     winston.error(err);
                 } else {
                     if (question) {
-                        winston.info(user.username + " assigning Question " + question.id + " to room " + room);
-                        classroom.in(room).emit('assignQuestion', question);
 
-                        currentSession.assignments.push({
+                        winston.info(user.username + " assigning Question " + question.id + " to room " + room);
+
+
+                        var currentAssignment = {
                             question: question.id,
                             assignedAt: Date.now(),
                             dueAt: moment().add(1, 'minutes').toDate()
-                        });
+                        };
+
+                        currentSession.assignments.push(currentAssignment);
 
                         currentSession.save(function(err) {
                             if (err) {
                                 winston.error(err);
                             } else {
                                 // TODO hacky way of sending the last assignment, refactor?
+                                // TODO test.
                                 callback(currentSession.assignments[currentSession.assignments.length-1]);
+                                currentAssignment.question = question;
+                                classroom.in(room).emit('assignQuestion', currentAssignment);
                             }
                         });
 

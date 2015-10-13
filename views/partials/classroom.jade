@@ -43,4 +43,9 @@
     .col-md-3
         p.text-center Students Connected
         ul.list-group
-            li.list-group-item(ng-repeat="student in manager.students") {{student}}
+            li.list-group-item(ng-repeat="student in manager.students.connected") {{student}}
+            li.list-group-item.list-group-item-warning(ng-show="manager.students.connected.length == 0") No Students Connected
+        p.text-center Students Disconnected
+        ul.list-group
+            li.list-group-item(ng-repeat="student in manager.students.disconnected") {{student}}
+            li.list-group-item.list-group-item-success(ng-show="manager.students.disconnected.length == 0") No Students Disconnected
