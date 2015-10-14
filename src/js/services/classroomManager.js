@@ -55,7 +55,7 @@ app.factory('classroomManager', ['dashSocket', 'API', '$timeout', '$interval', f
             data.course = course;
             manager.inSession = true;
             manager.session = data;
-            API.getSessions();
+            API.getActiveSessions();
             API.getQuestionsForCourse(course._id, function(questions) {
                 manager.questions = questions;
             });

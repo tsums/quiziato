@@ -15,6 +15,9 @@ var User = new Schema({
         first: {type: String, required: true},
         last: {type: String, required: true}
     }
+}, {
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true }
 });
 
 User.virtual('name.full').get(function() {

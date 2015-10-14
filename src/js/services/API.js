@@ -31,7 +31,7 @@ app.factory('API', ['$http', function($http) {
         });
     };
 
-    API.getSessions = function() {
+    API.getActiveSessions = function() {
         $http.get('/web/api/session/active').then(function(response) {
             API.sessions = response.data;
         }, function(error) {
@@ -39,9 +39,25 @@ app.factory('API', ['$http', function($http) {
         });
     };
 
+    API.getPastSessionsForCourse = function(courseId, callback) {
+        $http.get('/web/api/session/ended/course/' + courseId).then(function(response) {
+            callback(response.data);
+        }, function(error) {
+            console.log(error);
+        });
+    };
+
+    API.getSession = function (sessionId, callback) {
+        $http.get('/web/api/session/' + sessionId).then(function(response) {
+            callback(response.data);
+        }, function(error) {
+            console.log(error);
+        });
+    };
+
     API.endSession = function(id) {
         $http.post('/web/api/session/' + id + '/end', null).then(function(response) {
-            API.getSessions();
+            API.getActiveSessions();
         }, function (error) {
             console.log(error);
         })
@@ -64,7 +80,7 @@ app.factory('API', ['$http', function($http) {
     };
 
     API.getCourses();
-    API.getSessions();
+    API.getActiveSessions();
 
     return API;
 
