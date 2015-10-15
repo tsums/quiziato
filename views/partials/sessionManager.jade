@@ -4,10 +4,10 @@ div.well
         select.form-control(required='', ng-model='currentCourse', ng-options='course.title for course in API.courses')
             option(value='') Select Course
 
-div.well(ng-hide='currentCourse == null')
+div.well
     form-group.form-group
         select.form-control(ng-model='currentSession', ng-options='session as getLabel(session) for session in sessions | orderBy: "-date"')
             option(value='') Choose Session
 
-div(ng-hide="currentSession == null", ng-repeat='record in sessionDetail.attendace | orderBy: "record.student.name.last"')
+div(ng-repeat='record in sessionDetail.attendace | orderBy: "record.student.name.last"')
     p {{record.student.name.last}}, {{record.student.name.first}}
