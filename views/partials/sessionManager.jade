@@ -4,7 +4,7 @@ div.well
         select.form-control(required='', ng-model='currentCourse', ng-options='course.title for course in API.courses')
             option(value='') Select Course
 
-div.well(ng-hide='currentSession == null')
+div.well(ng-hide='currentCourse == null')
     form-group.form-group
         select.form-control(ng-model='currentSession', ng-options='session as getLabel(session) for session in sessions | orderBy: "-date"')
             option(value='') Choose Session
