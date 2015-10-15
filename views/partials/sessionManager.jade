@@ -9,5 +9,5 @@ div.well
         select.form-control(ng-model='currentSession', ng-options='session as getLabel(session) for session in sessions | orderBy: "-date"')
             option(value='') Choose Session
 
-div(ng-repeat='record in sessionDetail.attendace')
-    p {{record.student.name.full}}
+div(ng-repeat='record in sessionDetail.attendance | orderBy: "record.student.name.last"')
+    p {{record.student.name.last}}, {{record.student.name.first}}
