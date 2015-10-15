@@ -116,7 +116,7 @@ var listen = function (server) {
                         if (err) {
                             winston.error(err);
                         } else if(!record) {
-                            record = new AttendanceRecord({student: user.id, session: session.id});
+                            record = new AttendanceRecord({student: user.id, session: session.id, time: Date.now()});
                             record.save(function(err) {
                                 if (err) {
                                     winston.error(err);
