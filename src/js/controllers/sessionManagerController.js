@@ -23,7 +23,7 @@ app.controller('sessionManagerController', ['$scope', '$filter', 'API', function
         console.log(newVal);
         if (newVal) {
             API.getSession(newVal._id, function(data) {
-                console.log(data);
+                $scope.sessionDetail = data;
             })
         }
     });
