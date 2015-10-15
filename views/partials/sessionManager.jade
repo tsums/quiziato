@@ -11,4 +11,4 @@ div.well
 
 .now(ng-repeat='record in sessionDetail.attendance | orderBy: "record.student.name.last"')
     p.col-md-4 {{record.student.name.last}}, {{record.student.name.first}}
-    p.col-md-4 {{record.time | date "MM/dd h:mm a"}}
+    p.col-md-4 {{record.time | date: "MM/dd h:mm a"}}
