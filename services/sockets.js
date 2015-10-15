@@ -238,6 +238,7 @@ var listen = function (server) {
                                 // TODO test.
                                 callback(currentSession.assignments[currentSession.assignments.length-1]);
                                 currentAssignment.question = question;
+                                winston.info("Sending Question to Room: " + currentAssignment.question.id);
                                 classroom.in(room).emit('assignQuestion', currentAssignment);
                             }
                         });
