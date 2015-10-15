@@ -105,35 +105,34 @@ var listen = function (server) {
             CourseSession.findOne({roomId: data}).populate('course').exec(function (err, session) {
                 if (err) {
                     winston.error(err.message);
+                } else if (!session) {
+                    winston.info('Session not found with Room ID: ' + data);
                 } else {
-                    if (!session) {
-                        winston.info('Session not found with Room ID: ' + data);
-                        return;
-                    }
 
-                    // TODO this needs to be tested.
                     AttendanceRecord.findOne({student: user.id, session: session.id}, function(err, record) {
                         if (err) {
                             winston.error(err);
                         } else if(!record) {
-                            record = new AttendanceRecord({student: user.id, session: session.id, time: Date.now()});
+                            record = new AttendanceRecord({
+                                student: user.id,
+                                session: session.id,
+                                time: Date.now()
+                            });
                             record.save(function(err) {
                                 if (err) {
                                     winston.error(err);
-                                } else {
-                                    room = session.roomId;
-                                    winston.info(user.username + " submitted attendance for session: " + session._id);
-                                    winston.info('current room: ' + room);
-                                    socket.join(room);
-                                    callback(session);
-                                    dashboard.in(room).emit('studentJoined', user.name.full);
-                                    // TODO refactor this to emit events even if rejoin to session,
-                                    // TODO this should send the full list w/ connection status.
                                 }
                             })
                         }
                     });
 
+                    winston.info(user.username + " submitted attendance for session: " + session._id);
+
+                    room = session.roomId;
+                    socket.join(room);
+                    callback(session);
+
+                    dashboard.in(room).emit('studentJoined', user.name.full);
 
                 }
             });
