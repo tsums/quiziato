@@ -127,6 +127,8 @@ var listen = function (server) {
                                     socket.join(room);
                                     callback(session);
                                     dashboard.in(room).emit('studentJoined', user.name.full);
+                                    // TODO refactor this to emit events even if rejoin to session,
+                                    // TODO this should send the full list w/ connection status.
                                 }
                             })
                         }
