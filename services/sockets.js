@@ -34,14 +34,14 @@ var listen = function (server) {
     // Dashboard Namespace is for web clients.
     var dashboard = io.of('/dashboard');
 
-    var sendStudentConnectionUpdate = function(sessionId) {
-        AttendanceRecord.find({session: sessionId}).populate('student').exec(function(err, records) {
+    var sendStudentConnectionUpdate = function(session) {
+        AttendanceRecord.find({session: session.id}).populate('student').exec(function(err, records) {
             if (err) {
                 winston.error(err);
                 return;
             }
 
-            dashboard.emit('students', records);
+            dashboard.in(session.roomId).emit('students', records);
         });
     };
 
@@ -126,21 +126,26 @@ var listen = function (server) {
                     AttendanceRecord.findOne({student: user.id, session: session.id}, function(err, record) {
                         if (err) {
                             winston.error(err);
-                        } else if(!record) {
+                            return;
+                        }
+
+                        if(!record) {
                             record = new AttendanceRecord({
                                 student: user.id,
                                 session: session.id,
                                 time: Date.now(),
                                 connected: true
                             });
-                            record.save(function(err) {
-                                if (err) {
-                                    winston.error(err);
-                                } else {
-                                    sendStudentConnectionUpdate(currentSession.id); //TODO test
-                                }
-                            })
+                        } else {
+                            record.connected = true;
                         }
+                        record.save(function(err) {
+                            if (err) {
+                                winston.error(err);
+                            } else {
+                                sendStudentConnectionUpdate(currentSession);
+                            }
+                        });
                     });
 
                     winston.info(user.username + " submitted attendance for session: " + session._id);
@@ -167,7 +172,7 @@ var listen = function (server) {
                             if (err) {
                                 winston.error(err);
                             } else {
-                                sendStudentConnectionUpdate(currentSession.id); //TODO test
+                                sendStudentConnectionUpdate(currentSession);
                             }
                         })
                     }
@@ -237,7 +242,7 @@ var listen = function (server) {
                     socket.join(room);
                     currentSession = session;
                     callback(session);
-                    // TODO student connection update
+                    sendStudentConnectionUpdate(currentSession);
                     winston.info('Instructor ' + user.username + ' Re-Joined Session: ' + session.id);
                 }
             });
