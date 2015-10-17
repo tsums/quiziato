@@ -110,6 +110,14 @@ var listen = function (server) {
 
         winston.info(user.username + ' connected to namespace \'/classroom\'');
 
+        socket.on('statusCheck', function(data, callback) {
+            var status = {
+                inSession: currentSession != null,
+                session: currentSession
+            };
+            callback(status);
+        });
+
         socket.on('attendance', function(data, callback) {
 
             winston.info(user.username + ' sent attendance token: ' + data);
