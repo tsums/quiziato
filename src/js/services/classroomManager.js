@@ -11,21 +11,6 @@ app.factory('classroomManager', ['dashSocket', 'API', '$timeout', '$interval', f
 
     var manager = {};
 
-    //// Add student to list when they join the room
-    //dashSocket.on('studentJoined', function(data) {
-    //    manager.students.connected.push(data);
-    //    console.log("studentJoined: " + data)
-    //});
-    //
-    //// remove student from list when they leave the room.
-    //dashSocket.on('studentLeft', function(data) {
-    //    var i = manager.students.connected.indexOf(data);
-    //    console.log("studentLeft: " + data);
-    //    if (i > -1) {
-    //        manager.students.connected.splice(i, 1);
-    //    }
-    //});
-
     // when we get a new students lisrt, replace it.
     dashSocket.on('students', function(data) {
         console.log(data);
@@ -38,10 +23,7 @@ app.factory('classroomManager', ['dashSocket', 'API', '$timeout', '$interval', f
     });
 
     manager.reset = function() {
-        manager.students = {
-            connected: [],
-            disconnected: []
-        };
+        manager.attendanceRecords = [];
         manager.questions = [];
         manager.inSession = false;
         manager.assignment = null;
