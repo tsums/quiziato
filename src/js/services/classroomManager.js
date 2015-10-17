@@ -28,6 +28,7 @@ app.factory('classroomManager', ['dashSocket', 'API', '$timeout', '$interval', f
 
     // when we get a new students lisrt, replace it.
     dashSocket.on('students', function(data) {
+        console.log(data);
         manager.attendanceRecords = data;
     });
 
