@@ -34,6 +34,17 @@ var listen = function (server) {
     // Dashboard Namespace is for web clients.
     var dashboard = io.of('/dashboard');
 
+    var sendStudentConnectionUpdate = function(sessionId) {
+        AttendanceRecord.find({session: sessionId}).populate('student').exec(function(err, records) {
+            if (err) {
+                winston.error(err);
+                return;
+            }
+
+            dashboard.emit('students', records);
+        });
+    };
+
     // Token-Based Authentication for Mobile Clients
     classroom.use(function(socket,next) {
 
@@ -94,6 +105,7 @@ var listen = function (server) {
     classroom.on('connection', function (socket) {
 
         var room = null;
+        var currentSession = null;
         var user = socket.request.user;
 
         winston.info(user.username + ' connected to namespace \'/classroom\'');
@@ -109,6 +121,8 @@ var listen = function (server) {
                     winston.info('Session not found with Room ID: ' + data);
                 } else {
 
+                    currentSession = session;
+
                     AttendanceRecord.findOne({student: user.id, session: session.id}, function(err, record) {
                         if (err) {
                             winston.error(err);
@@ -116,11 +130,14 @@ var listen = function (server) {
                             record = new AttendanceRecord({
                                 student: user.id,
                                 session: session.id,
-                                time: Date.now()
+                                time: Date.now(),
+                                connected: true
                             });
                             record.save(function(err) {
                                 if (err) {
                                     winston.error(err);
+                                } else {
+                                    sendStudentConnectionUpdate(currentSession.id); //TODO test
                                 }
                             })
                         }
@@ -131,9 +148,6 @@ var listen = function (server) {
                     room = session.roomId;
                     socket.join(room);
                     callback(session);
-
-                    dashboard.in(room).emit('studentJoined', user.name.full);
-
                 }
             });
 
@@ -142,8 +156,25 @@ var listen = function (server) {
 
         socket.on('disconnect', function(data) {
             winston.info(user.username + 'disconnected from \'/classroom\'');
-            dashboard.in(room).emit('studentLeft', socket.request.user.name.full);
-        })
+
+            if (currentSession != null) {
+                AttendanceRecord.findOne({student: user.id, session: currentSession.id}, function(err, record) {
+                    if (err) {
+                        winston.error(err);
+                    } else if (record) {
+                        record.connected = false;
+                        record.save(function(err) {
+                            if (err) {
+                                winston.error(err);
+                            } else {
+                                sendStudentConnectionUpdate(currentSession.id); //TODO test
+                            }
+                        })
+                    }
+
+                });
+            }
+        });
 
     });
 
@@ -206,6 +237,7 @@ var listen = function (server) {
                     socket.join(room);
                     currentSession = session;
                     callback(session);
+                    // TODO student connection update
                     winston.info('Instructor ' + user.username + ' Re-Joined Session: ' + session.id);
                 }
             });
@@ -235,8 +267,6 @@ var listen = function (server) {
                             if (err) {
                                 winston.error(err);
                             } else {
-                                // TODO hacky way of sending the last assignment, refactor?
-                                // TODO test.
                                 callback(currentSession.assignments[currentSession.assignments.length-1]);
                                 currentAssignment.question = question;
                                 winston.info("Sending Question to Room: " + currentAssignment.question.id);
