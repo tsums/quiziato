@@ -4,6 +4,9 @@
  * Quiz Project
  */
 
+/*
+    Angular API Connector Service
+ */
 
 var app = angular.module('dashboard');
 

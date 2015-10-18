@@ -1,9 +1,12 @@
-    /**
+/**
  * Trevor Summerfield
  * CS 490-001 Fall 2015
  * Quiz Project
  */
 
+/*
+    Classroom Manager Service. Keeps control of socket connections.
+ */
 
 var app = angular.module('dashboard');
 
