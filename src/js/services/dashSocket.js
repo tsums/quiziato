@@ -4,6 +4,10 @@
  * Quiz Project
  */
 
+/*
+    Angular Socket wrapper for socket.io
+ */
+
 
 var app = angular.module('dashboard');
 

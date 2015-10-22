@@ -1,5 +1,11 @@
 /**
- * Created by trevor on 9/27/15.
+ * Trevor Summerfield
+ * CS 490-001 Fall 2015
+ * Quiz Project
+ */
+
+/*
+    Global Config Variables
  */
 
 module.exports = {
