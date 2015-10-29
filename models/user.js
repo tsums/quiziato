@@ -10,7 +10,7 @@ var Schema = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose');
 
 var User = new Schema({
-    role: {type: String},
+    role: {type: String, required: true},
     name: {
         first: {type: String, required: true},
         last: {type: String, required: true}

@@ -20,7 +20,7 @@ var config = require('../config');
 var AccessToken = require('../models/accessToken');
 var User = require('../models/user');
 var Course = require('../models/course');
-var CourseSession = require('../models/course_session');
+var CourseSession = require('../models/courseSession');
 var Question = require('../models/question');
 var AttendanceRecord = require('../models/attendanceRecord');
 

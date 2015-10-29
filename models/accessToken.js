@@ -4,6 +4,9 @@
  * Quiz Project
  */
 
+/*
+    OAuth2 Access Token Schema
+ */
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;

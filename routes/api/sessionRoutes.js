@@ -5,7 +5,7 @@
  */
 
 var Question = require('../../models/question');
-var CourseSession = require('../../models/course_session');
+var CourseSession = require('../../models/courseSession');
 var AttendanceRecord = require('../../models/attendanceRecord');
 var router = require('express').Router();
 var winston = require('winston').loggers.get('api');

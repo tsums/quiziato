@@ -7,7 +7,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-//TODO Schema
 var Course = new Schema({
     title : {type: String, required: true},
     instructor: {type: Schema.Types.ObjectId, required: true}
