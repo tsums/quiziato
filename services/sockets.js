@@ -22,6 +22,7 @@ var User = require('../models/user');
 var Course = require('../models/course');
 var CourseSession = require('../models/courseSession');
 var Question = require('../models/question');
+var QuestionAssignment = require('../models/questionAssignment');
 var AttendanceRecord = require('../models/attendanceRecord');
 
 var listen = function (server) {
@@ -265,27 +266,35 @@ var listen = function (server) {
                 } else {
                     if (question) {
 
+                        // TODO this needs to change to support the new reference model.
                         winston.info(user.username + " assigning Question " + question.id + " to room " + room);
 
-
-                        var currentAssignment = {
+                        var currentAssignment = new QuestionAssignment({
                             question: question.id,
                             assignedAt: Date.now(),
-                            dueAt: moment().add(1, 'minutes').toDate()
-                        };
+                            dueAt: moment().add(1, 'minutes').toDate() // TODO configurable time length.
+                        });
 
-                        currentSession.assignments.push(currentAssignment);
-
-                        currentSession.save(function(err) {
+                        currentAssignment.save(function(err) {
                             if (err) {
+                                winston.error('error saving current assignment');
                                 winston.error(err);
                             } else {
-                                callback(currentSession.assignments[currentSession.assignments.length-1]);
-                                currentAssignment.question = question;
-                                winston.info("Sending Question to Room: " + currentAssignment.question.id);
-                                classroom.in(room).emit('assignQuestion', currentAssignment);
+                                currentSession.assignments.push(currentAssignment.id);
+                                currentSession.save(function(err) {
+                                    if (err) {
+                                        winston.error(err);
+                                    } else {
+                                        callback(currentAssignment); //TODO check on what this is sending back.
+                                        currentAssignment.question = question;
+                                        winston.info("Sending Question to Room: " + currentAssignment.question.id);
+                                        classroom.in(room).emit('assignQuestion', currentAssignment);
+                                    }
+                                });
                             }
                         });
+
+
 
                     }
                 }

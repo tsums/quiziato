@@ -24,7 +24,11 @@ router.route('/')
 
     .post(function (req, res) {
         var question = new Question(req.body);
+
+        //TODO switch on question mode.
+
         question.author = req.user.id;
+        question.type = "MC"; //TODO send question type from dashboard.
         question.save(function(err) {
             if (err) {
                 winston.error(err);

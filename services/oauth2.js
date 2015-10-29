@@ -56,7 +56,7 @@ passport.use(new BearerStrategy(
                     return done(null, false);
                 }
 
-                var info = { scope: '*' }; //TODO possibly consider including scopes.
+                var info = { scope: '*' };
                 done(null, user, info);
             })
 
