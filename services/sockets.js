@@ -193,6 +193,16 @@ var listen = function (server) {
 
         });
 
+        socket.on('answer', function(data, callback) {
+
+            console.log(data);
+            // TODO process answer received
+                // TODO check if answer already submitted
+                // TODO make new answer object, associate with assignment, and save.
+                // TODO make sure assignment being answered is still accepting answers.
+
+        });
+
         socket.on('disconnect', function(data) {
             winston.info(user.username + 'disconnected from \'/classroom\'');
 
