@@ -14,15 +14,31 @@ app.factory('classroomManager', ['dashSocket', 'API', '$timeout', '$interval', f
 
     var manager = {};
 
-    // when we get a new students lisrt, replace it.
+    // when we get a new students lis  t, replace it.
     dashSocket.on('students', function(data) {
-        console.log(data);
         manager.attendanceRecords = data;
     });
 
     // Temporary Logger for Random Data.
     dashSocket.on('testEvent', function(data) {
         console.log(data);
+    });
+
+    dashSocket.on('currentAssignment', function(data) {
+        manager.assignment = data;
+
+        var due = moment(manager.assignment.dueAt);
+        manager.assignment.remaining = due.diff(moment(), 'seconds');
+
+        var counter = $interval(function () {
+            manager.assignment.remaining = due.diff(moment(), 'seconds');
+        }, 1000, manager.assignment.remaining);
+
+        $timeout(function() {
+            $interval.cancel(counter);
+            manager.assignment = null;
+        }, manager.assignment.remaining * 1000);
+
     });
 
     manager.reset = function() {
@@ -67,22 +83,17 @@ app.factory('classroomManager', ['dashSocket', 'API', '$timeout', '$interval', f
 
     manager.assignQuestion = function(question) {
         dashSocket.emit('assignQuestion', question._id, function(data) {
-            console.log(data);
-
             manager.assignment = data;
             manager.assignment.question = question;
 
             var due = moment(manager.assignment.dueAt);
-            console.log('due: ' + due);
             manager.assignment.remaining = due.diff(moment(), 'seconds');
 
             var counter = $interval(function () {
                 manager.assignment.remaining = due.diff(moment(), 'seconds');
             }, 1000, manager.assignment.remaining);
 
-            console.log(manager.assignment.remaining);
             $timeout(function() {
-                console.log("timeout_ended");
                 $interval.cancel(counter);
                 manager.assignment = null;
             }, manager.assignment.remaining * 1000);

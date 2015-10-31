@@ -46,6 +46,26 @@ var listen = function (server) {
         });
     };
 
+    var sendCurrentAssignmentToDashboard = function(session) {
+
+        QuestionAssignment.findOne(session.assignments[session.assignments.length - 1]).populate('question').exec(function(err, assignment) {
+
+            if (err) {
+                winston.error(err);
+                return;
+            }
+
+            if (assignment) {
+
+                if (assignment.dueAt > Date.now()) {
+                    dashboard.in(session.roomId).emit('currentAssignment', assignment);
+                }
+            }
+
+        });
+
+    };
+
     // Token-Based Authentication for Mobile Clients
     classroom.use(function(socket,next) {
 
@@ -123,7 +143,7 @@ var listen = function (server) {
 
             winston.info(user.username + ' sent attendance token: ' + data);
 
-            CourseSession.findOne({roomId: data}).populate('course instructor').exec(function (err, session) {
+            CourseSession.findOne({roomId: data}).populate('course instructor assignments').exec(function (err, session) {
                 if (err) {
                     winston.error(err.message);
                 } else if (!session) {
@@ -132,36 +152,41 @@ var listen = function (server) {
 
                     currentSession = session;
 
-                    AttendanceRecord.findOne({student: user.id, session: session.id}, function(err, record) {
-                        if (err) {
-                            winston.error(err);
-                            return;
-                        }
+                    // TODO test this, iOS should be able to use this data to figure out if there is an assignment pending.
+                    CourseSession.populate(session, {path: 'assignments.question', model: 'Question'}).then(function() {
 
-                        if(!record) {
-                            record = new AttendanceRecord({
-                                student: user.id,
-                                session: session.id,
-                                time: Date.now(),
-                                connected: true
-                            });
-                        } else {
-                            record.connected = true;
-                        }
-                        record.save(function(err) {
+                        AttendanceRecord.findOne({student: user.id, session: session.id}, function (err, record) {
                             if (err) {
                                 winston.error(err);
-                            } else {
-                                sendStudentConnectionUpdate(currentSession);
+                                return;
                             }
+
+                            if (!record) {
+                                record = new AttendanceRecord({
+                                    student: user.id,
+                                    session: session.id,
+                                    time: Date.now(),
+                                    connected: true
+                                });
+                            } else {
+                                record.connected = true;
+                            }
+                            record.save(function (err) {
+                                if (err) {
+                                    winston.error(err);
+                                } else {
+                                    sendStudentConnectionUpdate(currentSession);
+                                }
+                            });
                         });
+
+                        winston.info(user.username + " submitted attendance for session: " + session._id);
+
+                        room = session.roomId;
+                        socket.join(room);
+                        callback(session);
+
                     });
-
-                    winston.info(user.username + " submitted attendance for session: " + session._id);
-
-                    room = session.roomId;
-                    socket.join(room);
-                    callback(session);
                 }
             });
 
@@ -252,6 +277,7 @@ var listen = function (server) {
                     currentSession = session;
                     callback(session);
                     sendStudentConnectionUpdate(currentSession);
+                    sendCurrentAssignmentToDashboard(currentSession);
                     winston.info('Instructor ' + user.username + ' Re-Joined Session: ' + session.id);
                 }
             });
