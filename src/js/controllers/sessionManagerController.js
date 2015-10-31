@@ -14,16 +14,16 @@ app.controller('sessionManagerController', ['$scope', '$filter', 'API', function
         if (newVal) {
             API.getPastSessionsForCourse(newVal._id, function(data) {
                 $scope.sessions = data;
-                console.log(data);
             })
         }
     });
 
     $scope.$watch('currentSession', function (newVal, oldVal) {
-        console.log(newVal);
         if (newVal) {
+            console.log("Current Session Changed: " + newVal._id);
             API.getSession(newVal._id, function(data) {
                 $scope.sessionDetail = data;
+                console.log(data);
             })
         }
     });
