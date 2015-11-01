@@ -24,6 +24,7 @@ var CourseSession = require('../models/courseSession');
 var Question = require('../models/question');
 var QuestionAssignment = require('../models/questionAssignment');
 var AttendanceRecord = require('../models/attendanceRecord');
+var AssignmentAnswer = require('../models/assignmentAnswer');
 
 var listen = function (server) {
 
@@ -193,13 +194,47 @@ var listen = function (server) {
 
         });
 
-        socket.on('answer', function(data, callback) {
+        socket.on('submitAnswer', function(data, callback) {
 
             console.log(data);
+
+            var optionId = data.optionId;
+            var assignmentId = data.assignmentId;
+
             // TODO process answer received
-                // TODO check if answer already submitted
-                // TODO make new answer object, associate with assignment, and save.
-                // TODO make sure assignment being answered is still accepting answers.
+            QuestionAssignment.findById(assignmentId).populate('question').exec(function (err, assignment) {
+                if (err) {
+                    winston.error(err);
+                    callback({err: err});
+                    return;
+                }
+
+                if (assignment) {
+                    // TODO check if answer already submitted=
+
+                    // TODO make sure assignment being answered is still accepting answers.
+                    if (assignment.dueAt < Date.now()) {
+                        // TODO make new answer object, associate with assignment, and save.
+                        var answer = new AssignmentAnswer({
+                            assignment: assignmentId,
+                            submission: optionId,
+                            submittedAt: Date.now(),
+                            correct: (optionId == assignment.question.correctOption)
+                        });
+
+                        answer.save(function(err) {
+                            if (err) {
+                                winston.error(err);
+                                return;
+                            }
+
+                            callback({success: true})
+                        })
+                    }
+                }
+
+            });
+
 
         });
 
