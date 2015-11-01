@@ -213,7 +213,7 @@ var listen = function (server) {
                     // TODO check if answer already submitted=
 
                     // TODO make sure assignment being answered is still accepting answers.
-                    if (assignment.dueAt < Date.now()) {
+                    if (assignment.dueAt > Date.now()) {
                         // TODO make new answer object, associate with assignment, and save.
                         var answer = new AssignmentAnswer({
                             assignment: assignmentId,
@@ -230,7 +230,11 @@ var listen = function (server) {
 
                             callback({success: true})
                         })
+                    } else {
+                        winston.info('answer submitted after due time');
                     }
+                } else {
+                    winston.info('could not find assignment: ' + assignmentId)
                 }
 
             });

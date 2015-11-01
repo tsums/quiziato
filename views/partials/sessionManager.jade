@@ -42,6 +42,6 @@ div(ng-show="sessionDetail == null")
             p.col-md-3 {{ assignment.question.prompt }}
             p.col-md-3 {{assignment.assignedAt | date: "MM/dd h:mm a"}}
             p.col-md-3 {{assignment.dueAt | date: "MM/dd h:mm a"}}
-            a.col-md-3(href='#') Responses
+            a.col-md-3(ng-click='openAssignment(assignment)') Responses
 
 
