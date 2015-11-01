@@ -24,6 +24,10 @@ app.controller('assignmentController', ['$scope', '$filter', '$routeParams', '$l
 
     $scope.API = API;
 
+    $scope.returntoSession = function() {
+        $location.path('/sessions/' + $scope.session._id);
+    };
+
     $scope.getLabel = function(session) {
         return $filter('date')(session.date, "MM/dd h:mm a") + " : " + session.instructor.name.full;
     };

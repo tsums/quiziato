@@ -3,4 +3,15 @@
    CS 490-001 Fall 2015
    Quiz Project
 
-h2 I AM ASSIGNMENT MANAGER
+h5
+    a(ng-click='returntoSession()', href='#') ← {{getFullLabel(session)}}
+.row
+    h6.col-md-4 Assignment Details: {{assignment.question.prompt}}
+    h6.col-md-4 Assigned At: {{assignment.assignedAt | date: "MM/dd h:mm a"}}
+    h6.col-md-4 Due At: {{assignment.dueAt | date: "MM/dd h:mm a"}}
+
+p Responses
+.row(ng-repeat='answer in answers')
+    h6 {{answer}}
+
+
