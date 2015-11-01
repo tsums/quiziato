@@ -9,7 +9,7 @@ var Schema = mongoose.Schema;
 
 var AttendanceRecord = new Schema({
     student: {type: Schema.Types.ObjectId, required: true, ref: 'User'},
-    session: {type: Schema.Types.ObjectId, required: true, ref: 'Session'},
+    session: {type: Schema.Types.ObjectId, required: true, ref: 'CourseSession'},
     time: {type: Date, required: true},
     connected: {type: Boolean, required: true, default:false}
 });
