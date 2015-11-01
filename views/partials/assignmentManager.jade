@@ -3,23 +3,25 @@
    CS 490-001 Fall 2015
    Quiz Project
 
-h5
-    a(ng-click='returntoSession()', href='#') ← {{getFullLabel(session)}}
-.row
-    h6.col-md-4 Assignment Details: {{assignment.question.prompt}}
-    h6.col-md-4 Assigned At: {{assignment.assignedAt | date: "MM/dd h:mm a"}}
-    h6.col-md-4 Due At: {{assignment.dueAt | date: "MM/dd h:mm a"}}
+div(ng-if='session != null')
 
-p Responses
-.row
-    h6.col-md-3 Student
-    h6.col-md-3 Submitted At
-    h6.col-md-3 Response
-    h6.col-md-3 Correct?
-.row(ng-repeat='answer in assignment.answers')
-    p.col-md-3 {{answer.student.name.full}}
-    p.col-md-3 {{answer.submittedAt | date: "MM/dd h:mm a"}}
-    p.col-md-3 {{answer.submission}}
-    p.col-md-3 {{answer.correct}}
+    h5
+        a(ng-click='returntoSession()', href='#') ← {{getFullLabel(session)}}
+    .row
+        h6.col-md-4 Assignment Details: {{assignment.question.prompt}}
+        h6.col-md-4 Assigned At: {{assignment.assignedAt | date: "MM/dd h:mm a"}}
+        h6.col-md-4 Due At: {{assignment.dueAt | date: "MM/dd h:mm a"}}
+
+    p Responses
+    .row
+        h6.col-md-3 Student
+        h6.col-md-3 Submitted At
+        h6.col-md-3 Response
+        h6.col-md-3 Correct?
+    .row(ng-repeat='answer in assignment.answers')
+        p.col-md-3 {{answer.student.name.full}}
+        p.col-md-3 {{answer.submittedAt | date: "MM/dd h:mm a"}}
+        p.col-md-3 {{answer.submission}}
+        p.col-md-3 {{answer.correct}}
 
 

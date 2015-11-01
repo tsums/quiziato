@@ -31,6 +31,7 @@ div(ng-show="sessionDetail == null")
         .now(ng-repeat='record in sessionDetail.attendance | orderBy: "record.student.name.last"')
             p.col-md-6 {{record.student.name.last}}, {{record.student.name.first}}
             p.col-md-6 {{record.time | date: "MM/dd h:mm a"}}
+        p(ng-show='!sessionDetail.attendance.length') No students in attendance
     .col-md-7
         h5 Assignments
         .row
@@ -43,5 +44,6 @@ div(ng-show="sessionDetail == null")
             p.col-md-3 {{assignment.assignedAt | date: "MM/dd h:mm a"}}
             p.col-md-3 {{assignment.dueAt | date: "MM/dd h:mm a"}}
             a.col-md-3(ng-click='openAssignment(assignment)', href='#') Responses
+        p(ng-show='!sessionDetail.assignments.length') No questions assigned
 
 
