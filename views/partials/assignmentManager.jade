@@ -16,7 +16,7 @@ p Responses
     h6.col-md-3 Submitted At
     h6.col-md-3 Response
     h6.col-md-3 Correct?
-.row(ng-repeat='answer in answers')
+.row(ng-repeat='answer in assignment.answers')
     p.col-md-3 {{answer.student.name.full}}
     p.col-md-3 {{answer.submittedAt | date: "MM/dd h:mm a"}}
     p.col-md-3 {{answer.submission}}
