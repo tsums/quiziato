@@ -37,9 +37,12 @@ router.route('/me/sessions')
             }
 
             if (records) {
-                records = records.filter(function(value) {
-                    return value.session.ended == false;
-                });
+
+                if (req.query.active) {
+                    records = records.filter(function(value) {
+                        return value.session.ended == false;
+                    });
+                }
 
                 res.send(records);
             }
