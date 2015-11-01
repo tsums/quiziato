@@ -52,4 +52,12 @@ router.route('/me/sessions')
 
     });
 
+router.route('/me/grades')
+
+    .get(function (req, res) {
+        // TODO this.
+        res.send('Not Yet Implemented!');
+    });
+
+
 module.exports = router;

@@ -14,6 +14,8 @@ app.controller('classroomController', ['$scope', '$routeParams', '$controller', 
 
     $scope.show_qr = true;
 
+    $scope.timeInput = 1;
+
     $scope.toggleQR = function() {
         $scope.show_qr = !$scope.show_qr;
     }

@@ -296,7 +296,7 @@ var listen = function (server) {
 
         socket.on('assignQuestion', function(data, callback) {
 
-            Question.findById(data, function(err, question) {
+            Question.findById(data.question, function(err, question) {
                 if (err) {
                     winston.error(err);
                 } else {
@@ -308,7 +308,7 @@ var listen = function (server) {
                         var currentAssignment = new QuestionAssignment({
                             question: question.id,
                             assignedAt: Date.now(),
-                            dueAt: moment().add(1, 'minutes').toDate() // TODO configurable time length.
+                            dueAt: moment().add(parseInt(data.time), 'minutes').toDate() // TODO configurable time length.
                         });
 
                         currentAssignment.save(function(err) {

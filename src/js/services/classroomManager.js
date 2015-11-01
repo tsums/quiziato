@@ -81,8 +81,9 @@ app.factory('classroomManager', ['dashSocket', 'API', '$timeout', '$interval', f
         manager.reset();
     };
 
-    manager.assignQuestion = function(question) {
-        dashSocket.emit('assignQuestion', question._id, function(data) {
+    manager.assignQuestion = function(question, time) {
+        console.log(time);
+        dashSocket.emit('assignQuestion', {question: question._id, time: time}, function(data) {
             manager.assignment = data;
             manager.assignment.question = question;
 

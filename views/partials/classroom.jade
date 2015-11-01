@@ -28,17 +28,19 @@
         div(ng-if='manager.inSession')
             p.lead.text-center {{manager.session.course.title}} Started At: {{manager.session.date | date : "MM/dd h:mm a"}}
             .row
-                div.col-md-6
+                div.col-md-4
                     div.btn-toolbar.pagination-centered
                         button.btn.btn-sm.btn-danger(type='button', ng-click='manager.leaveSession()') Leave Session
                         button.btn.btn-sm.btn-warning(type='button', ng-click='toggleQR()') Show QR Code
-                div.col-md-6
-                    form.form-inline
+                div.col-md-8
+                    form.form-inline(name='assignQuestionForm')
+                        .form-group
+                            input.form-control(type='text', size='4', ng-model='timeInput', ng-pattern='/^[1-9][0-9]*$/', required='')
                         .form-group
                             select.form-control(ng-model='currentQuestion', ng-options='question.title for question in manager.questions')
                                 option(value='') Choose Question
                         .form-group
-                            button.btn.btn-sm.btn-success(ng-disabled='currentQuestion == null || manager.assignment != null', ng-click='manager.assignQuestion(currentQuestion)') Assign Question
+                            button.btn.btn-sm.btn-success(ng-disabled='currentQuestion == null || manager.assignment != null || assignQuestionForm.$invalid', ng-click='manager.assignQuestion(currentQuestion, timeInput)') Assign Question
             div(ng-if='manager.assignment != null').interior.text-center
                 //div.progress
                     div.progress-bar.progress-bar-striped.active(style="width: 60%;") 60%
