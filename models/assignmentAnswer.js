@@ -9,6 +9,7 @@ var Schema = mongoose.Schema;
 
 var AssignmentAnswer = new Schema({
     assignment: {type: Schema.Types.ObjectId, required: true, ref: 'QuestionAssignment'},
+    student: {type: Schema.Types.ObjectId, required: true, ref: 'User'},
     submission: {type: String, required: true},
     submittedAt: {type: Date, required: true},
     correct: {type: Boolean, required: true, default: false}

@@ -84,6 +84,7 @@ var listen = function (server) {
                 }
                 if (!token) {
                     socket.disconnect("Token Not Found...");
+                    return;
                 }
 
                 User.findById(token.userID, function (err, userFetched) {
@@ -216,6 +217,7 @@ var listen = function (server) {
                     if (assignment.dueAt > Date.now()) {
                         // TODO make new answer object, associate with assignment, and save.
                         var answer = new AssignmentAnswer({
+                            student: user.id,
                             assignment: assignmentId,
                             submission: optionId,
                             submittedAt: Date.now(),
