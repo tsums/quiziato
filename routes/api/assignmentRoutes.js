@@ -5,8 +5,8 @@
  */
 
 
-var QuestionAssignment = require('../models/questionAssignment');
-var AssignmentAnswer = require('../models/assignmentAnswer');
+var QuestionAssignment = require('../../models/questionAssignment');
+var AssignmentAnswer = require('../../models/assignmentAnswer');
 var router = require('express').Router();
 var winston = require('winston').loggers.get('api');
 
