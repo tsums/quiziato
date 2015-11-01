@@ -82,6 +82,10 @@ app.factory('API', ['$http', function($http) {
         return $http.post('/web/api/question', question);
     };
 
+    API.getAssignment = function(assignmentId) {
+        return $http.get('/web/api/assignment/' + assignmentId);
+    };
+
     API.getCourses();
     API.getActiveSessions();
 

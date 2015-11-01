@@ -48,7 +48,7 @@ router.route('/my')
 router.route('/:id')
 
     .get(function (req, res) {
-        Course.findById(req.id, function (err, course) {
+        Course.findById(req.params.id, function (err, course) {
 
             if (err) {
                 res.status(404).send('Not Found');

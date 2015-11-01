@@ -11,15 +11,15 @@ app.controller('assignmentController', ['$scope', '$filter', '$routeParams', '$l
     if ($routeParams.sid) {
         API.getSession($routeParams.sid, function (data) {
             $scope.session = data;
-
-            $scope.assignment = $scope.session.assignments.filter(function(assignment) {
-                return assignment._id == $routeParams.aid;
-            });
-
-            if ($scope.assignment.length > 0) {
-                $scope.assignment = $scope.assignment[0];
-            }
         });
+    }
+
+    if ($routeParams.aid) {
+        API.getAssignment($routeParams.aid).then(function (response) {
+            $scope.assignment = response.data;
+        }, function(error) {
+            console.log(error);
+        })
     }
 
     $scope.API = API;

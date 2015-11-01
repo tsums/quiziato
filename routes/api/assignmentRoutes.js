@@ -14,7 +14,9 @@ var winston = require('winston').loggers.get('api');
 router.route('/:id')
 
     .get(function (req, res) {
-        QuestionAssignment.findById(req.id).populate('question').exec(function (err, assignment) {
+        console.log(req.params.id);
+
+        QuestionAssignment.findById(req.params.id).populate('question').exec(function (err, assignment) {
             if(err) {
                 winston.error(err);
                 res.status(500).send(err);
@@ -23,7 +25,7 @@ router.route('/:id')
 
             if (assignment) {
 
-                AssignmentAnswer.find({assignment: req.id}).populate('student').exec(function (err, answers) {
+                AssignmentAnswer.find({assignment: req.params.id}).populate('student').exec(function (err, answers) {
 
                     if(err) {
                         winston.error(err);
@@ -31,6 +33,7 @@ router.route('/:id')
                         return;
                     }
 
+                    assignment = assignment.toObject();
                     assignment.answers = answers;
 
                     res.send(assignment);
