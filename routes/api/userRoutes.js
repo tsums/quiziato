@@ -36,6 +36,8 @@ router.route('/me/sessions')
                 return
             }
 
+            console.log(records);
+
             if (records) {
                 records = records.filter(function(value) {
                     return value.ended == false;
