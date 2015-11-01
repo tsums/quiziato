@@ -40,7 +40,7 @@ router.route('/me/sessions')
 
             if (records) {
                 records = records.filter(function(value) {
-                    return value.ended == false;
+                    return value.session.ended == false;
                 });
 
                 res.send(records);
