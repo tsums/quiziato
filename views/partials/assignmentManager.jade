@@ -11,7 +11,15 @@ h5
     h6.col-md-4 Due At: {{assignment.dueAt | date: "MM/dd h:mm a"}}
 
 p Responses
+.row
+    h6.col-md-3 Student
+    h6.col-md-3 Submitted At
+    h6.col-md-3 Response
+    h6.col-md-3 Correct?
 .row(ng-repeat='answer in answers')
-    h6 {{answer}}
+    p.col-md-3 {{answer.student.name.full}}
+    p.col-md-3 {{answer.submittedAt | date: "MM/dd h:mm a"}}
+    p.col-md-3 {{answer.submission}}
+    p.col-md-3 {{answer.correct}}
 
 
