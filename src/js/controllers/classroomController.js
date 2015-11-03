@@ -30,6 +30,17 @@ app.controller('classroomController', ['$scope', '$routeParams', '$controller', 
         });
     };
 
+    $scope.getTimeUntil = function(data) {
+        var dur = moment.duration(classroomManager.assignment.remaining, 'seconds');
+
+        var str = "";
+        if (dur.minutes() > 0) {
+            str += dur.minutes() + ' min '
+        }
+        str += dur.seconds() + ' sec';
+        return str;
+    };
+
     $scope.redirectToSession = function() {
         $location.path('/sessions/' + $scope.manager.session._id);
     }

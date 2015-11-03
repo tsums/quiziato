@@ -14,6 +14,7 @@
     "angular-bootstrap": "~0.14.3",
     "bootswatch-dist": "paper",
     "angular-qrcode": "monospaced/angular-qrcode#~6.0.3",
-    "moment": "~2.10.6"
+    "moment": "~2.10.6",
+    "ui-select": "angular-ui-select#~0.13.2"
   }
 }

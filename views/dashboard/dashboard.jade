@@ -14,6 +14,7 @@ html(lang='en')
         block css
             link(rel='stylesheet', href='/css/style.css')
             link(href='/components/bootswatch-dist/css/bootstrap.css', rel='stylesheet')
+            link(href='/components/ui-select/dist/select.min.css', rel='stylesheet')
         block js
             if ENV_DEVELOPMENT
                 script(src='http://localhost:35729/livereload.js')
@@ -57,4 +58,5 @@ html(lang='en')
     script(src='/components/angular-socket-io/socket.js')
     script(src='/components/angular-qrcode/angular-qrcode.js')
     script(src='/components/qrcode-generator/js/qrcode.js')
+    script(src='/components/ui-select/dist/select.min.js')
     script(src='/js/app.min.js')

@@ -8,7 +8,7 @@
  *  Dashboard Angular App
  */
 
-var app = angular.module('dashboard', ['btford.socket-io', 'ngRoute', 'monospaced.qrcode', 'ui.bootstrap']);
+var app = angular.module('dashboard', ['btford.socket-io', 'ngRoute', 'monospaced.qrcode', 'ui.bootstrap', 'ui.select']);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider

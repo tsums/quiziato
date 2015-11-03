@@ -31,21 +31,29 @@
                 div.col-md-7
                     div.btn-toolbar.pagination-centered
                         button.btn.btn-sm.btn-danger(type='button', ng-click='manager.leaveSession()') Leave Session
-                        button.btn.btn-sm.btn-primary(type='button', ng-click='toggleQR()') Show QR Code
                         button.btn.btn-sm.btn-warning(type='button', ng-click='') End Question
+                        button.btn.btn-sm.btn-primary(type='button', ng-click='toggleQR()') Show QR Code
                         button.btn.btn-sm.btn-default(type='button', ng-click='redirectToSession()') View Session Details
             hr(style='margin-bottom: 2em; margin-top: 0px')
 
             .row
                 .col-md-6
-                    form.form-inline(name='assignQuestionForm')
+                    form(name='assignQuestionForm')
+                        h6 Assign Question
                         .form-group
-                            input.form-control(type='text', size='4', ng-model='timeInput', ng-pattern='/^[1-9][0-9]*$/', required='')
+                            label Minutes
+                            input.form-control(type='number', ng-model='timeInput', ng-pattern='/^[1-9][0-9]*$/', required='')
+                            p.help-block Number of minutes student has to respond
                         .form-group
-                            select.form-control(ng-model='currentQuestion', ng-options='question.title for question in manager.questions')
-                                option(value='') Choose Question
+                            label Choose Question
+                            ui-select(ng-model="$parent.currentQuestion")
+                                ui-select-match(placeholder="Select or search...")
+                                    span(ng-bind="$select.selected.title")
+                                ui-select-choices(repeat="question in (manager.questions | filter: $select.search)")
+                                    span(ng-bind="question.title")
+                            p.help-block Select From drop-down or type to search
                         .form-group
-                            button.btn.btn-sm.btn-success(ng-disabled='currentQuestion == null || manager.assignment != null || assignQuestionForm.$invalid', ng-click='manager.assignQuestion(currentQuestion, timeInput)') Assign Question
+                            button.btn.btn-success(ng-disabled='currentQuestion == null || manager.assignment != null || assignQuestionForm.$invalid', ng-click='manager.assignQuestion(currentQuestion, timeInput)') Assign Question
 
                 .col-md-6.text-center.well
                     h5 Current Question
@@ -53,7 +61,7 @@
                             div.progress-bar.progress-bar-striped.active(style="width: 60%;") 60%
                     div(ng-if='manager.assignment != null')
                         h1 {{manager.assignment.question.prompt}}
-                        h3 Answer Due {{manager.assignment.remaining}}
+                        h3 Answer Due in {{getTimeUntil(manager.assignment.remaining)}}
                     div(ng-if='manager.assignment == null')
                         h4 No Assignment
 
