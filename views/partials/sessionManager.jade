@@ -22,7 +22,7 @@ div(ng-show="sessionDetail == null")
 .row(ng-if="sessionDetail != null")
     h4 {{getFullLabel(sessionDetail)}}
     h6
-        a(href="sessions") ← Go Back
+        a(href="#", ng-click="back()") ← Go Back
     .col-md-5
         h5 Attendance
         .row

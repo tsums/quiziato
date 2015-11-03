@@ -33,27 +33,29 @@
                         button.btn.btn-sm.btn-danger(type='button', ng-click='manager.leaveSession()') Leave Session
                         button.btn.btn-sm.btn-primary(type='button', ng-click='toggleQR()') Show QR Code
                         button.btn.btn-sm.btn-warning(type='button', ng-click='') End Question
-                        button.btn.btn-sm.btn-default(type='button', ng-click='') View Session Details
+                        button.btn.btn-sm.btn-default(type='button', ng-click='redirectToSession()') View Session Details
             hr(style='margin-bottom: 2em; margin-top: 0px')
 
-            div.text-center
-                form.form-inline(name='assignQuestionForm')
-                    .form-group
-                        input.form-control(type='text', size='4', ng-model='timeInput', ng-pattern='/^[1-9][0-9]*$/', required='')
-                    .form-group
-                        select.form-control(ng-model='currentQuestion', ng-options='question.title for question in manager.questions')
-                            option(value='') Choose Question
-                    .form-group
-                        button.btn.btn-sm.btn-success(ng-disabled='currentQuestion == null || manager.assignment != null || assignQuestionForm.$invalid', ng-click='manager.assignQuestion(currentQuestion, timeInput)') Assign Question
+            .row
+                .col-md-6
+                    form.form-inline(name='assignQuestionForm')
+                        .form-group
+                            input.form-control(type='text', size='4', ng-model='timeInput', ng-pattern='/^[1-9][0-9]*$/', required='')
+                        .form-group
+                            select.form-control(ng-model='currentQuestion', ng-options='question.title for question in manager.questions')
+                                option(value='') Choose Question
+                        .form-group
+                            button.btn.btn-sm.btn-success(ng-disabled='currentQuestion == null || manager.assignment != null || assignQuestionForm.$invalid', ng-click='manager.assignQuestion(currentQuestion, timeInput)') Assign Question
 
-                h5 Current Question
-                    //div.progress
-                        div.progress-bar.progress-bar-striped.active(style="width: 60%;") 60%
-                div(ng-if='manager.assignment != null')
-                    h1 {{manager.assignment.question.prompt}}
-                    h3 Answer Due {{manager.assignment.remaining}}
-                div(ng-if='manager.assignment == null')
-                    h4 No Assignment
+                .col-md-6.text-center.well
+                    h5 Current Question
+                        //div.progress
+                            div.progress-bar.progress-bar-striped.active(style="width: 60%;") 60%
+                    div(ng-if='manager.assignment != null')
+                        h1 {{manager.assignment.question.prompt}}
+                        h3 Answer Due {{manager.assignment.remaining}}
+                    div(ng-if='manager.assignment == null')
+                        h4 No Assignment
 
 
     .col-md-2

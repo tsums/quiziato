@@ -32,6 +32,10 @@ app.controller('sessionManagerController', ['$scope', '$filter', '$routeParams',
         $location.path('/sessions/' + $scope.sessionDetail._id + '/assignment/' + assignment._id);
     };
 
+    $scope.back = function() {
+        window.history.back()
+    }
+
     $scope.getLabel = function(session) {
         return $filter('date')(session.date, "MM/dd h:mm a") + " : " + session.instructor.name.full;
     };

@@ -6,7 +6,8 @@
 
 var app = angular.module('dashboard');
 
-app.controller('classroomController', ['$scope', '$routeParams', '$controller', '$uibModal', 'classroomManager' , 'API', function($scope, $routeParams, $controller, $uibModal, classroomManager, API) {
+app.controller('classroomController', ['$scope', '$routeParams', '$controller', '$location', '$uibModal', 'classroomManager' , 'API',
+        function($scope, $routeParams, $controller, $location, $uibModal, classroomManager, API) {
 
     $scope.manager = classroomManager;
 
@@ -27,6 +28,10 @@ app.controller('classroomController', ['$scope', '$routeParams', '$controller', 
                 }
             }
         });
+    };
+
+    $scope.redirectToSession = function() {
+        $location.path('/sessions/' + $scope.manager.session._id);
     }
 
 }]);

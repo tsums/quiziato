@@ -25,7 +25,7 @@ app.controller('assignmentController', ['$scope', '$filter', '$routeParams', '$l
     $scope.API = API;
 
     $scope.returntoSession = function() {
-        $location.path('/sessions/' + $scope.session._id);
+        window.history.back()
     };
 
     $scope.getLabel = function(session) {
