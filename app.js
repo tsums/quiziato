@@ -102,6 +102,11 @@ app.get('/partials/:name', function(req,res) {
     res.render('partials/' + name);
 });
 
+app.get('/modals/:name', function(req,res) {
+    var name = req.params.name;
+    res.render('modals/' + name);
+});
+
 app.post('/oauth/token', oauth2.token);
 
 /*

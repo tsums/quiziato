@@ -6,7 +6,7 @@
 //- Classroom Manager Partial
 
 .row
-    .col-md-9
+    .col-md-10
         div(ng-if='!manager.inSession')
             .well(ng-show='API.sessions.length > 0')
                 h5.text-center You currently have {{API.sessions.length}} sessions in progress.
@@ -19,37 +19,44 @@
             form(name='start_session_form')
                 h6.text-center To begin, select a course and click 'Start Room'
                 .form-group
-                    label(for='username') Course
+                    label Course
                     select.form-control(required='', ng-model='course', ng-options='course.title for course in API.courses')
                         option(value='') Select Course
                 .form-group
                     button.btn.btn-lg.btn-primary.btn-block(type='submit', ng-click='manager.startSession(course)', ng-disabled='start_session_form.$invalid') Start Room
 
         div(ng-if='manager.inSession')
-            p.lead.text-center {{manager.session.course.title}} Started At: {{manager.session.date | date : "MM/dd h:mm a"}}
             .row
-                div.col-md-4
+                p.col-md-5.lead {{manager.session.course.title | limitTo : 15}} Started At: {{manager.session.date | date : "MM/dd/yy h:mm a"}}
+                div.col-md-7
                     div.btn-toolbar.pagination-centered
                         button.btn.btn-sm.btn-danger(type='button', ng-click='manager.leaveSession()') Leave Session
-                        button.btn.btn-sm.btn-warning(type='button', ng-click='toggleQR()') Show QR Code
-                div.col-md-8
-                    form.form-inline(name='assignQuestionForm')
-                        .form-group
-                            input.form-control(type='text', size='4', ng-model='timeInput', ng-pattern='/^[1-9][0-9]*$/', required='')
-                        .form-group
-                            select.form-control(ng-model='currentQuestion', ng-options='question.title for question in manager.questions')
-                                option(value='') Choose Question
-                        .form-group
-                            button.btn.btn-sm.btn-success(ng-disabled='currentQuestion == null || manager.assignment != null || assignQuestionForm.$invalid', ng-click='manager.assignQuestion(currentQuestion, timeInput)') Assign Question
-            div(ng-if='manager.assignment != null').interior.text-center
-                //div.progress
-                    div.progress-bar.progress-bar-striped.active(style="width: 60%;") 60%
-                h1 {{manager.assignment.question.prompt}}
-                h3 Answer Due {{manager.assignment.remaining}}
-            div(ng-if='show_qr').text-center.interior
-                qrcode(data='{{manager.session.roomId}}', size='500')
-                p {{manager.session.roomId}}
-    .col-md-3
+                        button.btn.btn-sm.btn-primary(type='button', ng-click='toggleQR()') Show QR Code
+                        button.btn.btn-sm.btn-warning(type='button', ng-click='') End Question
+                        button.btn.btn-sm.btn-default(type='button', ng-click='') View Session Details
+            hr(style='margin-bottom: 2em; margin-top: 0px')
+
+            div.text-center
+                form.form-inline(name='assignQuestionForm')
+                    .form-group
+                        input.form-control(type='text', size='4', ng-model='timeInput', ng-pattern='/^[1-9][0-9]*$/', required='')
+                    .form-group
+                        select.form-control(ng-model='currentQuestion', ng-options='question.title for question in manager.questions')
+                            option(value='') Choose Question
+                    .form-group
+                        button.btn.btn-sm.btn-success(ng-disabled='currentQuestion == null || manager.assignment != null || assignQuestionForm.$invalid', ng-click='manager.assignQuestion(currentQuestion, timeInput)') Assign Question
+
+                h5 Current Question
+                    //div.progress
+                        div.progress-bar.progress-bar-striped.active(style="width: 60%;") 60%
+                div(ng-if='manager.assignment != null')
+                    h1 {{manager.assignment.question.prompt}}
+                    h3 Answer Due {{manager.assignment.remaining}}
+                div(ng-if='manager.assignment == null')
+                    h4 No Assignment
+
+
+    .col-md-2
         p.text-center Students Connected
         ul.list-group
             li.list-group-item(ng-repeat="record in manager.attendanceRecords | filter: {connected: true}") {{record.student.name.full}}

@@ -1,0 +1,12 @@
+//
+   Trevor Summerfield
+   CS 490-001 Fall 2015
+   Quiz Project
+
+.modal-header
+    h3.modal-title.text-center Student: Scan Code with App Now
+.modal-body.text-center
+    qrcode(data='{{manager.session.roomId}}', size='550')
+    p {{manager.session.roomId}}
+.modal-footer
+    button.btn.btn-danger(type='button', ng-click='close()') Close

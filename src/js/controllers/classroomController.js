@@ -6,7 +6,7 @@
 
 var app = angular.module('dashboard');
 
-app.controller('classroomController', ['$scope', '$routeParams', '$controller', 'classroomManager' , 'API', function($scope, $routeParams, $controller, classroomManager, API) {
+app.controller('classroomController', ['$scope', '$routeParams', '$controller', '$uibModal', 'classroomManager' , 'API', function($scope, $routeParams, $controller, $uibModal, classroomManager, API) {
 
     $scope.manager = classroomManager;
 
@@ -17,7 +17,16 @@ app.controller('classroomController', ['$scope', '$routeParams', '$controller', 
     $scope.timeInput = 1;
 
     $scope.toggleQR = function() {
-        $scope.show_qr = !$scope.show_qr;
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: '/modals/qrModal',
+            controller: 'qrModalController',
+            resolve: {
+                items: function () {
+                    return $scope.items;
+                }
+            }
+        });
     }
 
 }]);
