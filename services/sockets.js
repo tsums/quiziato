@@ -378,6 +378,33 @@ var listen = function (server) {
             });
         });
 
+        socket.on('endAssignment', function(data, callback) {
+            QuestionAssignment.findById(data, function(err, assignment) {
+                if (err) {
+                    winston.error(err);
+                    return;
+                }
+
+                if (assignment && assignment.dueAt > Date.now()) {
+                    winston.info("Ending Assignment: " + data);
+
+                    assignment.dueAt = Date.now(); //TODO check the validity of this hack
+                    assignment.save(function(err) {
+                        if (err) {
+                            winston.error(err);
+                            return;
+                        }
+
+                        callback({end: true});
+                        classroom.in(room).emit('assignmentTerminated', data);
+                    })
+
+                } else {
+                    winston.warn("Tried to end assignment either didn't exist or was already due");
+                }
+            });
+        });
+
         socket.on('disconnect', function(data) {
             winston.info(user.username + ' disconnected from \'/dashboard\'');
             classroom.in(room).emit('instructorDisconnect');

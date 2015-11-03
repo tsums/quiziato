@@ -31,7 +31,7 @@
                 div.col-md-7
                     div.btn-toolbar.pagination-centered
                         button.btn.btn-sm.btn-danger(type='button', ng-click='manager.leaveSession()') Leave Session
-                        button.btn.btn-sm.btn-warning(type='button', ng-click='') End Question
+                        button.btn.btn-sm.btn-warning(type='button', ng-disabled='manager.assignment == null', ng-click='manager.endQuestion()') End Question
                         button.btn.btn-sm.btn-primary(type='button', ng-click='toggleQR()') Show QR Code
                         button.btn.btn-sm.btn-default(type='button', ng-click='redirectToSession()') View Session Details
             hr(style='margin-bottom: 2em; margin-top: 0px')

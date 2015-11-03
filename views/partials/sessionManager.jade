@@ -40,7 +40,7 @@ div(ng-show="sessionDetail == null")
             h6.col-md-3 Due At
             h6.col-md-3 View Responses
         .row(ng-repeat='assignment in sessionDetail.assignments | orderBy: "assignment.assignedAt"')
-            p.col-md-3 {{ assignment.question.prompt }}
+            p.col-md-3 {{ assignment.question.title }}
             p.col-md-3 {{assignment.assignedAt | date: "MM/dd h:mm a"}}
             p.col-md-3 {{assignment.dueAt | date: "MM/dd h:mm a"}}
             a.col-md-3(ng-click='openAssignment(assignment)', href='#') Responses

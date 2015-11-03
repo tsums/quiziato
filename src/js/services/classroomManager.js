@@ -30,12 +30,12 @@ app.factory('classroomManager', ['dashSocket', 'API', '$timeout', '$interval', f
         var due = moment(manager.assignment.dueAt);
         manager.assignment.remaining = due.diff(moment(), 'seconds');
 
-        var counter = $interval(function () {
+        manager.assignment.counter = $interval(function () {
             manager.assignment.remaining = due.diff(moment(), 'seconds');
         }, 1000, manager.assignment.remaining);
 
-        $timeout(function() {
-            $interval.cancel(counter);
+        manager.assignment.timeout = $timeout(function() {
+            $interval.cancel(manager.assignment.counter);
             manager.assignment = null;
         }, manager.assignment.remaining * 1000);
 
@@ -90,16 +90,23 @@ app.factory('classroomManager', ['dashSocket', 'API', '$timeout', '$interval', f
             var due = moment(manager.assignment.dueAt);
             manager.assignment.remaining = due.diff(moment(), 'seconds');
 
-            var counter = $interval(function () {
+            manager.assignment.counter = $interval(function () {
                 manager.assignment.remaining = due.diff(moment(), 'seconds');
             }, 1000, manager.assignment.remaining);
 
-            $timeout(function() {
-                $interval.cancel(counter);
+            manager.assignment.timeout = $timeout(function() {
+                $interval.cancel(manager.assignment.counter);
                 manager.assignment = null;
             }, manager.assignment.remaining * 1000);
 
         });
+    };
+
+    manager.endQuestion = function() {
+        dashSocket.emit('endAssignment', manager.assignment._id, function() {
+            $interval.cancel(manager.assignment.counter);
+            manager.assignment = null;
+        })
     };
 
     manager.reset();
