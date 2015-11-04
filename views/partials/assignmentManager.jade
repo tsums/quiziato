@@ -12,16 +12,31 @@ div(ng-if='session != null')
         h6.col-md-4 Assigned At: {{assignment.assignedAt | date: "MM/dd h:mm a"}}
         h6.col-md-4 Due At: {{assignment.dueAt | date: "MM/dd h:mm a"}}
 
-    p Responses
     .row
-        h6.col-md-3 Student
-        h6.col-md-3 Submitted At
-        h6.col-md-3 Response
-        h6.col-md-3 Correct?
-    .row(ng-repeat='answer in assignment.answers')
-        p.col-md-3 {{answer.student.name.full}}
-        p.col-md-3 {{answer.submittedAt | date: "MM/dd h:mm a"}}
-        p.col-md-3 {{getOptionText(answer.submission)}}
-        p.col-md-3 {{answer.correct}}
+        .col-md-4
+            p.lead Question
+            div
+                span.bold Title:
+                span  {{assignment.question.title}}
+            div
+                span.bold Prompt:
+                span  {{assignment.question.prompt}}
+            div(ng-repeat="option in assignment.question.options track by $index")
+                span.bold Option {{$index+1}}:
+                span  {{option.text}}
+
+
+        .col-md-8
+            p.lead Responses
+            .row
+                h6.col-md-3 Student
+                h6.col-md-3 Submitted At
+                h6.col-md-3 Response
+                h6.col-md-3 Correct?
+            .row(ng-repeat='answer in assignment.answers')
+                p.col-md-3 {{answer.student.name.full}}
+                p.col-md-3 {{answer.submittedAt | date: "MM/dd h:mm a"}}
+                p.col-md-3 {{getOptionText(answer.submission)}}
+                p.col-md-3 {{answer.correct ? 'Correct' : 'Incorrect' }}
 
 
