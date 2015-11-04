@@ -42,29 +42,23 @@ var listen = function (server) {
                 winston.error(err);
                 return;
             }
-
             dashboard.in(session.roomId).emit('students', records);
         });
     };
 
     var sendCurrentAssignmentToDashboard = function(session) {
-
         QuestionAssignment.findOne(session.assignments[session.assignments.length - 1]).populate('question').exec(function(err, assignment) {
-
             if (err) {
                 winston.error(err);
                 return;
             }
-
             if (assignment) {
 
                 if (assignment.dueAt > Date.now()) {
                     dashboard.in(session.roomId).emit('currentAssignment', assignment);
                 }
             }
-
         });
-
     };
 
     // Token-Based Authentication for Mobile Clients
@@ -134,11 +128,10 @@ var listen = function (server) {
         winston.info(user.username + ' connected to namespace \'/classroom\'');
 
         socket.on('statusCheck', function(data, callback) {
-            var status = {
+            callback({
                 inSession: currentSession != null,
                 session: currentSession
-            };
-            callback(status);
+            });
         });
 
         socket.on('attendance', function(data, callback) {
@@ -192,7 +185,6 @@ var listen = function (server) {
                 }
             });
 
-
         });
 
         socket.on('submitAnswer', function(data, callback) {
@@ -202,7 +194,11 @@ var listen = function (server) {
             var optionId = data.optionId;
             var assignmentId = data.assignmentId;
 
-            // TODO process answer received
+            if (optionId == null || assignmentId == null) {
+                winston.warn('Assignment Id or Option Id missing');
+                return;
+            }
+
             QuestionAssignment.findById(assignmentId).populate('question').exec(function (err, assignment) {
                 if (err) {
                     winston.error(err);
@@ -211,11 +207,9 @@ var listen = function (server) {
                 }
 
                 if (assignment) {
-                    // TODO check if answer already submitted=
+                    // TODO check if answer already submitted
 
-                    // TODO make sure assignment being answered is still accepting answers.
                     if (assignment.dueAt > Date.now()) {
-                        // TODO make new answer object, associate with assignment, and save.
                         var answer = new AssignmentAnswer({
                             student: user.id,
                             assignment: assignmentId,
@@ -230,6 +224,7 @@ var listen = function (server) {
                                 return;
                             }
 
+                            winston.info(user.username + " submitted answer ");
                             callback({success: true})
                         })
                     } else {
@@ -244,7 +239,7 @@ var listen = function (server) {
 
         });
 
-        socket.on('disconnect', function(data) {
+        socket.on('disconnect', function() {
             winston.info(user.username + 'disconnected from \'/classroom\'');
 
             if (currentSession != null) {
@@ -343,13 +338,12 @@ var listen = function (server) {
                 } else {
                     if (question) {
 
-                        // TODO this needs to change to support the new reference model.
                         winston.info(user.username + " assigning Question " + question.id + " to room " + room);
 
                         var currentAssignment = new QuestionAssignment({
                             question: question.id,
                             assignedAt: Date.now(),
-                            dueAt: moment().add(parseInt(data.time), 'minutes').toDate() // TODO configurable time length.
+                            dueAt: moment().add(parseInt(data.time), 'minutes').toDate()
                         });
 
                         currentAssignment.save(function(err) {
