@@ -36,4 +36,13 @@ app.controller('assignmentController', ['$scope', '$filter', '$routeParams', '$l
         return session.course.title + " : " + $filter('date')(session.date, "MM/dd h:mm a") + " : " + session.instructor.name.full;
     }
 
+    $scope.getOptionText = function(optionId) {
+        var option = $scope.assignment.question.options.filter(function (option) {
+            return option._id == optionId;
+        });
+
+        if (option.length > 0) return option[0].text;
+        return "Undefined";
+    }
+
 }]);

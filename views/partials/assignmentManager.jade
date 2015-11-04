@@ -21,7 +21,7 @@ div(ng-if='session != null')
     .row(ng-repeat='answer in assignment.answers')
         p.col-md-3 {{answer.student.name.full}}
         p.col-md-3 {{answer.submittedAt | date: "MM/dd h:mm a"}}
-        p.col-md-3 {{answer.submission}}
+        p.col-md-3 {{getOptionText(answer.submission)}}
         p.col-md-3 {{answer.correct}}
 
 
