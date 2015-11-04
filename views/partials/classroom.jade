@@ -29,11 +29,12 @@
             .row
                 p.col-md-5.lead {{manager.session.course.title | limitTo : 15}} Started At: {{manager.session.date | date : "MM/dd/yy h:mm a"}}
                 div.col-md-7
-                    div.btn-toolbar.pagination-centered
+                    div.btn-toolbar.pull-right
                         button.btn.btn-sm.btn-danger(type='button', ng-click='manager.leaveSession()') Leave Session
                         button.btn.btn-sm.btn-warning(type='button', ng-disabled='manager.assignment == null', ng-click='manager.endQuestion()') End Question
                         button.btn.btn-sm.btn-primary(type='button', ng-click='toggleQR()') Show QR Code
                         button.btn.btn-sm.btn-default(type='button', ng-click='redirectToSession()') View Session Details
+
             hr(style='margin-bottom: 2em; margin-top: 0px')
 
             .row
@@ -51,7 +52,7 @@
                                     span(ng-bind="$select.selected.title")
                                 ui-select-choices(repeat="question in (manager.questions | filter: $select.search)")
                                     span(ng-bind="question.title")
-                            p.help-block Select From drop-down or type to search
+                            p.help-block Select from drop-down or type to search
                         .form-group
                             button.btn.btn-success(ng-disabled='currentQuestion == null || manager.assignment != null || assignQuestionForm.$invalid', ng-click='manager.assignQuestion(currentQuestion, timeInput)') Assign Question
 

@@ -30,7 +30,7 @@ var listen = function (server) {
 
     var io = socketio.listen(server);
 
-    // Classroom Namespace is for mobile clien  ts.
+    // Classroom Namespace is for mobile clients.
     var classroom = io.of('/classroom');
 
     // Dashboard Namespace is for web clients.
