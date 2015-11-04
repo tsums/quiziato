@@ -12,12 +12,30 @@ div.well
 
 .row(ng-show="currentCourse != null")
     .col-md-8
-        p Questions
-        div(ng-repeat="question in questions")
-            p {{question.title}}
+        p.lead Questions
+
+        label Choose Question
+        ui-select(ng-model="$parent.currentQuestion")
+            ui-select-match(placeholder="Select or search...")
+                span(ng-bind="$select.selected.title")
+            ui-select-choices(repeat="question in (questions | filter: $select.search)")
+                span(ng-bind="question.title")
+        p.help-block Select from drop-down or type to search
+
+        div(ng-if='currentQuestion != null')
+            div
+                span.bold Title:
+                span  {{currentQuestion.title}}
+            div
+                span.bold Prompt:
+                span  {{currentQuestion.prompt}}
+            div(ng-repeat="option in currentQuestion.options track by $index")
+                span.bold Option {{$index+1}}:
+                span  {{option.text}}
+                span(ng-if='option._id == currentQuestion.correctOption')  ✓
 
     .col-md-4
-        p.text-center New Question
+        p.lead.text-center New Question
         form(name='new_question_form')
             .form-group.form-group-sm
                 label.control-label Question Title
