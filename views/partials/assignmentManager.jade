@@ -24,6 +24,7 @@ div(ng-if='session != null')
             div(ng-repeat="option in assignment.question.options track by $index")
                 span.bold Option {{$index+1}}:
                 span  {{option.text}}
+                span(ng-if='option._id == assignment.question.correctOption')  ✓
 
 
         .col-md-8
