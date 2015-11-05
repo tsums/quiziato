@@ -82,6 +82,10 @@ app.factory('API', ['$http', function($http) {
         return $http.post('/web/api/question', question);
     };
 
+    API.deleteQuestion = function(questionId) {
+        return $http.delete('/web/api/question/' + questionId);
+    };
+
     API.getAssignment = function(assignmentId) {
         return $http.get('/web/api/assignment/' + assignmentId);
     };

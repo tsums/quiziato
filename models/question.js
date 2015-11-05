@@ -18,7 +18,8 @@ var Question = new Schema({
     author: {type: Schema.Types.ObjectId, required: true},
     type: {type: String, required: true},
     options: [QuestionOption],
-    correctOption: {type: String, required: true}
+    correctOption: {type: String, required: true},
+    removed: {type: Boolean, required: true, default: false}
 });
 
 module.exports = mongoose.model('Question', Question);

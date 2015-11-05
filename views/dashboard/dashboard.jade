@@ -26,17 +26,27 @@ html(lang='en')
                 .navbar.navbar-default(role="navigation")
                     .container
                         .navbar-header
-                            a.navbar-brand(href="/dashboard") iClicker2000™
+                            a.navbar-brand(href="/dashboard")
+                                span.glyphicon.glyphicon-education
+                                span  iClicker2000™
 
                         ul.nav.navbar-nav
                             li
-                                a(href="classroom", ng-class="{bold : activeController == 'classroomController'}") Classroom
+                                a(href="classroom", ng-class="{bold : activeController == 'classroomController'}")
+                                    span.glyphicon.glyphicon-blackboard
+                                    span  Classroom
                             li
-                                a(href="questions", ng-class="{bold : activeController == 'questionManagerController'}") Questions
+                                a(href="questions", ng-class="{bold : activeController == 'questionManagerController'}")
+                                    span.glyphicon.glyphicon-question-sign
+                                    span  Questions
                             li
-                                a(href="sessions", ng-class="{bold : activeController == 'sessionManagerController'}") Sessions
+                                a(href="sessions", ng-class="{bold : activeController == 'sessionManagerController'}")
+                                    span.glyphicon.glyphicon-apple
+                                    span  Sessions
                             li
-                                a(href="courses", ng-class="{bold : activeController == 'courseManagerController'}") Courses
+                                a(href="courses", ng-class="{bold : activeController == 'courseManagerController'}")
+                                    span.glyphicon.glyphicon-book
+                                    span  Courses
 
                         ul.nav.navbar-nav.navbar-right
                             li
@@ -44,7 +54,11 @@ html(lang='en')
                             li
                                 p.navbar-text Logged in as #[b #{user.name.full} ]
                             li
-                                a(href='/logout') Log Out
+                                a(href='/logout')
+                                    span.glyphicon.glyphicon-log-out
+                                    span  Log Out
+
+
                 .container
                     div(ng-view)
 

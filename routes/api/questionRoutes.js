@@ -15,8 +15,28 @@ router.route('/:id')
         Question.findById(req.params.id, function (err, question) {
             if (err) {
                 res.status(404).send('Not Found');
+            } else {
+                res.json(question)
             }
-            res.json(question)
+        });
+    })
+
+    .delete(function (req, res) {
+        Question.findById(req.params.id, function (err, question) {
+            if (err) {
+                res.status(404).send('Not Found');
+            }
+            else {
+                question.removed = true;
+                question.save(function(err) {
+                    if (err) {
+                        winston.error(err);
+                        res.status(500).send(err);
+                    } else {
+                        res.status(204).send();
+                    }
+                });
+            }
         });
     });
 
@@ -52,7 +72,7 @@ router.route('/')
             res.status(400).send('\'course\' query missing')
         }
 
-        Question.find({course: req.query.course}, function (err, questions) {
+        Question.find({course: req.query.course, removed: false}, function (err, questions) {
             if (err) {
                 winston.error(err);
                 res.status(500).send(err.message);

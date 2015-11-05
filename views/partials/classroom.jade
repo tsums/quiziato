@@ -4,10 +4,8 @@
  Quiz Project
 
 //- Classroom Manager Partial
-
-.row
-    .col-md-10
-        div(ng-if='!manager.inSession')
+.row(ng-if='!manager.inSession')
+    .col-md-10.col-md-push-1
             .well(ng-show='API.sessions.length > 0')
                 h5.text-center You currently have {{API.sessions.length}} sessions in progress.
                 div(ng-repeat='session in API.sessions')
@@ -25,60 +23,65 @@
                 .form-group
                     button.btn.btn-lg.btn-primary.btn-block(type='submit', ng-click='manager.startSession(course)', ng-disabled='start_session_form.$invalid') Start Room
 
-        div(ng-if='manager.inSession')
-            .row
-                p.col-md-5.lead {{manager.session.course.title | limitTo : 15}} Started At: {{manager.session.date | date : "MM/dd/yy h:mm a"}}
-                div.col-md-7
-                    div.btn-toolbar.pull-right
-                        button.btn.btn-sm.btn-danger(type='button', ng-click='manager.leaveSession()') Leave Session
-                        button.btn.btn-sm.btn-warning(type='button', ng-disabled='manager.assignment == null', ng-click='manager.endQuestion()') End Question
-                        button.btn.btn-sm.btn-primary(type='button', ng-click='toggleQR()') Show QR Code
-                        button.btn.btn-sm.btn-default(type='button', ng-click='redirectToSession()') View Session Details
+.row(ng-if='manager.inSession')
+    .col-md-10
+        .row
+            p.col-md-5.lead {{manager.session.course.title | limitTo : 15}} Started: {{manager.session.date | date : "MM/dd h:mm a"}}
+            div.col-md-7
+                div.btn-toolbar.pull-right
+                    button.btn.btn-sm.btn-danger(type='button', ng-click='manager.leaveSession()')
+                        span.glyphicon.glyphicon-arrow-left
+                        span  Leave Session
+                    button.btn.btn-sm.btn-warning(type='button', ng-disabled='manager.assignment == null', ng-click='manager.endQuestion()') End Question
+                    button.btn.btn-sm.btn-primary(type='button', ng-click='toggleQR()')
+                        span.glyphicon.glyphicon-qrcode
+                        span  Show QR Code
+                    button.btn.btn-sm.btn-default(type='button', ng-click='redirectToSession()') View Details
 
-            hr(style='margin-bottom: 2em; margin-top: 0px')
+        hr(style='margin-bottom: 2em; margin-top: 0px')
 
-            .row
-                .col-md-6
-                    form(name='assignQuestionForm')
-                        h6 Assign Question
-                        .form-group
-                            label Minutes
-                            input.form-control(type='number', ng-model='timeInput', ng-pattern='/^[1-9][0-9]*$/', required='')
-                            p.help-block Number of minutes student has to respond
-                        .form-group
-                            label Choose Question
-                            ui-select(ng-model="$parent.currentQuestion")
-                                ui-select-match(placeholder="Select or search...")
-                                    span(ng-bind="$select.selected.title")
-                                ui-select-choices(repeat="question in (manager.questions | filter: $select.search)")
-                                    span(ng-bind="question.title")
-                            p.help-block Select from drop-down or type to search
-                        .form-group
-                            input(type='checkbox', ng-model='questionGraded')
-                            label  Graded
-                            p.help-block Whether responses for this question are graded.
-                        .form-group
-                            button.btn.btn-success(ng-disabled='currentQuestion == null || manager.assignment != null || assignQuestionForm.$invalid', ng-click='manager.assignQuestion(currentQuestion, timeInput, questionGraded)') Assign Question
+        .row
+            .col-md-6
+                form(name='assignQuestionForm')
+                    h6 Assign Question
+                    .form-group
+                        label Minutes
+                        input.form-control(type='number', ng-model='timeInput', ng-pattern='/^[1-9][0-9]*$/', required='')
+                        p.help-block Number of minutes student has to respond
+                    .form-group
+                        label Choose Question
+                        ui-select(ng-model="$parent.currentQuestion")
+                            ui-select-match(placeholder="Select or search...")
+                                span(ng-bind="$select.selected.title")
+                            ui-select-choices(repeat="question in (manager.questions | filter: $select.search)")
+                                span(ng-bind="question.title")
+                        p.help-block Select from drop-down or type to search
+                    .form-group
+                        input(type='checkbox', ng-model='questionGraded')
+                        label  Graded
+                        p.help-block Whether responses for this question are graded.
+                    .form-group
+                        button.btn.btn-success(ng-disabled='currentQuestion == null || manager.assignment != null || assignQuestionForm.$invalid', ng-click='manager.assignQuestion(currentQuestion, timeInput, questionGraded)') Assign Question
 
-                .col-md-6.text-center.well
-                    h5 Current Question
-                        //div.progress
-                            div.progress-bar.progress-bar-striped.active(style="width: 60%;") 60%
-                    div(ng-if='manager.assignment != null')
-                        h1 {{manager.assignment.question.prompt}}
-                        h3 Answer Due in {{getTimeUntil(manager.assignment.remaining)}}
-                        h4 {{manager.assignment.countAnswers}} / {{ manager.attendanceRecords.length }}
-                        p Students have responded
-                    div(ng-if='manager.assignment == null')
-                        h4 No Assignment
+            .col-md-6.text-center.well
+                h5 Current Question
+                    //div.progress
+                        div.progress-bar.progress-bar-striped.active(style="width: 60%;") 60%
+                div(ng-if='manager.assignment != null')
+                    h1 {{manager.assignment.question.prompt}}
+                    h3 Answer Due in {{getTimeUntil(manager.assignment.remaining)}}
+                    h4 {{manager.assignment.countAnswers}} / {{ manager.attendanceRecords.length }}
+                    p Students have responded
+                div(ng-if='manager.assignment == null')
+                    h4 No Assignment
 
 
     .col-md-2
-        p.text-center Students Connected
+        p.text-center Students Online ({{ (manager.attendanceRecords | filter: {connected: true}).length }}/{{ manager.attendanceRecords.length }})
         ul.list-group
             li.list-group-item(ng-repeat="record in manager.attendanceRecords | filter: {connected: true}") {{record.student.name.full}}
             //li.list-group-item.list-group-item-warning(ng-show="manager.students.connected.length == 0") No Students Connected
-        p.text-center Students Disconnected
+        p.text-center Students Offline ({{ (manager.attendanceRecords | filter: {connected: false}).length }}/{{ manager.attendanceRecords.length }})
         ul.list-group
             li.list-group-item(ng-repeat="record in manager.attendanceRecords | filter: {connected: false}") {{record.student.name.full}}
             //li.list-group-item.list-group-item-success(ng-show="manager.students.disconnected.length == 0") No Students Disconnected

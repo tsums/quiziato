@@ -4,7 +4,7 @@
  Quiz Project
 
 //- Question Manager Partial
-
+p.lead Manage Questions
 div.well
     form-group.form-group
         select.form-control(required='', ng-model='currentCourse', ng-options='course.title for course in API.courses')
@@ -15,13 +15,18 @@ div.well
         p.lead Questions
 
         label Choose Question
-        ui-select(ng-model="$parent.currentQuestion")
-            ui-select-match(placeholder="Select or search...")
-                span(ng-bind="$select.selected.title")
-            ui-select-choices(repeat="question in (questions | filter: $select.search)")
-                span(ng-bind="question.title")
-        p.help-block Select from drop-down or type to search
-
+        .row
+            .col-md-8
+                ui-select(ng-model="$parent.currentQuestion")
+                    ui-select-match(placeholder="Select or search...")
+                        span(ng-bind="$select.selected.title")
+                    ui-select-choices(repeat="question in (questions | filter: $select.search)")
+                        span(ng-bind="question.title")
+                p.help-block Select from drop-down or type to search
+            .col-md-4
+                button.btn.btn-danger(ng-click='deleteQuestion(currentQuestion._id)', ng-disabled='currentQuestion == null')
+                    span.glyphicon.glyphicon-trash
+                    span  Delete Question
         div(ng-if='currentQuestion != null')
             div
                 span.bold Title:

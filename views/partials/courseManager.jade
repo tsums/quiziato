@@ -7,7 +7,7 @@
 
 .row
     .col-md-8
-        p Courses
+        p.lead Courses
         div(ng-repeat="course in API.courses")
             .row
                 .col-md-4
@@ -17,7 +17,7 @@
     .col-md-4
         form(name='new_course_form')
             .form-group
-                label Create New Course
+                label.lead Create New Course
                 input.form-control(type='text', name='course_title', placeholder='Title', autofocus='', required='', ng-model='new_course_title')
             .form-group
                 button.btn.btn-primary.btn-block(type='submit' ng-click='API.postCourse(new_course_title)', ng-disabled='new_course_form.$invalid') Create Course
