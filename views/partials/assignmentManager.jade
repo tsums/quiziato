@@ -8,9 +8,10 @@ div(ng-if='session != null')
     h5
         a(ng-click='returntoSession()', href='#') ← {{getFullLabel(session)}}
     .row
-        h6.col-md-4 Assignment Details: {{assignment.question.prompt}}
-        h6.col-md-4 Assigned At: {{assignment.assignedAt | date: "MM/dd h:mm a"}}
-        h6.col-md-4 Due At: {{assignment.dueAt | date: "MM/dd h:mm a"}}
+        h5.col-md-3 Assignment Details:
+        h5.col-md-3 Assigned At: {{assignment.assignedAt | date: "MM/dd h:mm a"}}
+        h5.col-md-3 Due At: {{assignment.dueAt | date: "MM/dd h:mm a"}}
+        h5.col-md-3 Graded: {{assignment.graded ? 'Graded' : 'Ungraded'}}
 
     .row
         .col-md-4
@@ -33,11 +34,12 @@ div(ng-if='session != null')
                 h6.col-md-3 Student
                 h6.col-md-3 Submitted At
                 h6.col-md-3 Response
-                h6.col-md-3 Correct?
+                h6.col-md-3(ng-if='assignment.graded') Correct?
             .row(ng-repeat='answer in assignment.answers')
                 p.col-md-3 {{answer.student.name.full}}
                 p.col-md-3 {{answer.submittedAt | date: "MM/dd h:mm a"}}
                 p.col-md-3 {{getOptionText(answer.submission)}}
-                p.col-md-3 {{answer.correct ? 'Correct' : 'Incorrect' }}
+                p.col-md-3(ng-if='assignment.graded') {{answer.correct ? 'Correct' : 'Incorrect' }}
+            p(ng-if='assignment.answers.length == 0') No Responses
 
 

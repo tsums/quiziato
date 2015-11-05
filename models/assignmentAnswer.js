@@ -12,6 +12,7 @@ var AssignmentAnswer = new Schema({
     student: {type: Schema.Types.ObjectId, required: true, ref: 'User'},
     submission: {type: String, required: true},
     submittedAt: {type: Date, required: true},
+    graded: {type: Boolean, required: true},
     correct: {type: Boolean, required: true, default: false}
 });
 

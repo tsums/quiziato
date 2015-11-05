@@ -13,7 +13,7 @@ app.controller('classroomController', ['$scope', '$routeParams', '$controller', 
 
     $scope.API = API;
 
-    $scope.show_qr = true;
+    $scope.questionGraded = true;
 
     $scope.timeInput = 1;
 

@@ -215,6 +215,7 @@ var listen = function (server) {
                             assignment: assignmentId,
                             submission: optionId,
                             submittedAt: Date.now(),
+                            graded: assignment.graded,
                             correct: (optionId == assignment.question.correctOption)
                         });
 
@@ -343,6 +344,7 @@ var listen = function (server) {
                         var currentAssignment = new QuestionAssignment({
                             question: question.id,
                             assignedAt: Date.now(),
+                            graded: data.graded,
                             dueAt: moment().add(parseInt(data.time), 'minutes').toDate()
                         });
 

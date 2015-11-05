@@ -54,7 +54,11 @@
                                     span(ng-bind="question.title")
                             p.help-block Select from drop-down or type to search
                         .form-group
-                            button.btn.btn-success(ng-disabled='currentQuestion == null || manager.assignment != null || assignQuestionForm.$invalid', ng-click='manager.assignQuestion(currentQuestion, timeInput)') Assign Question
+                            input(type='checkbox', ng-model='questionGraded')
+                            label  Graded
+                            p.help-block Whether responses for this question are graded.
+                        .form-group
+                            button.btn.btn-success(ng-disabled='currentQuestion == null || manager.assignment != null || assignQuestionForm.$invalid', ng-click='manager.assignQuestion(currentQuestion, timeInput, questionGraded)') Assign Question
 
                 .col-md-6.text-center.well
                     h5 Current Question

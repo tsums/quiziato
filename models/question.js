@@ -16,7 +16,7 @@ var Question = new Schema({
     prompt: {type: String, required: true},
     course: {type: Schema.Types.ObjectId, required: true},
     author: {type: Schema.Types.ObjectId, required: true},
-    type: {type: String, required: true}, //TODO set type when questions are created.
+    type: {type: String, required: true},
     options: [QuestionOption],
     correctOption: {type: String, required: true}
 });
