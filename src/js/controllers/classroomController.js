@@ -14,6 +14,7 @@ app.controller('classroomController', ['$scope', '$routeParams', '$controller', 
     $scope.API = API;
 
     $scope.questionGraded = true;
+    $scope.newSessionAttendanceMandatory = true;
 
     $scope.timeInput = 1;
 

@@ -13,6 +13,7 @@ var CourseSession = new Schema({
     course: {type: Schema.Types.ObjectId, required: true, ref: 'Course'},
     roomId: {type: String, required: true},
     instructor: {type: Schema.Types.ObjectId, required: true, ref: 'User'},
+    attendanceMandatory: {type: Boolean, required: true, default: true},
     assignments: [{type: Schema.Types.ObjectId, ref: 'QuestionAssignment'}]
 });
 

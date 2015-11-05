@@ -24,7 +24,7 @@ div(ng-show="sessionDetail == null")
     h6
         a(href="#", ng-click="back()") ← Go Back
     .col-md-5
-        h5 Attendance
+        h5 Attendance ({{sessionDetail.attendanceMandatory ? 'Mandatory' : 'Optional'}})
         .row
             h6.col-md-6 Student
             h6.col-md-6 Checkin Time

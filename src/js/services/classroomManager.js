@@ -58,9 +58,10 @@ app.factory('classroomManager', ['dashSocket', 'API', '$timeout', '$interval', f
     };
 
     // create a class session.
-    manager.startSession = function(course) {
+    manager.startSession = function(course, attendanceMandatory) {
         dashSocket.emit('startSession', {
-            course: course._id
+            course: course._id,
+            attendanceMandatory: attendanceMandatory
         }, function(data) {
             data.course = course;
             manager.inSession = true;

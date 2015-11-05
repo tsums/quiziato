@@ -6,22 +6,27 @@
 //- Classroom Manager Partial
 .row(ng-if='!manager.inSession')
     .col-md-10.col-md-push-1
-            .well(ng-show='API.sessions.length > 0')
-                h5.text-center You currently have {{API.sessions.length}} sessions in progress.
-                div(ng-repeat='session in API.sessions')
-                    .row
-                        p.col-md-4 {{session.course.title}} : {{session.date | date : "MM/dd h:mm a"}}
-                        button.btn.btn-sm.btn-success.col-md-3(ng-click='manager.resumeSession(session)') Rejoin Session
-                        button.btn.btn-sm.btn-warning.col-md-3.col-md-push-1(ng-click='API.endSession(session._id)') End Session
+        p.lead Classroom
+        .well(ng-show='API.sessions.length > 0')
+            h5.text-center You currently have {{API.sessions.length}} sessions in progress.
+            div(ng-repeat='session in API.sessions')
+                .row
+                    p.col-md-4 {{session.course.title}} : {{session.date | date : "MM/dd h:mm a"}}
+                    button.btn.btn-sm.btn-success.col-md-3(ng-click='manager.resumeSession(session)') Rejoin Session
+                    button.btn.btn-sm.btn-warning.col-md-3.col-md-push-1(ng-click='API.endSession(session._id)') End Session
 
-            form(name='start_session_form')
-                h6.text-center To begin, select a course and click 'Start Room'
-                .form-group
-                    label Course
-                    select.form-control(required='', ng-model='course', ng-options='course.title for course in API.courses')
-                        option(value='') Select Course
-                .form-group
-                    button.btn.btn-lg.btn-primary.btn-block(type='submit', ng-click='manager.startSession(course)', ng-disabled='start_session_form.$invalid') Start Room
+        form(name='start_session_form')
+            h6.text-center To begin, select a course and click 'Start Room'
+            .form-group
+                label Course
+                select.form-control(required='', ng-model='course', ng-options='course.title for course in API.courses')
+                    option(value='') Select Course
+            .form-group
+                input(type='checkbox', ng-model='newSessionAttendanceMandatory', id='newSessionAttendanceMandatoryCheckbox')
+                label(for='newSessionAttendanceMandatoryCheckbox') Mandatory Attendance
+                p.help-block Students not attending will be graded absent
+            .form-group
+                button.btn.btn-lg.btn-primary.btn-block(type='submit', ng-click='manager.startSession(course, newSessionAttendanceMandatory)', ng-disabled='start_session_form.$invalid') Start Room
 
 .row(ng-if='manager.inSession')
     .col-md-10

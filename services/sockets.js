@@ -293,6 +293,7 @@ var listen = function (server) {
             var session = new CourseSession({
                 date: Date.now(),
                 course: data.course,
+                attendanceMandatory: data.attendanceMandatory,
                 roomId: uuid.v4(),
                 instructor: user.id
             });
