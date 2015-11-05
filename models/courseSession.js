@@ -7,9 +7,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// TODO QuestionAssignment is no longer an embedded doc - need to fix all API/Socket code.
-
-
 var CourseSession = new Schema({
     date : {type: Date, required: true},
     ended: {type: Boolean, required: true, default: false},

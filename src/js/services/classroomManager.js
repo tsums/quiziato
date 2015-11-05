@@ -24,8 +24,16 @@ app.factory('classroomManager', ['dashSocket', 'API', '$timeout', '$interval', f
         console.log(data);
     });
 
+    dashSocket.on('answerUpdate', function(data) {
+        if (manager.assignment) {
+            manager.assignment.countAnswers = data;
+        }
+    });
+
+    // TODO combine this with manual assign.
     dashSocket.on('currentAssignment', function(data) {
         manager.assignment = data;
+        manager.assignment.countAnswers = 0;
 
         var due = moment(manager.assignment.dueAt);
         manager.assignment.remaining = due.diff(moment(), 'seconds');
@@ -86,6 +94,7 @@ app.factory('classroomManager', ['dashSocket', 'API', '$timeout', '$interval', f
         dashSocket.emit('assignQuestion', {question: question._id, time: time, graded: graded}, function(data) {
             manager.assignment = data;
             manager.assignment.question = question;
+            manager.assignment.countAnswers = 0;
 
             var due = moment(manager.assignment.dueAt);
             manager.assignment.remaining = due.diff(moment(), 'seconds');

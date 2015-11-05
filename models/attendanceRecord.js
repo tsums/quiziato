@@ -15,6 +15,6 @@ var AttendanceRecord = new Schema({
 });
 
 AttendanceRecord.index({ student: 1, session: -1 }, { unique: true });
-AttendanceRecord.index({ session: 1, connected: 1}); //TODO test this.
+AttendanceRecord.index({ session: 1, connected: 1});
 
 module.exports = mongoose.model('AttendanceRecord', AttendanceRecord);

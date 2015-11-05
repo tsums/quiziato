@@ -67,6 +67,8 @@
                     div(ng-if='manager.assignment != null')
                         h1 {{manager.assignment.question.prompt}}
                         h3 Answer Due in {{getTimeUntil(manager.assignment.remaining)}}
+                        h4 {{manager.assignment.countAnswers}} / {{ manager.attendanceRecords.length }}
+                        p Students have responded
                     div(ng-if='manager.assignment == null')
                         h4 No Assignment
 

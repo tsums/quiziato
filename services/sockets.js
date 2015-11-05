@@ -61,6 +61,19 @@ var listen = function (server) {
         });
     };
 
+    // TODO need to meet w/ iOS to test this functionality.
+    var sendDashboardStudentAnsweredUpdate = function(room, assignmentId) {
+        AssignmentAnswer.find({assignment : assignmentId}, function(err, answers) {
+            if (err) {
+                winston.error(err);
+                return;
+            }
+
+            dashboard.in(room).emit('answerUpdate', answers.length);
+        });
+    };
+
+
     // Token-Based Authentication for Mobile Clients
     classroom.use(function(socket,next) {
 
@@ -226,7 +239,8 @@ var listen = function (server) {
                             }
 
                             winston.info(user.username + " submitted answer ");
-                            callback({success: true})
+                            callback({success: true});
+                            sendDashboardStudentAnsweredUpdate(room, assignmentId);
                         })
                     } else {
                         winston.info('answer submitted after due time');
