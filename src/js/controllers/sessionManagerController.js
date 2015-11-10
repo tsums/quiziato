@@ -41,7 +41,7 @@ app.controller('sessionManagerController', ['$scope', '$filter', '$routeParams',
     };
 
     $scope.getFullLabel = function(session) {
-        return session.course.title + " : " + $filter('date')(session.date, "MM/dd h:mm a") + " : " + session.instructor.name.full;
+        return session.course.full + " : " + $filter('date')(session.date, "MM/dd h:mm a") + " : " + session.instructor.name.full;
     }
 
 }]);

@@ -7,7 +7,7 @@
 p.lead Manage Questions
 div.well
     form-group.form-group
-        select.form-control(required='', ng-model='currentCourse', ng-options='course.title for course in API.courses')
+        select.form-control(required='', ng-model='currentCourse', ng-options='course.full for course in API.courses')
             option(value='') Select Course
 
 .row(ng-show="currentCourse != null")

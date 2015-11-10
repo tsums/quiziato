@@ -14,7 +14,7 @@ div(ng-if='session != null')
         h5.col-md-3 Graded: {{assignment.graded ? 'Graded' : 'Ungraded'}}
 
     .row
-        .col-md-4
+        .col-md-3
             p.lead Question
             div
                 span.bold Title:
@@ -29,7 +29,7 @@ div(ng-if='session != null')
             p.text-warning(ng-if='assignment.question.removed') Note: Question was deleted after assignment.
 
 
-        .col-md-8
+        .col-md-9
             p.lead Responses
             .row
                 h6.col-md-3 Student

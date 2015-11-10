@@ -10,4 +10,6 @@ app.controller('courseManagerController', ['$scope', '$routeParams', 'API', func
 
     $scope.API = API;
 
+    $scope.new_course = {};
+
 }]);

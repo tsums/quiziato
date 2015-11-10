@@ -11,7 +11,7 @@ div(ng-show="sessionDetail == null")
 
         div.well.col-md-5
             form-group.form-group
-                select.form-control(required='', ng-model='currentCourse', ng-options='course.title for course in API.courses')
+                select.form-control(required='', ng-model='currentCourse', ng-options='course.full for course in API.courses')
                     option(value='') Select Course
 
         div.well.col-md-6.col-md-push-1

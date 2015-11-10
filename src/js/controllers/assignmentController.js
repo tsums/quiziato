@@ -33,7 +33,7 @@ app.controller('assignmentController', ['$scope', '$filter', '$routeParams', '$l
     };
 
     $scope.getFullLabel = function(session) {
-        return session.course.title + " : " + $filter('date')(session.date, "MM/dd h:mm a") + " : " + session.instructor.name.full;
+        return session.course.short + " : " + $filter('date')(session.date, "MM/dd h:mm a") + " : " + session.instructor.name.full;
     }
 
     $scope.getOptionText = function(optionId) {

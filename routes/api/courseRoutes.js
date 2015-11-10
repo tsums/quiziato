@@ -17,7 +17,8 @@ router.route('/')
 
     .post(function (req, res) {
 
-        var course = new Course({title: req.body.title, instructor: req.user.id});
+        var course = new Course(req.body);
+        course.instructor = req.user.id;
         course.save(function (err) {
             if (err) {
                 winston.error(err.message);
@@ -33,7 +34,7 @@ router.route('/my')
 
     .get(function (req, res) {
 
-        Course.find({instructor: req.user.id}, function (err, courses) {
+        Course.find({instructor: req.user.id}).populate('instructor').exec(function (err, courses) {
             if (err) {
                 winston.error(err.message);
                 res.code(500).send('Error Ocurred: ' + err.message);

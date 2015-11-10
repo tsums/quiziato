@@ -7,17 +7,28 @@
 
 .row
     .col-md-8
-        p.lead Courses
-        div(ng-repeat="course in API.courses")
-            .row
-                .col-md-4
-                    p {{course.title}}
-                .col-md-4
-                    a(href="classroom") Start Session
+        p.lead Your Courses
+        .row
+            p.col-md-3 Course Number
+            p.col-md-3 Section
+            p.col-md-3 Title
+            p.col-md-3 Instructor
+        .row(ng-repeat="course in API.courses")
+            p.col-md-3 {{course.number}}
+            p.col-md-3 {{course.section}}
+            p.col-md-3 {{course.title}}
+            p.col-md-3 {{course.instructor.name.full}}
     .col-md-4
+        p.lead New Course
         form(name='new_course_form')
             .form-group
-                label.lead Create New Course
-                input.form-control(type='text', name='course_title', placeholder='Title', autofocus='', required='', ng-model='new_course_title')
+                label Course Number
+                input.form-control(type='text', name='course_number', placeholder='CS100', autofocus='', required='', ng-model='new_course.number')
             .form-group
-                button.btn.btn-primary.btn-block(type='submit' ng-click='API.postCourse(new_course_title)', ng-disabled='new_course_form.$invalid') Create Course
+                label Course Section
+                input.form-control(type='text', name='course_numer', placeholder='001', autofocus='', required='', ng-model='new_course.section')
+            .form-group
+                label Course Title
+                input.form-control(type='text', name='course_title', placeholder='Roadmap to Computing', autofocus='', required='', ng-model='new_course.title')
+            .form-group
+                button.btn.btn-primary.btn-block(type='submit' ng-click='API.postCourse(new_course)', ng-disabled='new_course_form.$invalid') Create Course

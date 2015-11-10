@@ -11,7 +11,7 @@
             h5.text-center You currently have {{API.sessions.length}} sessions in progress.
             div(ng-repeat='session in API.sessions')
                 .row
-                    p.col-md-4 {{session.course.title}} : {{session.date | date : "MM/dd h:mm a"}}
+                    p.col-md-4 {{session.course.short}} : {{session.date | date : "MM/dd h:mm a"}}
                     button.btn.btn-sm.btn-success.col-md-3(ng-click='manager.resumeSession(session)') Rejoin Session
                     button.btn.btn-sm.btn-warning.col-md-3.col-md-push-1(ng-click='API.endSession(session._id)') End Session
 
@@ -19,7 +19,7 @@
             h6.text-center To begin, select a course and click 'Start Room'
             .form-group
                 label Course
-                select.form-control(required='', ng-model='course', ng-options='course.title for course in API.courses')
+                select.form-control(required='', ng-model='course', ng-options='course.short for course in API.courses')
                     option(value='') Select Course
             .form-group
                 input(type='checkbox', ng-model='newSessionAttendanceMandatory', id='newSessionAttendanceMandatoryCheckbox')
@@ -31,7 +31,7 @@
 .row(ng-if='manager.inSession')
     .col-md-10
         .row
-            p.col-md-5.lead {{manager.session.course.title | limitTo : 15}} Started: {{manager.session.date | date : "MM/dd h:mm a"}}
+            p.col-md-5.lead {{manager.session.course.short | limitTo : 15}} Started: {{manager.session.date | date : "MM/dd h:mm a"}}
             div.col-md-7
                 div.btn-toolbar.pull-right
                     button.btn.btn-sm.btn-danger(type='button', ng-click='manager.leaveSession()')

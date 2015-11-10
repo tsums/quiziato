@@ -24,10 +24,8 @@ app.factory('API', ['$http', function($http) {
         });
     };
 
-    API.postCourse = function(title) {
-        $http.post('/web/api/course', {
-            title: title
-        }).then(function(response) {
+    API.postCourse = function(course) {
+        $http.post('/web/api/course', course).then(function(response) {
             API.getCourses();
         }, function(error) {
             console.log(error);
