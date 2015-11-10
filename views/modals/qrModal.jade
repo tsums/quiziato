@@ -6,7 +6,7 @@
 .modal-header
     h3.modal-title.text-center Student: Scan Code Now
 .modal-body.text-center
-    qrcode(data='{{manager.session.roomId}}', size='550')
+    qrcode(data='{{manager.session.roomId}}', size='500')
     p {{manager.session.roomId}}
 .modal-footer
     button.btn.btn-danger(type='button', ng-click='close()') Close

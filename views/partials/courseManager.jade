@@ -31,4 +31,4 @@
                 label Course Title
                 input.form-control(type='text', name='course_title', placeholder='Roadmap to Computing', autofocus='', required='', ng-model='new_course.title')
             .form-group
-                button.btn.btn-primary.btn-block(type='submit' ng-click='API.postCourse(new_course)', ng-disabled='new_course_form.$invalid') Create Course
+                button.btn.btn-primary.btn-block(type='submit' ng-click='API.postCourse(new_course) && (new_course = null)', ng-disabled='new_course_form.$invalid') Create Course

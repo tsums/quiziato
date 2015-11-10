@@ -18,7 +18,6 @@ html(lang='en')
         block js
             if ENV_DEVELOPMENT
                 script(src='http://localhost:35729/livereload.js')
-
         base(href="/dashboard/")
     body
         div(ng-app='dashboard')
@@ -58,10 +57,8 @@ html(lang='en')
                                     span.glyphicon.glyphicon-log-out
                                     span  Log Out
 
-
                 .container
                     div(ng-view)
-
 
     script(src='/socket.io/socket.io.js')
     script(src='/components/moment/moment.js')

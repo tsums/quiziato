@@ -8,6 +8,7 @@ var router = require('express').Router();
 var winston = require('winston').loggers.get('api');
 var CourseSession = require('../../models/courseSession');
 var AttendanceRecord = require('../../models/attendanceRecord');
+var AssignmentAnswer = require('../../models/assignmentAnswer');
 
 router.route('/me')
 
@@ -33,7 +34,7 @@ router.route('/me/sessions')
 
             if (err) {
                 winston.error(err);
-                return
+                return;
             }
 
             if (records) {
@@ -49,6 +50,33 @@ router.route('/me/sessions')
 
         });
 
+
+    });
+
+router.route('/me/session/:sid/grades')
+
+    .get(function(req, res) {
+
+        CourseSession.findById(req.sid, function(err, session) {
+            if (err) {
+                winston.error(err);
+                res.code(500).send(err);
+                return;
+            }
+
+            AssignmentAnswer.find({student: req.user.id}).where('assignment').in(session.assignments).populate('student assignment assignment.question').exec(function(err, answers) {
+
+                if (err) {
+                    winston.error(err);
+                    res.code(500).send(err);
+                    return;
+                }
+
+                res.send(answers);
+
+            });
+
+        });
 
     });
 
