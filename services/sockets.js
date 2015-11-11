@@ -61,7 +61,6 @@ var listen = function (server) {
         });
     };
 
-    // TODO need to meet w/ iOS to test this functionality.
     var sendDashboardStudentAnsweredUpdate = function(room, assignmentId) {
         AssignmentAnswer.find({assignment : assignmentId}, function(err, answers) {
             if (err) {
@@ -72,7 +71,6 @@ var listen = function (server) {
             dashboard.in(room).emit('answerUpdate', answers.length);
         });
     };
-
 
     // Token-Based Authentication for Mobile Clients
     classroom.use(function(socket,next) {
@@ -399,7 +397,7 @@ var listen = function (server) {
                 if (assignment && assignment.dueAt > Date.now()) {
                     winston.info("Ending Assignment: " + data);
 
-                    assignment.dueAt = Date.now(); //TODO check the validity of this hack
+                    assignment.dueAt = Date.now();
                     assignment.save(function(err) {
                         if (err) {
                             winston.error(err);

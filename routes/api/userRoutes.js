@@ -57,7 +57,7 @@ router.route('/me/session/:sid/grades')
 
     .get(function(req, res) {
 
-        CourseSession.findById(req.sid, function(err, session) {
+        CourseSession.findById(req.params.sid, function(err, session) {
             if (err) {
                 winston.error(err);
                 res.code(500).send(err);
