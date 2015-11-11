@@ -47,7 +47,7 @@ passport.use(new BearerStrategy(
                 return done(null, false);
             }
 
-            User.findOne(token.userID, function (err, user) {
+            User.findById(token.userID, function (err, user) {
 
                 if (err) {
                     return done(err);
@@ -58,7 +58,7 @@ passport.use(new BearerStrategy(
 
                 var info = { scope: '*' };
                 done(null, user, info);
-            })
+            });
 
         });
     }

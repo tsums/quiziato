@@ -64,17 +64,22 @@ router.route('/me/session/:sid/grades')
                 return;
             }
 
-            AssignmentAnswer.find({student: req.user.id}).where('assignment').in(session.assignments).populate('student assignment assignment.question').exec(function(err, answers) {
+            if (session) {
+                AssignmentAnswer.find({student: req.user.id}).where('assignment').in(session.assignments).populate('student assignment assignment.question').exec(function(err, answers) {
 
-                if (err) {
-                    winston.error(err);
-                    res.code(500).send(err);
-                    return;
-                }
+                    if (err) {
+                        winston.error(err);
+                        res.code(500).send(err);
+                        return;
+                    }
 
-                res.send(answers);
+                    res.send(answers);
 
-            });
+                });
+            } else {
+                res.status(404).send('Not Found');
+            }
+
 
         });
 
