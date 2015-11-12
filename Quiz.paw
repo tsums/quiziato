@@ -296,7 +296,7 @@
     </object>
     <object type="LMREQUEST" id="z135">
         <attribute name="uuid" type="string">61D66D65-B5CD-4D36-8817-5D10090EF513</attribute>
-        <attribute name="url" type="string">[{"data":{"environmentVariable":"F42CC0C3-6986-4E82-A208-A8D3A9DAE663"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/api\\/user\\/me"]</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"F42CC0C3-6986-4E82-A208-A8D3A9DAE663"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/api\\/user\\/me\\/session\\/56423e7e90af271100f79848\\/grades"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>
@@ -307,7 +307,7 @@
         <attribute name="name" type="string">Get Me</attribute>
         <relationship name="parent" type="0/1" destination="LMREQUESTTREEITEM" idrefs="z137"></relationship>
         <relationship name="children" type="0/0" destination="LMREQUESTTREEITEM"></relationship>
-        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z134 z136"></relationship>
+        <relationship name="headers" type="0/0" destination="LMKEYVALUE" idrefs="z136 z134"></relationship>
     </object>
     <object type="LMKEYVALUE" id="z136">
         <attribute name="value" type="string"></attribute>
@@ -469,7 +469,7 @@
     </object>
     <object type="LMREQUEST" id="z154">
         <attribute name="uuid" type="string">1E39B409-9246-4EBF-B4E8-6C37DFFD9D56</attribute>
-        <attribute name="url" type="string">[{"data":{"environmentVariable":"F42CC0C3-6986-4E82-A208-A8D3A9DAE663"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/api\\/user\\/me\\/session\\/56423e3190af271100f79844\\/grades"]</attribute>
+        <attribute name="url" type="string">[{"data":{"environmentVariable":"F42CC0C3-6986-4E82-A208-A8D3A9DAE663"},"identifier":"com.luckymarmot.EnvironmentVariableDynamicValue"},"\\/api\\/user\\/me\\/session\\/56423e7e90af271100f79848\\/grades"]</attribute>
         <attribute name="storecookies" type="bool">1</attribute>
         <attribute name="sendcookies" type="bool">1</attribute>
         <attribute name="redirectmethod" type="bool">0</attribute>

@@ -65,7 +65,7 @@ router.route('/me/session/:sid/grades')
             }
 
             if (session) {
-                AssignmentAnswer.find({student: req.user.id}).where('assignment').in(session.assignments).populate('student assignment assignment.question').exec(function(err, answers) {
+                AssignmentAnswer.find({student: req.user.id}).where('assignment').in(session.assignments).populate('student assignment').exec(function(err, answers) {
 
                     if (err) {
                         winston.error(err);
@@ -73,7 +73,10 @@ router.route('/me/session/:sid/grades')
                         return;
                     }
 
-                    res.send(answers);
+                    CourseSession.populate(answers, {path: 'assignment.question', model: 'Question'}).then(function() {
+                        res.send(answers);
+                    });
+
 
                 });
             } else {
