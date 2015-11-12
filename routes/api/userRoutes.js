@@ -4,6 +4,10 @@
  * Quiz Project
  */
 
+/*
+    Routes for user data.
+ */
+
 var router = require('express').Router();
 var winston = require('winston').loggers.get('api');
 var CourseSession = require('../../models/courseSession');

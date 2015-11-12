@@ -12,6 +12,7 @@ router.get('/', function (req, res) {
     res.redirect('/login');
 });
 
+// All /dashboard* URLS should render the dashboard view. Local routing on Angular side will take over.
 router.get('/dashboard*', ensureLoggedIn('/login'), roleControl.is('instructor'), function(req, res) {
     res.render('dashboard/dashboard', {user: req.user});
 });

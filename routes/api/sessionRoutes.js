@@ -4,6 +4,10 @@
  * Quiz Project
  */
 
+/*
+    Routes for class session information.
+ */
+
 var Question = require('../../models/question');
 var CourseSession = require('../../models/courseSession');
 var AttendanceRecord = require('../../models/attendanceRecord');

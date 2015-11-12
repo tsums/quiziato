@@ -4,6 +4,10 @@
  * Quiz Project
  */
 
+/*
+    Question API Routes.
+ */
+
 
 var Question = require('../../models/question');
 var router = require('express').Router();
@@ -45,10 +49,9 @@ router.route('/')
     .post(function (req, res) {
         var question = new Question(req.body);
 
-        //TODO switch on question mode.
-
+        //TODO consider handling more question types.
         question.author = req.user.id;
-        question.type = "MC"; //TODO send question type from dashboard.
+        question.type = "MC";
         question.save(function(err) {
             if (err) {
                 winston.error(err);

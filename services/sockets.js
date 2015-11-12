@@ -5,7 +5,7 @@
  */
 
 /*
- * Socket Configuration
+    Master Socket Configuration
  */
 
 var socketio = require('socket.io');
@@ -26,8 +26,10 @@ var QuestionAssignment = require('../models/questionAssignment');
 var AttendanceRecord = require('../models/attendanceRecord');
 var AssignmentAnswer = require('../models/assignmentAnswer');
 
+// Listen function controls the entire operation of socket server.
 var listen = function (server) {
 
+    // bind io to the express server.
     var io = socketio.listen(server);
 
     // Classroom Namespace is for mobile clients.
@@ -36,6 +38,7 @@ var listen = function (server) {
     // Dashboard Namespace is for web clients.
     var dashboard = io.of('/dashboard');
 
+    // inform dashboard of student connection change.
     var sendStudentConnectionUpdate = function(session) {
         AttendanceRecord.find({session: session.id}).populate('student').exec(function(err, records) {
             if (err) {
@@ -46,6 +49,7 @@ var listen = function (server) {
         });
     };
 
+    // inform dashboard of session assignment change.
     var sendCurrentAssignmentToDashboard = function(session) {
         QuestionAssignment.findOne(session.assignments[session.assignments.length - 1]).populate('question').exec(function(err, assignment) {
             if (err) {
@@ -61,6 +65,7 @@ var listen = function (server) {
         });
     };
 
+    // inform dashboard of student submissions count change.
     var sendDashboardStudentAnsweredUpdate = function(room, assignmentId) {
         AssignmentAnswer.find({assignment : assignmentId}, function(err, answers) {
             if (err) {
@@ -130,6 +135,7 @@ var listen = function (server) {
 
     }));
 
+    // when a socket connects to the classroom, establish their protool.
     classroom.on('connection', function (socket) {
 
         var room = null;
@@ -138,6 +144,7 @@ var listen = function (server) {
 
         winston.info(user.username + ' connected to namespace \'/classroom\'');
 
+        // allow client to query for status
         socket.on('statusCheck', function(data, callback) {
             callback({
                 inSession: currentSession != null,
@@ -145,6 +152,7 @@ var listen = function (server) {
             });
         });
 
+        // when submitting attendance, validate.
         socket.on('attendance', function(data, callback) {
 
             winston.info(user.username + ' sent attendance token: ' + data);
@@ -158,7 +166,6 @@ var listen = function (server) {
 
                     currentSession = session;
 
-                    // TODO test this, iOS should be able to use this data to figure out if there is an assignment pending.
                     CourseSession.populate(session, {path: 'assignments.question', model: 'Question'}).then(function() {
 
                         AttendanceRecord.findOne({student: user.id, session: session.id}, function (err, record) {

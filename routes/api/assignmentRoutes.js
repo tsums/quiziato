@@ -4,12 +4,14 @@
  * Quiz Project
  */
 
+/*
+    Assignment API Routes.
+ */
 
 var QuestionAssignment = require('../../models/questionAssignment');
 var AssignmentAnswer = require('../../models/assignmentAnswer');
 var router = require('express').Router();
 var winston = require('winston').loggers.get('api');
-
 
 router.route('/:id')
 
@@ -27,7 +29,7 @@ router.route('/:id')
 
                 AssignmentAnswer.find({assignment: req.params.id}).populate('student').exec(function (err, answers) {
 
-                    if(err) {
+                    if (err) {
                         winston.error(err);
                         res.status(500).send(err);
                         return;
@@ -35,7 +37,6 @@ router.route('/:id')
 
                     assignment = assignment.toObject();
                     assignment.answers = answers;
-
                     res.send(assignment);
 
                 });
@@ -45,6 +46,5 @@ router.route('/:id')
             }
         });
     });
-
 
 module.exports = router;
