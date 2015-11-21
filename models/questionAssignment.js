@@ -14,16 +14,6 @@ var QuestionAssignment = new Schema({
     assignedAt: {type: Date, required: true},
     dueAt: {type: Date, required: true},
     graded: {type: Boolean, required: true, default: true}
-}, {
-    toObject: { virtuals: true },
-    toJSON: { virtuals: true }
-});
-
-// TODO virtual here that finds the percentages for the assignment
-QuestionAssignment.virtual('average').get(function () {
-
-
-
 });
 
 

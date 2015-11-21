@@ -37,6 +37,22 @@ router.route('/:id')
 
                     assignment = assignment.toObject();
                     assignment.answers = answers;
+
+                    if (assignment.graded) {
+                        var average = 0;
+
+                        for (var i = 0, len = answers.length; i < len; i++) {
+                            if (answers[i].correct) {
+                                average++;
+                            }
+                        }
+
+                        average = average / answers.length;
+
+                        assignment.average = average;
+                    }
+
+
                     res.send(assignment);
 
                 });
