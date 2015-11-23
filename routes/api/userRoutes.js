@@ -50,7 +50,9 @@ router.route('/me/sessions')
                 }
 
                 CourseSession.populate(records, {path: 'session.course', model: 'Course'}).then(function() {
-                    res.send(records);
+                    CourseSession.populate(records, {path: 'session.instructor', model: 'Instructor'}).then(function() {
+                        res.send(records);
+                    });
                 });
 
             }
