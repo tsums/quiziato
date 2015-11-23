@@ -49,7 +49,10 @@ router.route('/me/sessions')
                     });
                 }
 
-                res.send(records);
+                CourseSession.populate(records, {path: 'session.course', model: 'Course'}).then(function() {
+                    res.send(records);
+                });
+
             }
 
         });
