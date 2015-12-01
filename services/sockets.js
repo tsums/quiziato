@@ -225,37 +225,48 @@ var listen = function (server) {
                 }
 
                 if (assignment) {
-                    // TODO check if answer already submitted
 
-                    if (assignment.dueAt > Date.now()) {
-                        var answer = new AssignmentAnswer({
-                            student: user.id,
-                            assignment: assignmentId,
-                            submission: optionId,
-                            submittedAt: Date.now(),
-                            graded: assignment.graded,
-                            correct: (optionId == assignment.question.correctOption)
-                        });
+                    AssignmentAnswer.findOne({assignment: assignment.id, student: user.id}, function(err, submission) {
+                        if (err) {
+                            winston.error(err);
+                        }
 
-                        answer.save(function(err) {
-                            if (err) {
-                                winston.error(err);
-                                return;
-                            }
+                        if (submission) {
+                            winston.info(user.username + " tried to submit an answer twice for assignment: " + assignment.id);
+                        } else if (assignment.dueAt > Date.now()) {
 
-                            winston.info(user.username + " submitted answer ");
-                            callback({success: true});
-                            sendDashboardStudentAnsweredUpdate(room, assignmentId);
-                        })
-                    } else {
-                        winston.info('answer submitted after due time');
-                    }
+                            var answer = new AssignmentAnswer({
+                                student: user.id,
+                                assignment: assignmentId,
+                                submission: optionId,
+                                submittedAt: Date.now(),
+                                graded: assignment.graded,
+                                correct: (optionId == assignment.question.correctOption)
+                            });
+
+                            answer.save(function(err) {
+                                if (err) {
+                                    winston.error(err);
+                                    return;
+                                }
+
+                                winston.info(user.username + " submitted answer ");
+                                callback({success: true});
+                                sendDashboardStudentAnsweredUpdate(room, assignmentId);
+                            });
+
+                        } else {
+                            winston.info('answer submitted after due time');
+                        }
+
+                    });
+
+
                 } else {
                     winston.info('could not find assignment: ' + assignmentId)
                 }
 
             });
-
 
         });
 

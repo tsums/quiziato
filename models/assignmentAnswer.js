@@ -16,4 +16,6 @@ var AssignmentAnswer = new Schema({
     correct: {type: Boolean, required: true, default: false}
 });
 
+AssignmentAnswer.index({ student: 1, assignment: -1 }, { unique: true });
+
 module.exports = mongoose.model('AssignmentAnswer', AssignmentAnswer);
