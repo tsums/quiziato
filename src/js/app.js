@@ -39,6 +39,9 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
             templateUrl: '/partials/assignmentManager',
             controller: 'assignmentController'
         })
+        .when('/help', {
+            templateUrl: '/partials/help'
+        })
         .otherwise({redirectTo: '/'});
 
     $locationProvider.html5Mode({
