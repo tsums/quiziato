@@ -36,7 +36,7 @@ html(lang='en')
                                     span  Classroom
                             li
                                 a(href="questions", ng-class="{bold : activeController == 'questionManagerController'}")
-                                    span.glyphicon.glyphicon-question-sign
+                                    span.glyphicon.glyphicon-pencil
                                     span  Questions
                             li
                                 a(href="sessions", ng-class="{bold : activeController == 'sessionManagerController'}")
@@ -46,6 +46,9 @@ html(lang='en')
                                 a(href="courses", ng-class="{bold : activeController == 'courseManagerController'}")
                                     span.glyphicon.glyphicon-book
                                     span  Courses
+                            li
+                                a(href="help")
+                                    span.glyphicon.glyphicon-question-sign
 
                         ul.nav.navbar-nav.navbar-right
                             li
