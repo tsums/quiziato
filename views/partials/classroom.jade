@@ -31,22 +31,22 @@
 .row(ng-if='manager.inSession')
     .col-md-10
         .row
-            p.col-md-5.lead {{manager.session.course.short | limitTo : 15}} Started: {{manager.session.date | date : "MM/dd h:mm a"}}
+            p.col-md-5.lead {{manager.session.course.short | limitTo : 15}} : {{manager.session.date | date : "MM/dd h:mm a"}}
             div.col-md-7
                 div.btn-toolbar.pull-right
                     button.btn.btn-sm.btn-danger(type='button', ng-click='manager.leaveSession()')
                         span.glyphicon.glyphicon-arrow-left
-                        span  Leave Session
+                        span  Leave
                     button.btn.btn-sm.btn-warning(type='button', ng-disabled='manager.assignment == null', ng-click='manager.endQuestion()') End Question
                     button.btn.btn-sm.btn-primary(type='button', ng-click='toggleQR()')
                         span.glyphicon.glyphicon-qrcode
-                        span  Show QR Code
+                        span  QR Code
                     button.btn.btn-sm.btn-default(type='button', ng-click='redirectToSession()') View Details
 
         hr(style='margin-bottom: 2em; margin-top: 0px')
 
         .row
-            .col-md-6
+            .col-md-5
                 form(name='assignQuestionForm')
                     h6 Assign Question
                     .form-group
@@ -68,7 +68,7 @@
                     .form-group
                         button.btn.btn-success(ng-disabled='currentQuestion == null || manager.assignment != null || assignQuestionForm.$invalid', ng-click='manager.assignQuestion(currentQuestion, timeInput, questionGraded)') Assign Question
 
-            .col-md-6.text-center.well
+            .col-md-7.text-center.well
                 h5 Current Question
                     //div.progress
                         div.progress-bar.progress-bar-striped.active(style="width: 60%;") 60%

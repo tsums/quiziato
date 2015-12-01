@@ -10,7 +10,7 @@ div(ng-if='session != null')
     .row
         h5.col-md-3 Assignment Details:
         h5.col-md-3 {{assignment.graded ? 'Graded' : 'Ungraded'}} Question
-        h5.col-md-3(ng-if='assignment.graded') Correct: {{assignment.average * 100}}%
+        h5.col-md-3(ng-if='assignment.graded') Students Correct: {{assignment.average * 100}}%
     .row
         h6.col-md-3 Assigned At: {{assignment.assignedAt | date: "MM/dd h:mm a"}}
         h6.col-md-3 Due At: {{assignment.dueAt | date: "MM/dd h:mm a"}}

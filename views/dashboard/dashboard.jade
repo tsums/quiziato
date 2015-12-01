@@ -49,13 +49,13 @@ html(lang='en')
 
                         ul.nav.navbar-nav.navbar-right
                             li
-                                p.navbar-text {{socket.connected ? 'Connected' : 'Disconnected' }}
+                                p.navbar-text {{socket.connected ? 'Online' : 'Offline' }}
                             li
-                                p.navbar-text Logged in as #[b #{user.name.full} ]
+                                p.navbar-text #[b #{user.name.full} ]
                             li
                                 a(href='/logout')
                                     span.glyphicon.glyphicon-log-out
-                                    span  Log Out
+                                    span  Logout
 
                 .container
                     div(ng-view)
