@@ -251,7 +251,7 @@ var listen = function (server) {
                                 }
 
                                 winston.info(user.username + " submitted answer ");
-                                callback({success: true});
+                                callback(answer);
                                 sendDashboardStudentAnsweredUpdate(room, assignmentId);
                             });
 
