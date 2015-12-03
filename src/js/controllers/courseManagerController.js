@@ -12,4 +12,10 @@ app.controller('courseManagerController', ['$scope', '$routeParams', 'API', func
 
     $scope.new_course = {};
 
+    $scope.submitCourseForm = function() {
+
+        API.postCourse($scope.new_course);
+        $scope.new_course = {};
+
+    }
 }]);
