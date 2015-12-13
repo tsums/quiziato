@@ -9,8 +9,15 @@ extends ../layout
 
 block content
     .center-block.auth-box
-        h1 Quiz App
-        p Welcome to Quiz App, please Log In:
+        h1
+            span &nbsp;
+            span.glyphicon.glyphicon-education
+            span  Quiziato™
+        p
+            span Welcome to
+            span &nbsp;
+            span.glyphicon.glyphicon-education
+            span  Quiziato™, please Log In:
         if message.length !== 0
             .alert.alert-danger= message
         form(role='form', action="/login", method="post")

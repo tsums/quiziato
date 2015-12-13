@@ -17,7 +17,7 @@ var winston = require('winston').loggers.get('default');
 router.route('/login')
 
     .get(ensureNotLoggedIn('/dashboard'), function (req, res) {
-        res.render('auth/login', {title: 'Log in to Quiz App', message: req.flash('error')});
+        res.render('auth/login', {title: 'Quiziato™', message: req.flash('error')});
     })
 
     .post(ensureNotLoggedIn('/dashboard'), passport.authenticate('local', {
