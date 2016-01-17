@@ -8,7 +8,7 @@
 extends ../layout
 block content
     .center-block.auth-box
-        h1 Quiz App
+        h1 Quiziato™
         p Please fill the form below to register:
         if message.length !== 0
             .alert.alert-danger= message
@@ -26,4 +26,4 @@ block content
                 label(for='name_last') Last Name
                 input.form-control(type='text', name='name_last',placeholder='Last Name', required='')
 
-            button.login-entry.btn.btn-lg.btn-primary.btn-block(type='submit') Register
+            button.login-entry.btn.btn-lg.btn-primary.btn-block(type='submit') Register for Quiziato™

@@ -14,15 +14,25 @@ app.factory('classroomManager', ['dashSocket', 'API', '$timeout', '$interval', f
 
     var manager = {};
 
-    // when we get a new students lisrt, replace it.
+    // when we get a new students lis  t, replace it.
     dashSocket.on('students', function(data) {
-        console.log(data);
         manager.attendanceRecords = data;
     });
 
     // Temporary Logger for Random Data.
     dashSocket.on('testEvent', function(data) {
         console.log(data);
+    });
+
+    dashSocket.on('answerUpdate', function(data) {
+        if (manager.assignment) {
+            manager.assignment.countAnswers = data;
+        }
+    });
+
+    dashSocket.on('currentAssignment', function(data) {
+        manager.assignment = data;
+        handleAssignment();
     });
 
     manager.reset = function() {
@@ -34,9 +44,10 @@ app.factory('classroomManager', ['dashSocket', 'API', '$timeout', '$interval', f
     };
 
     // create a class session.
-    manager.startSession = function(course) {
+    manager.startSession = function(course, attendanceMandatory) {
         dashSocket.emit('startSession', {
-            course: course._id
+            course: course._id,
+            attendanceMandatory: attendanceMandatory
         }, function(data) {
             data.course = course;
             manager.inSession = true;
@@ -65,32 +76,39 @@ app.factory('classroomManager', ['dashSocket', 'API', '$timeout', '$interval', f
         manager.reset();
     };
 
-    manager.assignQuestion = function(question) {
-        dashSocket.emit('assignQuestion', question._id, function(data) {
-            console.log(data);
-
+    manager.assignQuestion = function(question, time, graded) {
+        console.log(time);
+        dashSocket.emit('assignQuestion', {question: question._id, time: time, graded: graded}, function(data) {
             manager.assignment = data;
             manager.assignment.question = question;
-
-            var due = moment(manager.assignment.dueAt);
-            console.log('due: ' + due);
-            manager.assignment.remaining = due.diff(moment(), 'seconds');
-
-            var counter = $interval(function () {
-                manager.assignment.remaining = due.diff(moment(), 'seconds');
-            }, 1000, manager.assignment.remaining);
-
-            console.log(manager.assignment.remaining);
-            $timeout(function() {
-                console.log("timeout_ended");
-                $interval.cancel(counter);
-                manager.assignment = null;
-            }, manager.assignment.remaining * 1000);
-
+            handleAssignment();
         });
     };
 
+    manager.endQuestion = function() {
+        dashSocket.emit('endAssignment', manager.assignment._id, function() {
+            $interval.cancel(manager.assignment.counter);
+            manager.assignment = null;
+        })
+    };
+
     manager.reset();
+
+    var handleAssignment = function() {
+        manager.assignment.countAnswers = 0;
+
+        var due = moment(manager.assignment.dueAt);
+        manager.assignment.remaining = due.diff(moment(), 'seconds');
+
+        manager.assignment.counter = $interval(function () {
+            manager.assignment.remaining = due.diff(moment(), 'seconds');
+        }, 1000, manager.assignment.remaining);
+
+        manager.assignment.timeout = $timeout(function() {
+            $interval.cancel(manager.assignment.counter);
+            manager.assignment = null;
+        }, manager.assignment.remaining * 1000);
+    };
 
     return manager;
 }]);

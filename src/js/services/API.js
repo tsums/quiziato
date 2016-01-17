@@ -24,10 +24,8 @@ app.factory('API', ['$http', function($http) {
         });
     };
 
-    API.postCourse = function(title) {
-        $http.post('/web/api/course', {
-            title: title
-        }).then(function(response) {
+    API.postCourse = function(course) {
+        $http.post('/web/api/course', course).then(function(response) {
             API.getCourses();
         }, function(error) {
             console.log(error);
@@ -80,6 +78,14 @@ app.factory('API', ['$http', function($http) {
 
     API.postQuestion = function(question) {
         return $http.post('/web/api/question', question);
+    };
+
+    API.deleteQuestion = function(questionId) {
+        return $http.delete('/web/api/question/' + questionId);
+    };
+
+    API.getAssignment = function(assignmentId) {
+        return $http.get('/web/api/assignment/' + assignmentId);
     };
 
     API.getCourses();

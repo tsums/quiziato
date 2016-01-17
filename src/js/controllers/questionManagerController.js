@@ -32,6 +32,17 @@ app.controller('questionManagerController', ['$scope', '$routeParams', 'API', fu
         $scope.new_question.course = $scope.currentCourse._id;
         API.postQuestion($scope.new_question).then(function(response) {
             $scope.fetchCurrentQuestions($scope.currentCourse._id);
+            $scope.new_question = {};
+            $scope.new_question.options = [{}];
+        }, function(error) {
+            console.log(error);
+        })
+    };
+
+    $scope.deleteQuestion = function(questionId) {
+        API.deleteQuestion(questionId).then(function (response) {
+            $scope.fetchCurrentQuestions($scope.currentCourse._id);
+            $scope.currentQuestion = null;
         }, function(error) {
             console.log(error);
         })

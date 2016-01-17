@@ -10,11 +10,13 @@ var courseRoutes = require('./api/courseRoutes');
 var questionRoutes = require('./api/questionRoutes');
 var userRoutes = require('./api/userRoutes');
 var sessionRoutes = require('./api/sessionRoutes');
+var assignmentRoutes = require('./api/assignmentRoutes');
 
 // These routes should use the bearer method.
 router.use('/user', userRoutes);
 router.use('/course', courseRoutes);
 router.use('/question', questionRoutes);
 router.use('/session', sessionRoutes);
+router.use('/assignment', assignmentRoutes);
 
 module.exports = router;

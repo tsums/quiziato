@@ -9,8 +9,6 @@
  */
 
 var ConnectRoles = require('connect-roles');
-
-// Role Control Definition Controls under what conditions a request can go through.
 var roleControl = new ConnectRoles();
 
 roleControl.use('instructor', function (req) {

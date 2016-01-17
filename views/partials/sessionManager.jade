@@ -5,20 +5,45 @@
 
 //- Session Manager Partial`
 
-h5 Review Previous Sessions
-div.well
-    form-group.form-group
-        select.form-control(required='', ng-model='currentCourse', ng-options='course.title for course in API.courses')
-            option(value='') Select Course
+div(ng-show="sessionDetail == null")
+    p.lead Review Previous Sessions
+    .row
 
-div.well
-    form-group.form-group
-        select.form-control(ng-model='currentSession', ng-options='session as getLabel(session) for session in sessions | orderBy: "-date"')
-            option(value='') Choose Session
+        div.well.col-md-5
+            form-group.form-group
+                select.form-control(required='', ng-model='currentCourse', ng-options='course.full for course in API.courses')
+                    option(value='') Select Course
 
-.row(ng-show="currentSession != null")
-    h6.col-md-4 Student
-    h6.col-md-4 Checkin Time
-.now(ng-repeat='record in sessionDetail.attendance | orderBy: "record.student.name.last"')
-    p.col-md-4 {{record.student.name.last}}, {{record.student.name.first}}
-    p.col-md-4 {{record.time | date: "MM/dd h:mm a"}}
+        div.well.col-md-6.col-md-push-1
+            form-group.form-group
+                select.form-control(ng-model='currentSession', ng-options='session as getLabel(session) for session in sessions | orderBy: "-date"', ng-change="openSession()")
+                    option(value='') Choose Session
+
+.row(ng-if="sessionDetail != null")
+    h4 {{getFullLabel(sessionDetail)}}
+    h6
+        a(href="#", ng-click="back()") ← Go Back
+    .col-md-5
+        h5 Attendance ({{sessionDetail.attendanceMandatory ? 'Mandatory' : 'Optional'}})
+        .row
+            h6.col-md-6 Student
+            h6.col-md-6 Checkin Time
+        .now(ng-repeat='record in sessionDetail.attendance | orderBy: "record.student.name.last"')
+            p.col-md-6 {{record.student.name.last}}, {{record.student.name.first}}
+            p.col-md-6 {{record.time | date: "MM/dd h:mm a"}}
+        p(ng-show='!sessionDetail.attendance.length') No students in attendance
+    .col-md-7
+        h5 Assignments
+        .row
+            h6.col-md-3 Question
+            h6.col-md-3 Assigned Time
+            h6.col-md-3 Due At
+            h6.col-md-3 View Responses
+        .row(ng-repeat='assignment in sessionDetail.assignments | orderBy: "assignment.assignedAt"')
+            p.col-md-3 {{ assignment.question.title }}
+            p.col-md-3 {{assignment.assignedAt | date: "MM/dd h:mm a"}}
+            p.col-md-3 {{assignment.dueAt | date: "MM/dd h:mm a"}}
+            a.col-md-3(ng-click='openAssignment(assignment)', href='#') Responses
+        p(ng-show='!sessionDetail.assignments.length') No questions assigned
+
+

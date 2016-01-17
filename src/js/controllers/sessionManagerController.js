@@ -6,7 +6,13 @@
 
 var app = angular.module('dashboard');
 
-app.controller('sessionManagerController', ['$scope', '$filter', 'API', function ($scope, $filter, API) {
+app.controller('sessionManagerController', ['$scope', '$filter', '$routeParams', '$location', 'API', function ($scope, $filter, $routeParams, $location, API) {
+
+    if ($routeParams.sid) {
+        API.getSession($routeParams.sid, function (data) {
+            $scope.sessionDetail = data;
+        });
+    }
 
     $scope.API = API;
 
@@ -14,22 +20,28 @@ app.controller('sessionManagerController', ['$scope', '$filter', 'API', function
         if (newVal) {
             API.getPastSessionsForCourse(newVal._id, function(data) {
                 $scope.sessions = data;
-                console.log(data);
             })
         }
     });
 
-    $scope.$watch('currentSession', function (newVal, oldVal) {
-        console.log(newVal);
-        if (newVal) {
-            API.getSession(newVal._id, function(data) {
-                $scope.sessionDetail = data;
-            })
-        }
-    });
+    $scope.openSession = function() {
+        $location.path('/sessions/' + $scope.currentSession._id);
+    };
+
+    $scope.openAssignment = function(assignment) {
+        $location.path('/sessions/' + $scope.sessionDetail._id + '/assignment/' + assignment._id);
+    };
+
+    $scope.back = function() {
+        window.history.back()
+    }
 
     $scope.getLabel = function(session) {
         return $filter('date')(session.date, "MM/dd h:mm a") + " : " + session.instructor.name.full;
+    };
+
+    $scope.getFullLabel = function(session) {
+        return session.course.full + " : " + $filter('date')(session.date, "MM/dd h:mm a") + " : " + session.instructor.name.full;
     }
 
 }]);

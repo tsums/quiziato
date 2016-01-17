@@ -8,7 +8,7 @@
  *  Dashboard Angular App
  */
 
-var app = angular.module('dashboard', ['btford.socket-io', 'ngRoute', 'monospaced.qrcode', 'ui.bootstrap']);
+var app = angular.module('dashboard', ['btford.socket-io', 'ngRoute', 'monospaced.qrcode', 'ui.bootstrap', 'ui.select']);
 
 app.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
@@ -30,6 +30,17 @@ app.config(['$routeProvider', '$locationProvider', function($routeProvider, $loc
         .when('/sessions', {
             templateUrl: '/partials/sessionManager',
             controller: 'sessionManagerController'
+        })
+        .when('/sessions/:sid', {
+            templateUrl: '/partials/sessionManager',
+            controller: 'sessionManagerController'
+        })
+        .when('/sessions/:sid/assignment/:aid', {
+            templateUrl: '/partials/assignmentManager',
+            controller: 'assignmentController'
+        })
+        .when('/help', {
+            templateUrl: '/partials/help'
         })
         .otherwise({redirectTo: '/'});
 

@@ -3,6 +3,7 @@
  * CS 490-001 Fall 2015
  * Quiz Project
  */
+
 /*
     Connect-Session store using Redis Memory Cache for persistent sessions and speed.
  */

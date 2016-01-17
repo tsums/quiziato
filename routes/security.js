@@ -4,6 +4,10 @@
  * Quiz Project
  */
 
+/*
+    API Security Intercept configuration - prevent usage without a method of authentication.
+ */
+
 var mobileAPI = require('express').Router();
 var webAPI = require('express').Router();
 var passport = require('passport');

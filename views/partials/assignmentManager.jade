@@ -1,0 +1,48 @@
+//
+   Trevor Summerfield
+   CS 490-001 Fall 2015
+   Quiz Project
+
+div(ng-if='session != null')
+
+    h5
+        a(ng-click='returntoSession()', href='#') ← {{getFullLabel(session)}}
+    .row
+        h5.col-md-3 Assignment Details:
+        h5.col-md-3 {{assignment.graded ? 'Graded' : 'Ungraded'}} Question
+        h5.col-md-3(ng-if='assignment.graded') Students Correct: {{assignment.average * 100}}%
+    .row
+        h6.col-md-3 Assigned At: {{assignment.assignedAt | date: "MM/dd h:mm a"}}
+        h6.col-md-3 Due At: {{assignment.dueAt | date: "MM/dd h:mm a"}}
+
+    .row
+        .col-md-3
+            p.lead Question
+            div
+                span.bold Title:
+                span  {{assignment.question.title}}
+            div
+                span.bold Prompt:
+                span  {{assignment.question.prompt}}
+            div(ng-repeat="option in assignment.question.options track by $index")
+                span.bold Option {{$index+1}}:
+                span  {{option.text}}
+                span(ng-if='option._id == assignment.question.correctOption')  ✓
+            p.text-warning(ng-if='assignment.question.removed') Note: Question was deleted after assignment.
+
+
+        .col-md-9
+            p.lead Responses
+            .row
+                h6.col-md-3 Student
+                h6.col-md-3 Submitted At
+                h6.col-md-3 Response
+                h6.col-md-3(ng-if='assignment.graded') Correct?
+            .row(ng-repeat='answer in assignment.answers')
+                p.col-md-3 {{answer.student.name.full}}
+                p.col-md-3 {{answer.submittedAt | date: "MM/dd h:mm a"}}
+                p.col-md-3 {{getOptionText(answer.submission)}}
+                p.col-md-3(ng-if='assignment.graded') {{answer.correct ? 'Correct' : 'Incorrect' }}
+            p(ng-if='assignment.answers.length == 0') No Responses
+
+
