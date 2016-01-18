@@ -30,3 +30,6 @@ The app uses web sockets to provide realtime communication to connected mobile d
 1. `cp env.json.dist env.json` and edit the environment variables to suit your needs.
 2. `npm install`
 3. `gulp`
+
+## License
+[MIT](LICENSE.txt)
