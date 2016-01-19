@@ -5,6 +5,8 @@ Quiziato™ is a real time classroom quiz system for instructors to gauge studen
 
 The app uses web sockets to provide realtime communication to connected mobile devices in the classroom, while the instructor manages the course session through the web dashboard.
 
+This is the Web Dashboard and Backend for Quiziato™. The backend and web interface can be found [here](https://github.com/MichaelSelsky/quiziato).
+
 ## Features
 - Accounts & Authentication
 - Instructor can create Multiple Choice Questions
@@ -30,6 +32,11 @@ The app uses web sockets to provide realtime communication to connected mobile d
 1. `cp env.json.dist env.json` and edit the environment variables to suit your needs.
 2. `npm install`
 3. `gulp`
+
+## Contributors ##
+[Trevor Summerfield](https://github.com/tsums) - Built the backend and web frontend
+
+[Michael Selsky](https://github.com/michaelselsky) - Built the iOS Application
 
 ## License
 [MIT](LICENSE.txt)
