@@ -5,7 +5,7 @@ Quiziato™ is a real time classroom quiz system for instructors to gauge studen
 
 The app uses web sockets to provide realtime communication to connected mobile devices in the classroom, while the instructor manages the course session through the web dashboard.
 
-This is the Web Dashboard and Backend for Quiziato™. The backend and web interface can be found [here](https://github.com/MichaelSelsky/quiziato).
+This is the Web Dashboard and Backend for Quiziato™. The iOS application can be found [here](https://github.com/MichaelSelsky/quiziato).
 
 ## Features
 - Accounts & Authentication
